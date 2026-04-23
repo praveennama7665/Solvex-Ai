@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team | Solvex-AI</title>
+<link rel="icon" href="../Solvex-Ai-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ══════════════════════════════════
+   ROOT & RESET
+══════════════════════════════════ */
+:root{
+  --navy:#050d1f;
+  --navy2:#0a1628;
+  --navy3:#0f2044;
+  --blue:#2563eb;
+  --blue-light:#3b82f6;
+  --sky:#38bdf8;
+  --accent:#f59e0b;
+  --rose:#f43f5e;
+  --text:#e2e8f0;
+  --text-dim:#94a3b8;
+  --border:rgba(255,255,255,.07);
+  --card-bg:rgba(255,255,255,.04);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--navy);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;font-family:inherit;}
+
+/* ══════════════════════════════════
+   NOISE / MESH BACKGROUND
+══════════════════════════════════ */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(37,99,235,.18), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(56,189,248,.12), transparent),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(245,158,11,.06), transparent);
+  pointer-events:none;z-index:0;
+}
+
+/* ══════════════════════════════════
+   HEADER
+══════════════════════════════════ */
+header{
+  position:sticky;top:0;z-index:999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 8%;height:72px;
+  background:rgba(5,13,31,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+
+.logo{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Syne',sans-serif;font-size:20px;font-weight:800;
+}
+.logo img{width:34px;border-radius:8px;}
+.logo .lo1{color:var(--sky);}
+.logo .lo2{color:white;}
+
+nav{display:flex;align-items:center;gap:8px;}
+.nav-link{
+  padding:8px 16px;border-radius:8px;
+  font-size:14px;font-weight:500;color:var(--text-dim);
+  transition:all .25s;position:relative;
+}
+.nav-link:hover{color:white;background:rgba(255,255,255,.07);}
+.nav-link.active{color:var(--sky);}
+
+.nav-cta{
+  padding:9px 22px;background:linear-gradient(135deg,var(--blue),var(--sky));
+  color:white;border-radius:10px;font-size:14px;font-weight:600;
+  box-shadow:0 4px 14px rgba(37,99,235,.35);
+  transition:all .25s;margin-left:8px;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,.45);}
+
+/* hamburger */
+.hamburger{
+  display:none;flex-direction:column;gap:5px;
+  width:32px;cursor:pointer;padding:4px;
+}
+.hamburger span{
+  display:block;height:2px;border-radius:2px;
+  background:white;transition:all .3s;
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.mobile-nav{
+  display:none;position:fixed;
+  top:72px;left:0;right:0;
+  background:rgba(5,13,31,.97);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:20px 8%;
+  flex-direction:column;gap:4px;
+  z-index:998;
+  animation:slideDown .3s ease;
+}
+.mobile-nav.show{display:flex;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+.mobile-nav .nav-link{padding:12px 16px;}
+
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
+.hero{
+  position:relative;z-index:1;
+  padding:100px 8% 70px;
+  text-align:center;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.3);
+  border-radius:50px;padding:6px 18px;
+  font-size:12px;font-weight:600;letter-spacing:1px;
+  text-transform:uppercase;color:var(--sky);margin-bottom:24px;
+}
+.hero-tag i{font-size:11px;}
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(36px,6vw,64px);
+  font-weight:800;line-height:1.1;
+  margin-bottom:20px;
+}
+.hero h1 .grad{
+  background:linear-gradient(135deg,var(--sky),var(--blue-light),var(--accent));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero p{
+  font-size:18px;color:var(--text-dim);
+  max-width:520px;margin:0 auto 48px;line-height:1.7;
+}
+
+/* floating pills */
+.hero-pills{
+  display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:60px;
+}
+.pill{
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:50px;padding:8px 20px;font-size:13px;
+  color:var(--text-dim);display:flex;align-items:center;gap:7px;
+  transition:all .25s;
+}
+.pill i{color:var(--sky);}
+.pill:hover{background:rgba(255,255,255,.08);color:white;transform:translateY(-2px);}
+
+/* ══════════════════════════════════
+   STATS BAR
+══════════════════════════════════ */
+.stats-bar{
+  position:relative;z-index:1;
+  display:flex;justify-content:center;gap:0;
+  margin:0 8% 80px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:20px;overflow:hidden;
+  flex-wrap:wrap;
+}
+.stat-item{
+  flex:1;min-width:140px;
+  padding:28px 20px;text-align:center;
+  border-right:1px solid var(--border);
+  transition:background .25s;
+}
+.stat-item:last-child{border-right:none;}
+.stat-item:hover{background:rgba(255,255,255,.04);}
+.stat-num{
+  font-family:'Syne',sans-serif;font-size:32px;font-weight:800;
+  background:linear-gradient(135deg,var(--sky),var(--blue-light));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.stat-lbl{font-size:13px;color:var(--text-dim);margin-top:4px;}
+
+/* ══════════════════════════════════
+   SECTION LABEL
+══════════════════════════════════ */
+.section-label{
+  position:relative;z-index:1;
+  text-align:center;margin-bottom:52px;
+}
+.section-label .tag{
+  display:inline-block;
+  background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);
+  border-radius:50px;padding:5px 16px;
+  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--sky);margin-bottom:14px;
+}
+.section-label h2{
+  font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;
+}
+.section-label p{font-size:16px;color:var(--text-dim);margin-top:10px;}
+
+/* ══════════════════════════════════
+   TEAM GRID
+══════════════════════════════════ */
+.team-section{
+  position:relative;z-index:1;
+  padding:0 8% 100px;
+}
+.team-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+}
+
+/* ══════════════════════════════════
+   TEAM CARD
+══════════════════════════════════ */
+.team-card{
+  position:relative;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:36px 28px 30px;
+  text-align:center;
+  overflow:hidden;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s, border-color .35s;
+  cursor:default;
+}
+.team-card::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(37,99,235,.08),transparent 60%);
+  opacity:0;transition:opacity .35s;border-radius:24px;
+}
+.team-card:hover{
+  transform:translateY(-12px);
+  box-shadow:0 30px 60px rgba(0,0,0,.4),0 0 0 1px rgba(56,189,248,.2);
+  border-color:rgba(56,189,248,.3);
+}
+.team-card:hover::before{opacity:1;}
+
+/* founder badge */
+.founder-badge{
+  position:absolute;top:18px;right:18px;
+  background:linear-gradient(135deg,var(--accent),#f97316);
+  border-radius:50px;padding:4px 12px;
+  font-size:10px;font-weight:700;letter-spacing:.5px;
+  color:white;text-transform:uppercase;
+  box-shadow:0 4px 12px rgba(245,158,11,.4);
+}
+
+/* avatar */
+.avatar-wrap{
+  position:relative;width:100px;height:100px;
+  margin:0 auto 20px;
+}
+.avatar-ring{
+  position:absolute;inset:-4px;border-radius:50%;
+  background:conic-gradient(from 0deg,var(--blue),var(--sky),var(--accent),var(--blue));
+  animation:spin 6s linear infinite;opacity:0;
+  transition:opacity .35s;
+}
+.team-card:hover .avatar-ring{opacity:1;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.avatar-ring::after{
+  content:'';position:absolute;inset:3px;
+  background:var(--navy);border-radius:50%;
+}
+.avatar-img{
+  position:relative;z-index:1;
+  width:100%;height:100%;border-radius:50%;
+  overflow:hidden;border:3px solid rgba(37,99,235,.4);
+  transition:border-color .35s;
+}
+.avatar-img img{width:100%;height:100%;object-fit:cover;}
+.team-card:hover .avatar-img{border-color:var(--sky);}
+
+/* placeholder avatar */
+.avatar-placeholder{
+  width:100%;height:100%;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:32px;font-weight:800;
+  color:white;
+}
+
+/* name */
+.card-name{
+  font-family:'Syne',sans-serif;font-size:19px;font-weight:700;
+  color:white;margin-bottom:6px;
+  transition:color .25s;
+}
+.team-card:hover .card-name{color:var(--sky);}
+
+/* role */
+.card-role{
+  font-size:13px;color:var(--text-dim);
+  margin-bottom:20px;font-weight:400;
+}
+
+/* role pill */
+.role-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.25);
+  border-radius:50px;padding:5px 14px;
+  font-size:11.5px;font-weight:600;color:var(--sky);
+  margin-bottom:22px;
+}
+
+/* social */
+.social-row{
+  display:flex;justify-content:center;gap:4px;
+  opacity:0;transform:translateY(10px);
+  transition:all .3s ease;
+}
+.team-card:hover .social-row{opacity:1;transform:translateY(0);}
+.social-btn{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:var(--text-dim);
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  transition:all .25s;
+}
+.social-btn:hover{transform:translateY(-3px);}
+.social-btn.gh:hover{background:rgba(110,84,148,.2);border-color:#6e5494;color:#c9b1ff;}
+.social-btn.li:hover{background:rgba(0,119,181,.2);border-color:#0077b5;color:#38bdf8;}
+.social-btn.ig:hover{background:rgba(225,48,108,.2);border-color:#e1306c;color:#fb7bc3;}
+.social-btn.ml:hover{background:rgba(234,67,53,.2);border-color:#ea4335;color:#fca5a5;}
+.social-btn.wa:hover{background:rgba(37,211,102,.2);border-color:#25d366;color:#86efac;}
+
+/* card glow */
+.card-glow{
+  position:absolute;bottom:-60px;left:50%;
+  transform:translateX(-50%);
+  width:160px;height:100px;border-radius:50%;
+  opacity:0;transition:opacity .35s;
+  pointer-events:none;
+}
+.team-card:hover .card-glow{opacity:.5;}
+
+/* ══════════════════════════════════
+   FOUNDER CARD SPECIAL
+══════════════════════════════════ */
+.team-card.founder-card{
+  border-color:rgba(37,99,235,.3);
+  background:rgba(37,99,235,.06);
+  grid-column: span 1;
+}
+.team-card.founder-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--sky),var(--accent));
+}
+
+/* ══════════════════════════════════
+   QUOTE SECTION
+══════════════════════════════════ */
+.quote-section{
+  position:relative;z-index:1;
+  padding:0 8% 100px;
+}
+.quote-card{
+  background:rgba(37,99,235,.07);
+  border:1px solid rgba(37,99,235,.2);
+  border-radius:24px;padding:52px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.quote-card::before{
+  content:'"';
+  position:absolute;top:-20px;left:40px;
+  font-family:'Syne',sans-serif;font-size:200px;font-weight:800;
+  color:rgba(37,99,235,.07);line-height:1;pointer-events:none;
+}
+.quote-text{
+  font-size:clamp(18px,2.5vw,26px);font-weight:300;
+  font-style:italic;color:var(--text);
+  max-width:700px;margin:0 auto 20px;line-height:1.6;
+  font-family:'DM Sans',sans-serif;
+}
+.quote-author{font-size:14px;color:var(--sky);font-weight:600;}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.02);
+  border-top:1px solid var(--border);
+  padding:60px 8% 0;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.5fr 1fr 1fr 1fr;
+  gap:40px;margin-bottom:48px;
+}
+.footer-col h3{
+  font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--sky);margin-bottom:18px;
+}
+.footer-col p{font-size:13.5px;color:var(--text-dim);line-height:1.7;}
+.footer-col a{
+  display:block;font-size:13.5px;color:var(--text-dim);
+  margin-bottom:10px;transition:all .2s;
+}
+.footer-col a:hover{color:white;padding-left:6px;}
+.footer-social{display:flex;gap:10px;margin-top:18px;}
+.fsoc-btn{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:var(--text-dim);transition:all .25s;
+}
+.fsoc-btn:hover{background:rgba(37,99,235,.2);border-color:var(--blue);color:var(--sky);transform:translateY(-3px);}
+.footer-brand{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:18px;font-weight:800;
+  margin-bottom:14px;
+}
+.footer-brand img{width:28px;border-radius:6px;}
+.footer-bottom{
+  border-top:1px solid var(--border);
+  padding:20px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-bottom p{font-size:13px;color:var(--text-dim);}
+.footer-bottom-links{display:flex;gap:20px;}
+.footer-bottom-links a{font-size:13px;color:var(--text-dim);transition:color .2s;}
+.footer-bottom-links a:hover{color:white;}
+
+/* ══════════════════════════════════
+   SCROLL ANIMATIONS
+══════════════════════════════════ */
+.reveal{
+  opacity:0;transform:translateY(30px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
+@media(max-width:1024px){
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .stats-bar{margin:0 4% 80px;}
+}
+@media(max-width:768px){
+  header{padding:0 5%;}
+  nav{display:none;}
+  .hamburger{display:flex;}
+  .hero{padding:70px 5% 50px;}
+  .stats-bar{margin:0 5% 60px;border-radius:16px;}
+  .stat-item{min-width:50%;border-bottom:1px solid var(--border);}
+  .stat-item:last-child{border-bottom:none;}
+  .team-section{padding:0 5% 70px;}
+  .quote-section{padding:0 5% 70px;}
+  .quote-card{padding:36px 28px;}
+  footer{padding:50px 5% 0;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+  .footer-bottom-links{justify-content:center;}
+}
+@media(max-width:520px){
+  .team-grid{grid-template-columns:1fr;}
+  .hero-pills{gap:8px;}
+  .footer-grid{grid-template-columns:1fr;}
+  .stats-bar{flex-direction:column;}
+  .stat-item{border-right:none;border-bottom:1px solid var(--border);}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <img src="../Solvex-Ai-logo.png" alt="Logo">
+    <span class="lo1">Solvex-</span>
+    <span class="lo2">Ai</span>
+  </div>
+
+  <nav id="desktopNav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="project.html" class="nav-link">Projects</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="team.html" class="nav-link active">Team</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+    <a href="signin.html" class="nav-cta">Sign In</a>
+  </nav>
+
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="project.html" class="nav-link">Projects</a>
+  <a href="about.html" class="nav-link">About</a>
+  <a href="team.html" class="nav-link active">Team</a>
+  <a href="contact.html" class="nav-link">Contact</a>
+  <a href="signin.html" class="nav-cta" style="text-align:center;margin-top:8px;">Sign In</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag reveal"><i class="fa-solid fa-users"></i> Our Core Team</div>
+  <h1 class="reveal">
+    The People Behind<br>
+    <span class="grad">Solvex-AI</span>
+  </h1>
+  <p class="reveal">Innovators, builders and problem-solvers working together to bridge industry challenges with student talent.</p>
+
+  <div class="hero-pills reveal">
+    <div class="pill"><i class="fa-solid fa-code"></i> Full-Stack Dev</div>
+    <div class="pill"><i class="fa-solid fa-palette"></i> UI/UX Design</div>
+    <div class="pill"><i class="fa-solid fa-database"></i> Backend</div>
+    <div class="pill"><i class="fa-solid fa-book"></i> Research</div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar reveal">
+  <div class="stat-item">
+    <div class="stat-num">4</div>
+    <div class="stat-lbl">Team Members</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">2</div>
+    <div class="stat-lbl">Years Together</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">12+</div>
+    <div class="stat-lbl">Projects Built</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">100%</div>
+    <div class="stat-lbl">Dedication</div>
+  </div>
+</div>
+
+<!-- TEAM SECTION -->
+<section class="team-section">
+
+  <div class="section-label reveal">
+    <div class="tag">Core Team</div>
+    <h2>Meet the <span style="color:var(--sky)">Builders</span></h2>
+    <p>Each member brings a unique superpower to the table</p>
+  </div>
+
+  <div class="team-grid">
+
+    <!-- PRAVEEN — FOUNDER -->
+    <div class="team-card founder-card reveal" style="transition-delay:.0s">
+      <div class="founder-badge"><i class="fa-solid fa-crown" style="margin-right:4px;font-size:9px;"></i>Founder</div>
+      <div class="card-glow" style="background:radial-gradient(circle,rgba(37,99,235,.6),transparent);"></div>
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-img">
+          <img src="solvex-test-code\team1.jpeg" alt="Praveen Nama"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="avatar-placeholder" style="background:linear-gradient(135deg,#2563eb,#38bdf8);display:none;">P</div>
+        </div>
+      </div>
+      <div class="card-name">Praveen Nama</div>
+      <div class="card-role">Founder • Developer • Team Leader</div>
+      <div class="role-chip"><i class="fa-solid fa-terminal"></i> Full-Stack Developer</div>
+      <div class="social-row">
+        <a href="#" class="social-btn gh" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="social-btn li" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="#" class="social-btn ig" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-btn ml" title="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="#" class="social-btn wa" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+
+    <!-- KRISHNA -->
+    <div class="team-card reveal" style="transition-delay:.1s">
+      <div class="card-glow" style="background:radial-gradient(circle,rgba(56,189,248,.5),transparent);"></div>
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-img">
+          <img src="krishna.jpg" alt="Krishna Yadav"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="avatar-placeholder" style="background:linear-gradient(135deg,#0891b2,#38bdf8);display:none;">K</div>
+        </div>
+      </div>
+      <div class="card-name">Krishna Yadav</div>
+      <div class="card-role">Backend Developer</div>
+      <div class="role-chip"><i class="fa-solid fa-server"></i> Backend Engineer</div>
+      <div class="social-row">
+        <a href="#" class="social-btn gh"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="social-btn li"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="#" class="social-btn ig"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-btn ml"><i class="fa-solid fa-envelope"></i></a>
+        <a href="#" class="social-btn wa"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+
+    <!-- MEENAL -->
+    <div class="team-card reveal" style="transition-delay:.2s">
+      <div class="card-glow" style="background:radial-gradient(circle,rgba(244,63,94,.4),transparent);"></div>
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-img">
+          <img src="meenal.jpg" alt="Meenal Patwa"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="avatar-placeholder" style="background:linear-gradient(135deg,#be185d,#f43f5e);display:none;">M</div>
+        </div>
+      </div>
+      <div class="card-name">Meenal Patwa</div>
+      <div class="card-role">UI / UX Designer</div>
+      <div class="role-chip"><i class="fa-solid fa-pen-nib"></i> UI/UX Designer</div>
+      <div class="social-row">
+        <a href="#" class="social-btn gh"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="social-btn li"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="#" class="social-btn ig"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-btn ml"><i class="fa-solid fa-envelope"></i></a>
+        <a href="#" class="social-btn wa"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+
+    <!-- PRIYANSHI -->
+    <div class="team-card reveal" style="transition-delay:.3s">
+      <div class="card-glow" style="background:radial-gradient(circle,rgba(245,158,11,.4),transparent);"></div>
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-img">
+          <img src="priyanshi.jpg" alt="Priyanshi Kumawat"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="avatar-placeholder" style="background:linear-gradient(135deg,#d97706,#f59e0b);display:none;">P</div>
+        </div>
+      </div>
+      <div class="card-name">Priyanshi Kumawat</div>
+      <div class="card-role">Research & Documentation</div>
+      <div class="role-chip"><i class="fa-solid fa-book-open"></i> Research Lead</div>
+      <div class="social-row">
+        <a href="#" class="social-btn gh"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="social-btn li"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="#" class="social-btn ig"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-btn ml"><i class="fa-solid fa-envelope"></i></a>
+        <a href="#" class="social-btn wa"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- QUOTE SECTION -->
+<section class="quote-section">
+  <div class="quote-card reveal">
+    <div class="quote-text">
+      "We don't just build software — we build bridges between real-world problems and the next generation of problem-solvers."
+    </div>
+    <div class="quote-author">— Praveen Nama, Founder of Solvex-AI</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+
+    <div class="footer-col">
+      <div class="footer-brand">
+        <img src="Solvex-Ai-logo.png" alt="Logo">
+        <span style="color:var(--sky)">Solvex</span><span>-AI</span>
+      </div>
+      <p>Real Problem Solver Platform connecting industries and students to build real-world solutions at Poornima University.</p>
+      <div class="footer-social">
+        <a href="#" class="fsoc-btn"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="fsoc-btn"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="#" class="fsoc-btn"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="#" class="fsoc-btn"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <a href="index.html">Home</a>
+      <a href="project.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="team.html">Team</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="footer-col">
+      <h3>University</h3>
+      <a href="#">Poornima University</a>
+      <a href="#">Faculty of Engineering</a>
+      <a href="#">Innovation Cell</a>
+      <a href="#">Student Projects</a>
+    </div>
+
+    <div class="footer-col">
+      <h3>Contact</h3>
+      <a href="mailto:Solvex-Ai@poornima.edu.in"><i class="fa-solid fa-envelope" style="margin-right:6px;color:var(--sky)"></i>Email Us</a>
+      <a href="#"><i class="fa-solid fa-headset" style="margin-right:6px;color:var(--sky)"></i>Support</a>
+      <a href="#"><i class="fa-solid fa-circle-question" style="margin-right:6px;color:var(--sky)"></i>FAQ</a>
+      <a href="#"><i class="fa-solid fa-life-ring" style="margin-right:6px;color:var(--sky)"></i>Help Center</a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Poornima University | Real Problem Solver Platform — Solvex-AI</p>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Mobile menu ── */
+function toggleMenu(){
+  const hb  = document.getElementById('hamburger');
+  const nav = document.getElementById('mobileNav');
+  hb.classList.toggle('open');
+  nav.classList.toggle('show');
+}
+
+/* Close mobile nav on link click */
+document.querySelectorAll('#mobileNav .nav-link, #mobileNav .nav-cta').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileNav').classList.remove('show');
+  });
+});
+
+/* ── Scroll reveal ── */
+const revealEls = document.querySelectorAll('.reveal');
+const observer  = new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+revealEls.forEach(el => observer.observe(el));
+
+/* ── Counter animation ── */
+function animateCounter(el, target, duration=1500){
+  const isPercent = target.toString().includes('%');
+  const isPlus    = target.toString().includes('+');
+  const num       = parseInt(target);
+  let start = null;
+  const step = (ts)=>{
+    if(!start) start=ts;
+    const prog = Math.min((ts-start)/duration,1);
+    const ease = 1-Math.pow(1-prog,3);
+    el.textContent = Math.round(ease*num)+(isPlus?'+':isPercent?'%':'');
+    if(prog<1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const statsObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.stat-num').forEach(el=>{
+        animateCounter(el, el.textContent, 1400);
+      });
+      statsObs.disconnect();
+    }
+  });
+},{threshold:0.5});
+const statsBar = document.querySelector('.stats-bar');
+if(statsBar) statsObs.observe(statsBar);
+</script>
+</body>
+</html>

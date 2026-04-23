@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solvex-AI — Student Innovation Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="../Solvex-Ai-logo.png">
+<style>
+/* ══════════════════════════════════════════
+   CSS VARIABLES — LIGHT THEME
+══════════════════════════════════════════ */
+:root {
+  --bg:        #f4f6fb;
+  --surface:   #ffffff;
+  --card:      #ffffff;
+  --card2:     #f9fafc;
+  --border:    #e5e9f2;
+  --border-h:  #c8d0e8;
+  --gold:      #c78b2a;
+  --gold-lt:   #fef3c7;
+  --gold-dark: #a16207;
+  --blue:      #2563eb;
+  --blue-lt:   #eff6ff;
+  --text:      #0f172a;
+  --muted:     #64748b;
+  --muted2:    #94a3b8;
+  --accent:    #e11d48;
+  --green:     #059669;
+  --navy:      #1e2d4d;
+  --shadow:    0 2px 16px rgba(15,23,42,0.08);
+  --shadow-h:  0 12px 40px rgba(15,23,42,0.14);
+  --r:         12px;
+  --rr:        18px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;font-family:'DM Sans',sans-serif;}
+input,textarea,select{font-family:'DM Sans',sans-serif;}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+header{
+  position:sticky;top:0;z-index:999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 6%;height:66px;
+  background:rgba(255,255,255,0.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 8px rgba(15,23,42,0.06);
+}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;transition:transform 0.3s;}
+.logo:hover{transform:scale(1.04);}
+.logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,#c78b2a,#f5c842);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:#fff;font-weight:900;
+  box-shadow:0 4px 12px rgba(199,139,42,0.3);
+}
+.logo-text{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--navy);}
+.logo-text span{color:var(--gold);}
+nav{display:flex;gap:4px;}
+nav a{padding:7px 15px;border-radius:8px;font-size:14px;font-weight:500;color:var(--muted);transition:all 0.22s;}
+nav a:hover{color:var(--navy);background:#f1f5f9;}
+nav a.active{color:var(--navy);font-weight:700;background:#f1f5f9;}
+.login-btn{
+  padding:9px 22px;border-radius:10px;
+  background:var(--navy);color:#fff;
+  font-size:14px;font-weight:700;
+  transition:all 0.3s;box-shadow:0 4px 12px rgba(30,45,77,0.2);
+}
+.login-btn:hover{background:#0f1a33;transform:translateY(-2px);}
+.role-badge{
+  display:flex;align-items:center;gap:7px;
+  padding:6px 14px;border-radius:20px;
+  font-size:12px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.5px;border:1px solid;
+}
+.role-student{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe;}
+.role-faculty{background:#f0fdf4;color:#15803d;border-color:#bbf7d0;}
+.role-provider{background:#fff7ed;color:#c2410c;border-color:#fed7aa;}
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.hero{
+  position:relative;min-height:340px;
+  display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;
+  background:linear-gradient(160deg,#1e2d4d 0%,#2a4080 50%,#1e2d4d 100%);
+}
+.hero-bg{position:absolute;inset:0;background-image:url("https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1400");background-size:cover;background-position:center;opacity:0.12;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:50px 50px;}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;}
+.orb-1{width:300px;height:300px;background:rgba(245,200,66,0.15);top:-60px;right:8%;}
+.orb-2{width:250px;height:250px;background:rgba(59,130,246,0.12);bottom:-50px;left:5%;}
+.hero-content{position:relative;z-index:2;padding:60px 20px;animation:heroIn 0.9s cubic-bezier(0.22,1,0.36,1) both;}
+@keyframes heroIn{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:translateY(0)}}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,200,66,0.15);border:1px solid rgba(245,200,66,0.35);border-radius:50px;padding:6px 18px;font-size:12px;font-weight:700;color:#fde68a;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(26px,4.5vw,48px);font-weight:800;line-height:1.15;color:#fff;}
+.hero h1 span{color:#fde68a;}
+.hero p{margin-top:12px;font-size:15px;color:rgba(255,255,255,0.7);line-height:1.7;max-width:540px;margin-inline:auto;}
+.hero-cta{margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{padding:12px 28px;border-radius:10px;background:linear-gradient(135deg,#c78b2a,#f5c842);color:#1a0e00;font-size:14px;font-weight:800;box-shadow:0 6px 18px rgba(199,139,42,0.35);transition:all 0.3s;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(199,139,42,0.45);}
+.btn-ghost{padding:12px 28px;border-radius:10px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;font-size:14px;font-weight:600;transition:all 0.3s;}
+.btn-ghost:hover{background:rgba(255,255,255,0.18);transform:translateY(-3px);}
+
+/* ══════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════ */
+.search-wrap{padding:28px 6%;display:flex;justify-content:center;}
+.search-inner{position:relative;width:100%;max-width:520px;}
+.search-inner i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted2);font-size:14px;pointer-events:none;}
+.search-inner input{width:100%;padding:13px 16px 13px 44px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;transition:all 0.3s;outline:none;box-shadow:var(--shadow);}
+.search-inner input::placeholder{color:var(--muted2);}
+.search-inner input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(199,139,42,0.1);}
+
+/* ══════════════════════════════════════════
+   STATS
+══════════════════════════════════════════ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:16px;padding:0 6% 44px;}
+.stat-box{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rr);padding:26px 20px;text-align:center;box-shadow:var(--shadow);transition:all 0.32s;position:relative;overflow:hidden;}
+.stat-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-dark));transform:scaleX(0);transition:transform 0.32s;transform-origin:left;}
+.stat-box:hover{transform:translateY(-5px);box-shadow:var(--shadow-h);border-color:var(--gold);}
+.stat-box:hover::after{transform:scaleX(1);}
+.stat-icon{font-size:26px;margin-bottom:10px;display:block;}
+.stat-box h2{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:var(--navy);line-height:1;}
+.stat-box p{margin-top:5px;font-size:13px;color:var(--muted);font-weight:500;}
+
+/* ══════════════════════════════════════════
+   SECTION TITLE
+══════════════════════════════════════════ */
+.section-title{padding:0 6% 22px;display:flex;align-items:center;gap:12px;}
+.section-title h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--navy);white-space:nowrap;}
+.section-title .pill{background:var(--gold-lt);border:1px solid #fde68a;color:var(--gold-dark);border-radius:50px;padding:3px 12px;font-size:12px;font-weight:700;}
+.title-line{flex:1;height:1.5px;background:var(--border);}
+
+/* ══════════════════════════════════════════
+   FORM SECTION
+══════════════════════════════════════════ */
+.form-section{padding:0 6% 52px;}
+
+/* View-only notice for faculty/provider */
+.view-only-notice{
+  display:none;
+  background:#eff6ff;border:1px solid #bfdbfe;
+  border-radius:14px;padding:16px 22px;
+  margin-bottom:32px;max-width:820px;margin-inline:auto;
+  align-items:center;gap:14px;
+}
+.view-only-notice i{font-size:20px;color:var(--blue);flex-shrink:0;}
+.view-only-notice p{font-size:14px;color:#1e40af;font-weight:500;line-height:1.6;}
+
+.form-card{background:var(--surface);border:1.5px solid var(--border);border-radius:22px;padding:36px;max-width:820px;margin:0 auto;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.form-card::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(199,139,42,0.07),transparent);border-radius:50%;}
+.form-card h2{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--navy);margin-bottom:26px;display:flex;align-items:center;gap:10px;}
+.form-card h2 i{color:var(--gold);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;}
+.form-card input,.form-card textarea,.form-card select{width:100%;padding:11px 14px;background:var(--card2);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-size:14px;transition:all 0.28s;outline:none;appearance:none;}
+.form-card input::placeholder,.form-card textarea::placeholder{color:var(--muted2);}
+.form-card input:focus,.form-card textarea:focus,.form-card select:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(199,139,42,0.1);}
+.form-card textarea{grid-column:span 2;resize:vertical;min-height:100px;}
+.file-field{background:var(--card2);border:1.5px dashed var(--border-h);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all 0.28s;margin-bottom:12px;}
+.file-field:hover{border-color:var(--gold);background:var(--gold-lt);}
+.file-field label{cursor:pointer;font-size:13px;color:var(--muted);}
+.file-field label i{display:block;font-size:22px;margin-bottom:5px;color:var(--gold);}
+.file-field input[type="file"]{display:none;}
+.submit-btn{margin-top:18px;padding:13px 34px;background:linear-gradient(135deg,#1e2d4d,#2a4080);color:#fff;font-size:14px;font-weight:800;border-radius:10px;transition:all 0.3s;box-shadow:0 6px 18px rgba(30,45,77,0.25);display:flex;align-items:center;gap:9px;}
+.submit-btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 28px rgba(30,45,77,0.35);}
+
+/* ══════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════ */
+.projects-grid{padding:0 6% 52px;display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:20px;}
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--rr);overflow:hidden;transition:all 0.38s cubic-bezier(0.23,1,0.32,1);box-shadow:var(--shadow);display:flex;flex-direction:column;}
+.card:hover{transform:translateY(-8px);border-color:var(--gold);box-shadow:0 20px 50px rgba(15,23,42,0.13),0 0 0 1px rgba(199,139,42,0.2);}
+.card-img-wrap{position:relative;overflow:hidden;height:190px;}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
+.card:hover img{transform:scale(1.08);}
+.card-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,0.45) 0%,transparent 55%);}
+.card-category{position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.4px;}
+.card-body{padding:16px;flex:1;display:flex;flex-direction:column;gap:9px;}
+.card-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--navy);line-height:1.3;}
+.card-provider{font-size:12px;color:var(--muted);font-weight:500;}
+.card-provider i{color:var(--gold);margin-right:4px;}
+.card-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;background:var(--blue-lt);color:var(--blue);border:1px solid #bfdbfe;}
+.card-rating{display:flex;align-items:center;gap:7px;margin-top:auto;}
+.stars-display{color:var(--gold);font-size:13px;}
+.rating-count{font-size:11px;color:var(--muted2);}
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid var(--border);background:var(--card2);}
+.view-btn{padding:7px 16px;border-radius:8px;background:linear-gradient(135deg,#1e2d4d,#2a4080);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;transition:all 0.28s;box-shadow:0 2px 8px rgba(30,45,77,0.2);}
+.view-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(30,45,77,0.3);}
+.card-team{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;}
+
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(8px);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal.open{display:flex;animation:fadeIn 0.28s;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-content{background:var(--surface);border:1.5px solid var(--border);border-radius:22px;width:100%;max-width:660px;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(15,23,42,0.22);animation:slideUp 0.38s cubic-bezier(0.22,1,0.36,1);position:relative;}
+@keyframes slideUp{from{opacity:0;transform:translateY(35px) scale(0.97)}to{opacity:1;transform:none}}
+.modal-img-wrap{position:relative;height:220px;overflow:hidden;border-radius:22px 22px 0 0;}
+.modal-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.modal-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--surface) 0%,transparent 55%);}
+.close-btn{position:absolute;top:14px;right:14px;z-index:2;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.9);border:1px solid var(--border);color:var(--navy);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all 0.25s;box-shadow:var(--shadow);}
+.close-btn:hover{background:var(--accent);color:#fff;transform:rotate(90deg);}
+.modal-body{padding:24px 30px;}
+.modal-badge{display:inline-block;background:var(--gold-lt);border:1px solid #fde68a;color:var(--gold-dark);border-radius:6px;padding:3px 12px;font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:12px;}
+.modal-body h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:18px;}
+.modal-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.meta-item{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;}
+.meta-item i{width:16px;text-align:center;color:var(--gold);font-size:13px;}
+.meta-label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;}
+.meta-val{font-size:13px;color:var(--navy);font-weight:600;margin-top:2px;}
+.modal-desc{font-size:14px;color:var(--muted);line-height:1.75;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:20px;}
+.modal-links{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:24px;}
+.modal-link{padding:8px 16px;border-radius:9px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;transition:all 0.28s;}
+.link-github{background:#f1f5f9;border:1px solid var(--border);color:var(--navy);}
+.link-github:hover{background:#e2e8f0;transform:translateY(-2px);}
+.link-project{background:var(--blue-lt);border:1px solid #bfdbfe;color:var(--blue);}
+.link-project:hover{background:#dbeafe;transform:translateY(-2px);}
+.link-pdf{background:#fff1f2;border:1px solid #fecdd3;color:#be123c;}
+.link-pdf:hover{background:#ffe4e6;transform:translateY(-2px);}
+.rate-section h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.star-row{display:flex;gap:5px;}
+.star-row span{font-size:28px;cursor:pointer;color:#d1d5db;transition:all 0.2s;}
+.star-row span:hover{transform:scale(1.25);color:var(--gold);}
+.star-row span.active{color:var(--gold);}
+.rate-msg{margin-top:10px;font-size:13px;color:var(--green);font-weight:600;min-height:18px;}
+
+/* ══════════════════════════════════════════
+   SCROLL SECTIONS
+══════════════════════════════════════════ */
+.scroll-section{padding:0 6% 52px;}
+.scroll-row{display:flex;gap:16px;overflow-x:auto;padding-bottom:10px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.scroll-row::-webkit-scrollbar{height:4px;}
+.scroll-row::-webkit-scrollbar-thumb{background:var(--border-h);border-radius:4px;}
+.mini-card{min-width:210px;background:var(--card);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.32s;flex-shrink:0;box-shadow:var(--shadow);}
+.mini-card:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:var(--shadow-h);}
+.mini-card img{width:100%;height:125px;object-fit:cover;}
+.mini-card-body{padding:11px 13px;}
+.mini-card-body h4{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.mini-rating{font-size:12px;color:var(--gold);}
+
+/* ══════════════════════════════════════════
+   EMPTY / TOAST
+══════════════════════════════════════════ */
+.empty-state{grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--muted2);}
+.empty-state i{font-size:44px;margin-bottom:14px;opacity:0.35;display:block;}
+.empty-state p{font-size:15px;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);border-radius:10px;padding:12px 22px;font-size:13px;font-weight:700;z-index:99999;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);box-shadow:0 8px 24px rgba(0,0,0,0.12);pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast-success{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;}
+.toast-error{background:#fff1f2;border:1px solid #fecdd3;color:#be123c;}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer{background:var(--navy);color:rgba(255,255,255,0.8);padding:30px 6% 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+.footer-brand{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#fff;}
+.footer-brand span{color:#fde68a;}
+.footer-copy{font-size:13px;color:rgba(255,255,255,0.38);}
+.footer-links{display:flex;gap:16px;}
+.footer-links a{font-size:13px;color:rgba(255,255,255,0.45);transition:color 0.2s;}
+.footer-links a:hover{color:#fde68a;}
+
+/* ══════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════ */
+.fade-up{opacity:0;transform:translateY(28px);animation:fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.d1{animation-delay:0.08s}.d2{animation-delay:0.16s}.d3{animation-delay:0.24s}.d4{animation-delay:0.32s}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:768px){
+  .form-grid{grid-template-columns:1fr;}
+  .form-card textarea{grid-column:1;}
+  nav{display:none;}
+  .projects-grid{grid-template-columns:1fr;}
+  .modal-meta{grid-template-columns:1fr;}
+  .modal-body{padding:18px;}
+}
+@media(max-width:480px){
+  header{padding:0 4%;}
+  .stats,.search-wrap,.section-title,.form-section,.scroll-section,.projects-grid{padding-left:4%;padding-right:4%;}
+  .form-card{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">S</div>
+    <div class="logo-text">Solvex<span>-AI</span></div>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#" class="active">Projects</a>
+    <a href="#">Impact</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="role-badge" id="roleBadge" style="display:none"></div>
+    <a class="login-btn" href="signup.html">
+      <i class="fa-solid fa-right-to-bracket" style="margin-right:7px"></i>Sign In
+    </a>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Poornima University · Solvex-AI</div>
+    <h1>Explore <span>Student Innovation</span><br>Projects</h1>
+    <p>Real solutions crafted by Poornima students for industry challenges — from AI to automation.</p>
+    <div class="hero-cta">
+      <!-- Submit CTA — sirf student ko dikhega, JS se control hoga -->
+      <button class="btn-primary" id="heroSubmitBtn" style="display:none"
+        onclick="document.getElementById('submitForm').scrollIntoView({behavior:'smooth'})">
+        <i class="fa-solid fa-plus"></i> Submit Project
+      </button>
+      <button class="btn-ghost"
+        onclick="document.getElementById('allProjects').scrollIntoView({behavior:'smooth'})">
+        Browse Projects <i class="fa-solid fa-arrow-down"></i>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEARCH ═══ -->
+<div class="search-wrap fade-up d1">
+  <div class="search-inner">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input id="searchInput" placeholder="Search by name, tech, category, branch…" oninput="searchProjects()">
+  </div>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<section class="stats fade-up d1">
+  <div class="stat-box"><span class="stat-icon">🚀</span><h2 id="projectCount">0</h2><p>Projects Submitted</p></div>
+  <div class="stat-box"><span class="stat-icon">🏭</span><h2 id="industryCount">0</h2><p>Industry Problems</p></div>
+  <div class="stat-box"><span class="stat-icon">👨‍💻</span><h2 id="studentCount">0</h2><p>Student Contributors</p></div>
+  <div class="stat-box"><span class="stat-icon">✅</span><h2 id="solutionCount">0</h2><p>Solutions Delivered</p></div>
+</section>
+
+<!-- ═══ FORM SECTION ═══ -->
+<section class="form-section fade-up d2" id="submitForm">
+
+  <!-- Section title — sirf student ko dikhega -->
+  <div class="section-title" id="formSectionTitle" style="display:none">
+    <h2><i class="fa-solid fa-paper-plane" style="color:var(--gold);margin-right:10px"></i>Submit Your Project</h2>
+    <div class="title-line"></div>
+  </div>
+
+  <!-- ══ VIEW-ONLY NOTICE (faculty / provider) ══ -->
+  <div class="view-only-notice" id="viewOnlyNotice">
+    <i class="fa-solid fa-circle-info"></i>
+    <p id="viewOnlyMsg">You can browse and rate projects below.</p>
+  </div>
+
+  <!-- ══ SUBMIT FORM — only students ══ -->
+  <div class="form-card" id="projectForm" style="display:none">
+    <h2><i class="fa-solid fa-folder-plus"></i> New Project Submission</h2>
+    <div class="form-grid">
+      <div class="field"><label>Project Name *</label><input id="name" placeholder="e.g. Smart Inventory System"></div>
+      <div class="field"><label>Provider / Company</label><input id="provider" placeholder="e.g. TCS, Infosys…"></div>
+      <div class="field"><label>Team Name *</label><input id="team" placeholder="e.g. Team Alpha"></div>
+      <div class="field"><label>Team Leader</label><input id="leader" placeholder="Leader's full name"></div>
+      <div class="field"><label>Members Count</label><input id="members" type="number" placeholder="e.g. 4" min="1"></div>
+      <div class="field">
+        <label>Department *</label>
+        <select id="branch">
+          <option value="">Select Department</option>
+          <option>CSE</option><option>AI</option><option>Mechanical</option>
+          <option>Civil</option><option>Electrical</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Technology *</label>
+        <select id="tech">
+          <option value="">Select Technology</option>
+          <option>AI</option><option>Web Development</option><option>Automation</option>
+          <option>IoT</option><option>Data Science</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Category *</label>
+        <select id="category">
+          <option value="">Select Category</option>
+          <option>Software</option><option>Hardware</option>
+          <option>Research</option><option>Automation</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label>GitHub Link</label><input id="github" placeholder="https://github.com/…"></div>
+      <div class="field"><label>Project Link</label><input id="projectLink" placeholder="https://…"></div>
+      <textarea id="desc" placeholder="Describe your project — problem solved, approach, impact…"></textarea>
+    </div>
+
+    <div class="file-field" onclick="document.getElementById('image').click()">
+      <label for="image">
+        <i class="fa-solid fa-image"></i>
+        <span id="imgLabel">Click to upload project image</span>
+      </label>
+      <input type="file" id="image" accept="image/*" onchange="updateLabel('image','imgLabel')">
+    </div>
+
+    <div class="file-field" onclick="document.getElementById('pdf').click()">
+      <label for="pdf">
+        <i class="fa-solid fa-file-pdf" style="color:#e11d48"></i>
+        <span id="pdfLabel">Click to upload project report (PDF)</span>
+      </label>
+      <input type="file" id="pdf" accept="application/pdf" onchange="updateLabel('pdf','pdfLabel')">
+    </div>
+
+    <button class="submit-btn" onclick="addProject()">
+      <i class="fa-solid fa-rocket"></i> Submit Project
+    </button>
+  </div>
+</section>
+
+<!-- ═══ ALL PROJECTS ═══ -->
+<section class="fade-up d3" id="allProjects">
+  <div class="section-title" style="padding:0 6% 22px">
+    <h2>All Projects</h2>
+    <div class="pill" id="projCountBadge">0</div>
+    <div class="title-line"></div>
+  </div>
+  <div class="projects-grid" id="projectList"></div>
+</section>
+
+<!-- ═══ TOP RATED ═══ -->
+<section class="scroll-section fade-up d3">
+  <div class="section-title"><h2>🏆 Top Rated</h2><div class="title-line"></div></div>
+  <div class="scroll-row" id="topRated"></div>
+</section>
+
+<!-- ═══ TRENDING ═══ -->
+<section class="scroll-section fade-up d4">
+  <div class="section-title"><h2>🔥 Trending</h2><div class="title-line"></div></div>
+  <div class="scroll-row" id="trending"></div>
+</section>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal" id="modal" onclick="handleModalClick(event)">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div id="details"></div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-brand">Solvex<span>-AI</span></div>
+  <div class="footer-links"><a href="#">About</a><a href="#">Contact</a><a href="#">Privacy</a></div>
+  <div class="footer-copy">© 2026 Poornima University. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   STATE
+══════════════════════════════════════════ */
+let projects    = [];
+let userRatings = {};
+
+/* ══════════════════════════════════════════
+   ROLE-BASED UI
+   sessionStorage.getItem('role'):
+     'student'  → form + submit btn dikhao
+     'faculty'  → sirf projects, notice dikhao
+     'provider' → sirf projects, notice dikhao
+     (empty)    → form hidden, notice hidden
+══════════════════════════════════════════ */
+function setupRoleUI() {
+  const role = (sessionStorage.getItem('role') || '').toLowerCase().trim();
+
+  /* ── Header badge ── */
+  const badge = document.getElementById('roleBadge');
+  if (role === 'student') {
+    badge.style.display = 'flex';
+    badge.className = 'role-badge role-student';
+    badge.innerHTML = '<i class="fa-solid fa-graduation-cap"></i> Student';
+  } else if (role === 'faculty') {
+    badge.style.display = 'flex';
+    badge.className = 'role-badge role-faculty';
+    badge.innerHTML = '<i class="fa-solid fa-chalkboard-teacher"></i> Faculty';
+  } else if (role === 'provider') {
+    badge.style.display = 'flex';
+    badge.className = 'role-badge role-provider';
+    badge.innerHTML = '<i class="fa-solid fa-building"></i> Provider';
+  }
+
+  /* ════════════════════════════════════════
+     STUDENT → form + hero CTA dikhao
+     ════════════════════════════════════════ */
+  if (role === 'student') {
+    document.getElementById('projectForm').style.display      = 'block';
+    document.getElementById('formSectionTitle').style.display = 'flex';
+    document.getElementById('heroSubmitBtn').style.display    = 'inline-flex';
+    document.getElementById('viewOnlyNotice').style.display   = 'none';
+  }
+  /* ════════════════════════════════════════
+     FACULTY / PROVIDER → form hide, notice show
+     ════════════════════════════════════════ */
+  else if (role === 'faculty' || role === 'provider') {
+    document.getElementById('projectForm').style.display      = 'none';
+    document.getElementById('formSectionTitle').style.display = 'none';
+    document.getElementById('heroSubmitBtn').style.display    = 'none';
+
+    const notice = document.getElementById('viewOnlyNotice');
+    notice.style.display = 'flex';
+
+    document.getElementById('viewOnlyMsg').innerHTML = role === 'faculty'
+      ? 'You are logged in as <b>Faculty</b>. You can browse, view details, and rate student projects.'
+      : 'You are logged in as <b>Industry Provider</b>. You can browse and view all submitted student projects.';
+  }
+  /* ════════════════════════════════════════
+     NO ROLE / NOT LOGGED IN → sab hide
+     ════════════════════════════════════════ */
+  else {
+    document.getElementById('projectForm').style.display      = 'none';
+    document.getElementById('formSectionTitle').style.display = 'none';
+    document.getElementById('heroSubmitBtn').style.display    = 'none';
+    document.getElementById('viewOnlyNotice').style.display   = 'none';
+  }
+}
+
+/* ══════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════ */
+function updateLabel(inputId, labelId) {
+  const f = document.getElementById(inputId).files[0];
+  if (f) document.getElementById(labelId).textContent = f.name;
+}
+
+function toast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.className = `toast toast-${type} show`;
+  el.textContent = (type === 'success' ? '✅  ' : '❌  ') + msg;
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function avgRating(arr) { return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+function renderStars(r)  { return [1,2,3,4,5].map(i=>i<=Math.round(r)?'★':'☆').join(''); }
+
+/* ══════════════════════════════════════════
+   GET + VALIDATE FORM
+══════════════════════════════════════════ */
+function getValues() {
+  return {
+    name:     document.getElementById('name').value.trim(),
+    provider: document.getElementById('provider').value.trim(),
+    team:     document.getElementById('team').value.trim(),
+    leader:   document.getElementById('leader').value.trim(),
+    members:  document.getElementById('members').value.trim(),
+    branch:   document.getElementById('branch').value,
+    tech:     document.getElementById('tech').value,
+    category: document.getElementById('category').value,
+    github:   document.getElementById('github').value.trim(),
+    link:     document.getElementById('projectLink').value.trim(),
+    desc:     document.getElementById('desc').value.trim()
+  };
+}
+
+function validate(d) {
+  if (!d.name)     { toast('Enter Project Name', 'error');  return false; }
+  if (!d.team)     { toast('Enter Team Name', 'error');     return false; }
+  if (!d.branch)   { toast('Select Department', 'error');   return false; }
+  if (!d.tech)     { toast('Select Technology', 'error');   return false; }
+  if (!d.category) { toast('Select Category', 'error');     return false; }
+  return true;
+}
+
+/* ══════════════════════════════════════════
+   ADD PROJECT — students only
+══════════════════════════════════════════ */
+function addProject() {
+  const role = (sessionStorage.getItem('role') || '').toLowerCase().trim();
+  if (role !== 'student') {
+    toast('Only students can submit projects.', 'error');
+    return;
+  }
+
+  const data = getValues();
+  if (!validate(data)) return;
+
+  const imgInput = document.getElementById('image');
+  if (!imgInput.files.length) { toast('Upload project image', 'error'); return; }
+
+  projects.unshift({
+    ...data,
+    image:   URL.createObjectURL(imgInput.files[0]),
+    pdf:     document.getElementById('pdf').files.length
+               ? URL.createObjectURL(document.getElementById('pdf').files[0]) : '',
+    ratings: []
+  });
+
+  updateStats();
+  displayProjects();
+
+  ['name','provider','team','leader','members','github','projectLink','desc']
+    .forEach(id => document.getElementById(id).value = '');
+  ['branch','tech','category'].forEach(id => document.getElementById(id).value = '');
+  ['image','pdf'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('imgLabel').textContent = 'Click to upload project image';
+  document.getElementById('pdfLabel').textContent = 'Click to upload project report (PDF)';
+
+  toast('Project submitted successfully! 🚀');
+  document.getElementById('allProjects').scrollIntoView({ behavior:'smooth' });
+}
+
+/* ══════════════════════════════════════════
+   STATS
+══════════════════════════════════════════ */
+function updateStats() {
+  animCount('projectCount',  projects.length);
+  animCount('industryCount', projects.length + 10);
+  animCount('studentCount',  projects.length * 3);
+  animCount('solutionCount', projects.length);
+  document.getElementById('projCountBadge').textContent = projects.length;
+}
+function animCount(id, target) {
+  const el = document.getElementById(id);
+  let n = 0; const step = Math.max(1, Math.ceil(target / 30));
+  const t = setInterval(() => {
+    n += step;
+    if (n >= target) { el.textContent = target + '+'; clearInterval(t); }
+    else el.textContent = n + '+';
+  }, 28);
+}
+
+/* ══════════════════════════════════════════
+   DISPLAY PROJECTS
+══════════════════════════════════════════ */
+function displayProjects(data = projects) {
+  const list = document.getElementById('projectList');
+  list.innerHTML = '';
+
+  if (!data.length) {
+    list.innerHTML = `<div class="empty-state">
+      <i class="fa-solid fa-folder-open"></i>
+      <p>No projects yet. Be the first to submit!</p>
+    </div>`;
+    updateTopProjects(); return;
+  }
+
+  data.forEach((p) => {
+    const idx  = projects.indexOf(p);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-img-wrap">
+        <img src="${p.image}" alt="${p.name}">
+        <div class="card-img-overlay"></div>
+        <div class="card-category">${p.category || p.branch}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${p.name}</div>
+        ${p.provider ? `<div class="card-provider"><i class="fa-solid fa-building"></i>${p.provider}</div>` : ''}
+        <div class="card-tags">
+          <span class="tag">${p.branch}</span>
+          <span class="tag">${p.tech}</span>
+        </div>
+        <div class="card-rating">
+          <span class="stars-display">${renderStars(avgRating(p.ratings))}</span>
+          <span class="rating-count">${p.ratings.length} rating${p.ratings.length!==1?'s':''}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-team"><i class="fa-solid fa-users"></i>${p.team}</div>
+        <button class="view-btn" onclick="viewDetails(${idx})">
+          View <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>`;
+    list.appendChild(card);
+  });
+  updateTopProjects();
+}
+
+/* ══════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════ */
+function searchProjects() {
+  const kw = document.getElementById('searchInput').value.toLowerCase().trim();
+  if (!kw) { displayProjects(); return; }
+  displayProjects(projects.filter(p =>
+    [p.name,p.tech,p.category,p.branch,p.desc,p.team,p.provider]
+      .some(f => f && f.toLowerCase().includes(kw))
+  ));
+}
+
+/* ══════════════════════════════════════════
+   VIEW DETAILS
+══════════════════════════════════════════ */
+function viewDetails(i) {
+  const p = projects[i]; if (!p) return;
+  const avg = avgRating(p.ratings);
+
+  document.getElementById('details').innerHTML = `
+    <div class="modal-img-wrap">
+      <img src="${p.image}" alt="${p.name}">
+    </div>
+    <div class="modal-body">
+      <div class="modal-badge">${p.category}</div>
+      <h2>${p.name}</h2>
+      <div class="modal-meta">
+        ${p.provider?`<div class="meta-item"><i class="fa-solid fa-building"></i><div><div class="meta-label">Provider</div><div class="meta-val">${p.provider}</div></div></div>`:''}
+        <div class="meta-item"><i class="fa-solid fa-users"></i><div><div class="meta-label">Team</div><div class="meta-val">${p.team}</div></div></div>
+        ${p.leader?`<div class="meta-item"><i class="fa-solid fa-user-tie"></i><div><div class="meta-label">Leader</div><div class="meta-val">${p.leader}</div></div></div>`:''}
+        ${p.members?`<div class="meta-item"><i class="fa-solid fa-person"></i><div><div class="meta-label">Members</div><div class="meta-val">${p.members}</div></div></div>`:''}
+        <div class="meta-item"><i class="fa-solid fa-code-branch"></i><div><div class="meta-label">Department</div><div class="meta-val">${p.branch}</div></div></div>
+        <div class="meta-item"><i class="fa-solid fa-microchip"></i><div><div class="meta-label">Technology</div><div class="meta-val">${p.tech}</div></div></div>
+      </div>
+      ${p.desc?`<div class="modal-desc">${p.desc}</div>`:''}
+      <div class="modal-links">
+        ${p.github?`<a href="${p.github}" target="_blank" class="modal-link link-github"><i class="fa-brands fa-github"></i> GitHub</a>`:''}
+        ${p.link?`<a href="${p.link}" target="_blank" class="modal-link link-project"><i class="fa-solid fa-external-link-alt"></i> Live Project</a>`:''}
+        ${p.pdf?`<a href="${p.pdf}" download class="modal-link link-pdf"><i class="fa-solid fa-file-pdf"></i> Download Report</a>`:''}
+      </div>
+      <div class="rate-section">
+        <h3><i class="fa-solid fa-star" style="color:var(--gold)"></i> Rate this Project</h3>
+        <div class="star-row" id="starRow_${i}">
+          ${[1,2,3,4,5].map(s=>`<span onclick="rate(${i},${s})" data-val="${s}">★</span>`).join('')}
+        </div>
+        <div class="rate-msg" id="rateMsg_${i}"></div>
+      </div>
+    </div>`;
+
+  highlightStars(i, Math.round(avg));
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function highlightStars(i, val) {
+  const row = document.getElementById('starRow_' + i); if (!row) return;
+  row.querySelectorAll('span').forEach(s => {
+    const v = +s.dataset.val;
+    s.style.color = v <= val ? 'var(--gold)' : '#d1d5db';
+    s.classList.toggle('active', v <= val);
+  });
+}
+
+/* ══════════════════════════════════════════
+   RATE
+══════════════════════════════════════════ */
+function rate(i, r) {
+  if (userRatings[i] !== undefined) {
+    projects[i].ratings[userRatings[i].index] = r;
+    userRatings[i].value = r;
+  } else {
+    projects[i].ratings.push(r);
+    userRatings[i] = { value:r, index:projects[i].ratings.length - 1 };
+  }
+  highlightStars(i, r);
+  const msg = document.getElementById('rateMsg_' + i);
+  if (msg) msg.textContent = `You rated ${r} star${r>1?'s':''}! Thanks 🙌`;
+  displayProjects();
+}
+
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleModalClick(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ══════════════════════════════════════════
+   TOP + TRENDING
+══════════════════════════════════════════ */
+function updateTopProjects() {
+  const top = [...projects].sort((a,b)=>avgRating(b.ratings)-avgRating(a.ratings)).slice(0,6);
+  document.getElementById('topRated').innerHTML = top.length
+    ? top.map(p=>`<div class="mini-card"><img src="${p.image}"><div class="mini-card-body"><h4>${p.name}</h4><div class="mini-rating">${renderStars(avgRating(p.ratings))}</div></div></div>`).join('')
+    : '<div style="color:var(--muted2);font-size:14px;padding:16px">No rated projects yet.</div>';
+
+  const trend = [...projects].sort((a,b)=>b.ratings.length-a.ratings.length).slice(0,6);
+  document.getElementById('trending').innerHTML = trend.length
+    ? trend.map(p=>`<div class="mini-card"><img src="${p.image}"><div class="mini-card-body"><h4>${p.name}</h4><div class="mini-rating">${renderStars(avgRating(p.ratings))} <span style="color:var(--muted2);font-size:10px;margin-left:4px">${p.ratings.length} votes</span></div></div></div>`).join('')
+    : '<div style="color:var(--muted2);font-size:14px;padding:16px">No trending projects yet.</div>';
+}
+
+/* ══════════════════════════════════════════
+   INIT — setupRoleUI PEHLE chalao
+══════════════════════════════════════════ */
+window.onload = function () {
+  setupRoleUI();
+  displayProjects();
+  updateStats();
+};
+</script>
+</body>
+</html>

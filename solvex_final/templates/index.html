@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Solvex_Ai - Real World Problem Solver Platform</title>
+
+    <meta name="description"
+        content="Solvex-Ai is a platform where industries post real problems and university students solve them.">
+
+    <!-- <link rel="stylesheet" href="style.css"> -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    <link rel="icon" href="../Solvex-Ai-logo.png">
+
+
+    <style>
+
+
+   /* ===== GLOBAL RESET ===== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+body{
+line-height:1.6;
+background:#f5f7fb;
+color:#222;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+img{
+max-width:100%;
+display:block;
+}
+
+
+/* ===== HEADER ===== */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 6%;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo img{
+width:55px;
+}
+
+.logo-text h1{
+font-size:20px;
+}
+
+.logo-text span{
+color:#2563eb;
+}
+
+.logo-text p{
+font-size:12px;
+color:#666;
+}
+
+
+/* ===== NAVIGATION ===== */
+
+
+/* Mobile Menu */
+@media (max-width:768px){
+
+.nav-links{
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 260px;
+    height: 100vh;
+    background: white;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 30px;
+    gap: 20px;
+    transition: 0.3s;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+}
+
+/* Open menu */
+.nav-links.active{
+    right: 0;
+}
+
+}
+
+nav ul{
+display:flex;
+list-style:none;
+gap:30px;
+}
+
+nav ul li{
+position:relative;
+}
+
+nav ul li a{
+font-weight:500;
+}
+
+nav ul li a:hover{
+color:#2563eb;
+}
+
+
+/* ===== DROPDOWN ===== */
+
+.dropdown-menu{
+display:none;
+position:absolute;
+top:30px;
+background:white;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+padding:10px 0;
+border-radius:6px;
+}
+
+.dropdown-menu li{
+padding:8px 20px;
+white-space:nowrap;
+}
+
+.dropdown:hover .dropdown-menu{
+display:block;
+}
+
+
+/* ===== HAMBURGER MENU ===== */
+
+.menu-icon{
+display:none;
+font-size:26px;
+cursor:pointer;
+}
+
+
+/* ===== MOBILE SIDE MENU ===== */
+
+#sideMenu{
+position:fixed;
+top:0;
+right:-100%;
+width:75%;
+max-width:300px;
+height:100vh;
+background:white;
+box-shadow:-5px 0 20px rgba(0,0,0,0.2);
+padding:90px 30px;
+transition:0.4s;
+z-index:2000;
+
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+#sideMenu ul{
+list-style:none;
+padding:0;
+}
+
+#sideMenu li{
+padding:15px 25px;
+border-bottom:1px solid #eee;
+}
+
+#sideMenu a{
+font-size:18px;
+color:#333;
+}
+
+#sideMenu a:hover{
+color:#2563eb;
+}
+
+.sideLink{
+font-size:18px;
+font-weight:500;
+color:#333;
+}
+
+.sideLink:hover{
+color:#2563eb;
+}
+
+
+/* ===== HERO SECTION ===== */
+
+.hero{
+padding:90px 8%;
+background:white;
+}
+
+.hero-container{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:40px;
+}
+
+.hero-text h1{
+font-size:42px;
+margin:20px 0;
+line-height:1.2;
+}
+
+.hero-text p{
+color:#555;
+margin-bottom:25px;
+}
+
+.blue{
+color:#2563eb;
+}
+
+.gold{
+color:#f59e0b;
+}
+
+.tag{
+background:#e8f0ff;
+color:#2563eb;
+padding:6px 12px;
+border-radius:20px;
+font-size:14px;
+}
+
+.hero-buttons{
+display:flex;
+gap:15px;
+margin-bottom:20px;
+}
+
+.btn-primary{
+background:#2563eb;
+color:white;
+padding:12px 22px;
+border-radius:6px;
+font-weight:500;
+}
+
+.btn-outline{
+border:2px solid #2563eb;
+padding:10px 20px;
+border-radius:6px;
+color:#2563eb;
+}
+
+.hero-features span{
+margin-right:20px;
+font-size:14px;
+color:#444;
+}
+
+.hero-image{
+position:relative;
+}
+
+.hero-card{
+position:absolute;
+bottom:-20px;
+left:-20px;
+background:white;
+padding:12px 18px;
+box-shadow:0 5px 15px rgba(0,0,0,0.15);
+border-radius:8px;
+font-size:14px;
+}
+
+
+/* ===== ABOUT SECTION ===== */
+
+.about-Solvex-Ai{
+padding:80px 8%;
+background:#f8fafc;
+}
+
+.about-container{
+display:flex;
+gap:50px;
+align-items:center;
+}
+
+.about-text h2{
+font-size:32px;
+margin-bottom:20px;
+}
+
+.about-text p{
+margin-bottom:15px;
+color:#555;
+}
+
+.steps{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-top:20px;
+}
+
+.step-box{
+background:white;
+padding:20px;
+border-radius:8px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.benefits{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-top:20px;
+}
+
+.benefit-box{
+background:white;
+padding:18px;
+border-radius:8px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+
+/* ===== ROLES SECTION ===== */
+
+.roles{
+padding:80px 8%;
+background:white;
+text-align:center;
+}
+
+.section-intro{
+max-width:700px;
+margin:10px auto 40px;
+color:#555;
+}
+
+.role-cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:25px;
+}
+
+.role-card{
+background:#f8fafc;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.07);
+}
+
+.role-icon{
+font-size:28px;
+color:#2563eb;
+margin-bottom:12px;
+}
+
+
+/* ===== STATS ===== */
+
+.platform-stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:20px;
+margin-top:40px;
+}
+
+.stat-box{
+background:#2563eb;
+color:white;
+padding:20px;
+border-radius:8px;
+}
+
+.stat-box h3{
+font-size:28px;
+}
+
+
+/* ===== LEADER SECTION ===== */
+
+.leader{
+padding:80px 8%;
+background:#f8fafc;
+text-align:center;
+}
+
+.leader-box{
+display:flex;
+align-items:center;
+gap:40px;
+margin-top:40px;
+justify-content:center;
+}
+
+.leader-img img{
+width:200px;
+border-radius:10px;
+}
+
+.leader-info{
+max-width:500px;
+text-align:left;
+}
+
+.role{
+color:#2563eb;
+margin-bottom:10px;
+}
+
+.skills{
+margin:15px 0;
+}
+
+.skills span{
+background:#2563eb;
+color:white;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+margin-right:8px;
+}
+
+.social a{
+margin-right:15px;
+font-size:20px;
+color:#444;
+}
+
+.social a:hover{
+color:#2563eb;
+}
+
+
+/* ===== WHY SECTION ===== */
+
+.why{
+padding:80px 8%;
+background:white;
+text-align:center;
+}
+
+.why-intro{
+max-width:650px;
+margin:10px auto 40px;
+color:#555;
+}
+
+.why-cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+}
+
+.why-card{
+background:#f8fafc;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.07);
+}
+
+.why-card i{
+font-size:28px;
+color:#2563eb;
+margin-bottom:12px;
+}
+
+
+/* ===== FOOTER ===== */
+
+.footer{
+background:#212e4b;
+color:white;
+padding:60px 8% 20px;
+}
+
+.footer-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:40px;
+}
+
+.footer-box h3{
+margin-bottom:12px;
+}
+
+.footer-box p,
+.footer-box li{
+font-size:14px;
+color:#cbd5e1;
+}
+
+.footer-box ul{
+list-style:none;
+}
+
+.footer-box ul li{
+margin-bottom:8px;
+}
+
+.footer-box ul li a{
+color:#cbd5e1;
+}
+
+.footer-box ul li a:hover{
+color:royalblue;
+}
+
+.social-links a{
+font-size:20px;
+margin-right:12px;
+color:#cbd5e1;
+}
+
+.social-links a:hover{
+color:royalblue;
+}
+
+.footer-bottom{
+text-align:center;
+margin-top:40px;
+border-top:1px solid #374151;
+padding-top:15px;
+color:#9ca3af;
+font-size:14px;
+}
+
+
+/* ===== MOBILE RESPONSIVE ===== */
+
+@media(max-width:900px){
+
+.hero-container{
+flex-direction:column;
+text-align:center;
+}
+
+.about-container{
+flex-direction:column;
+}
+
+.leader-box{
+flex-direction:column;
+text-align:center;
+}
+
+.leader-info{
+text-align:center;
+}
+
+/* Hide desktop nav */
+
+nav{
+display:none;
+}
+
+/* Show hamburger */
+
+.menu-icon{
+display:block;
+}
+
+}
+
+
+/* ===== AI CHATBOT ===== */
+
+#chatBtn{
+position:fixed;
+bottom:25px;
+right:25px;
+background:linear-gradient(135deg,#1e3a8a,#2563eb);
+color:white;
+border:none;
+width:62px;
+height:62px;
+border-radius:50%;
+font-size:26px;
+cursor:pointer;
+box-shadow:0 8px 24px rgba(37,99,235,0.45);
+z-index:9999;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:transform .2s;
+}
+#chatBtn:hover{transform:scale(1.1);}
+#chatBtn::after{
+content:'';
+position:absolute;
+width:62px;height:62px;
+border-radius:50%;
+background:rgba(37,99,235,.35);
+animation:chatPulse 2s infinite;
+}
+@keyframes chatPulse{0%{transform:scale(1);opacity:.7;}100%{transform:scale(1.7);opacity:0;}}
+
+#chatBox{
+position:fixed;
+bottom:100px;
+right:20px;
+width:340px;
+height:500px;
+border:none;
+border-radius:20px;
+box-shadow:0 20px 60px rgba(0,0,0,.25);
+display:none;
+z-index:9998;
+background:white;
+flex-direction:column;
+overflow:hidden;
+}
+@media(max-width:400px){
+  #chatBox{width:calc(100vw - 24px);right:12px;bottom:90px;height:460px;}
+}
+@keyframes blink{0%,80%,100%{opacity:.2;transform:scale(.8);}40%{opacity:1;transform:scale(1.2);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+</style>
+
+
+</head>
+
+<body>
+
+    <!-- ============== HEADER SECTION ================== -->
+
+    <header>
+
+        <div class="logo">
+            <img src="../Solvex-Ai-logo.png" alt="Solvex-Ai" onerror="handleImageError(this)"
+                onload="hideLoader()" id="logoimg">
+
+
+            <div class="logo-text">
+                <h1>Solvex- <span>Ai</span></h1>
+                <p>Real-World Problem Solver Platform</p>
+            </div>
+        </div>
+
+        <!--  ================= DESKTOP NAVIGATION ========== -->
+
+        <nav id="nav">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li class="dropdown">
+                    <a href="#event">Event &#9662;</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="prayogam.html">Prayogam</a></li>
+                         <li><a href="project.html">Project</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class="dropdown"><a href="#register">Register &#9662;</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="signup.html">Sign up</a></li>
+                        <li><a href="signin.html">Sign In</a></li>
+                    </ul>
+                </li>
+                
+                <li class="dropdown"><a href="#" onclick="return false;">Team &#9662;</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="Team.html">Solvex-Team</a></li>
+                        <li><a href="chatbot.html">🤖 AIRA-Ai</a></li>
+                        
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- ========== HUMBERGER NAVIGATION ========= -->
+
+        <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+
+        <div class="side-menu" id="sideMenu">
+            <a href="#hero" class="sideLink">Welcome To Solvex-Ai</a>
+            <a href="#home" class="sideLink">Home</a>
+            <a href="about.html" class="sideLink">About</a>
+            <a href="contact.html" class="sideLink">Contact</a>
+            <a href="team.html" class="sideLink">Team</a>
+            <a href="prayogam.html" class="sideLink">Prayogam</a>
+            <a href="signup.html" class="sideLink">Sign Up</a>
+            <a href="signin.html" class="sideLink">Sign In</a>
+            <a href="chatbot.html" class="sideLink" style="color:#2563eb;font-weight:700;">🤖 AIRA Chatbot</a>
+        </div>
+
+    </header>
+
+    <!-- ============= HEADER SECTION END =============-->
+
+
+    <section class="hero" id="home">
+
+        <div class="hero-container">
+
+            <!-- LEFT CONTENT -->
+
+            <div class="hero-text">
+
+                <span class="tag">⚡ Poornima University Solvex-Ai</span>
+
+                <h1>
+                    Bridge the gap between <br>
+                    <span class="blue">Students</span> and
+                    <span class="gold">Industry</span>
+                </h1>
+
+                <p>
+                    A modern platform where university students solve real-world
+                    industry challenges with faculty guidance. Build your portfolio,
+                    gain practical experience and create real impact.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="signin.html" class="btn-primary">Get Started Now →</a>
+
+                    <a href="about.html" class="btn-outline">Learn More</a>
+
+                </div>
+
+                <div class="hero-features">
+                    <span>✔ Free For Students</span>
+                    <span>✔ Verified Industries</span>
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT IMAGE -->
+
+            <div class="hero-image">
+
+                <img src="hero.jpg" alt="Students working">
+
+                <div class="hero-card">
+                    ✔ 100+ Projects<br>
+                    Successfully Delivered
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =============== ABOUT SECTION ========== -->
+
+
+    <!-- ===== ABOUT + HOW Solvex-Ai WORKS + BENEFITS ===== -->
+
+    <section class="about-Solvex-Ai" id="About">
+
+        <div class="about-container">
+
+            <!-- LEFT SIDE CONTENT -->
+
+            <div class="about-text">
+
+                <h2>About Solvex-Ai Platform</h2>
+
+                <p>
+                    Solvex-Ai (Real-World Problem Solver Platform) is an initiative of
+                    Poornima University designed to connect real industry problems
+                    with talented students and experienced faculty members.
+                </p>
+
+                <p>
+                    The platform allows organizations, startups and businesses to
+                    submit real Coding and IT challenges. These problems are reviewed
+                    by faculty members and then solved by skilled students, creating
+                    practical exposure and real-world learning opportunities.
+                </p>
+
+
+                <!-- ===== HOW Solvex-Ai WORKS ===== -->
+
+                <h3>How Solvex-Ai Works</h3>
+
+                <div class="steps">
+
+                    <div class="step-box">
+                        <h4>1. Industry Posts Problem</h4>
+                        <p>
+                            Organizations submit real-world Coding or IT problems
+                            including project requirements and timelines.
+                        </p>
+                    </div>
+
+                    <div class="step-box">
+                        <h4>2. Faculty Review</h4>
+                        <p>
+                            Faculty members analyze and approve problems to ensure
+                            quality, safety and academic value.
+                        </p>
+                    </div>
+
+                    <div class="step-box">
+                        <h4>3. Students Build Solutions</h4>
+                        <p>
+                            Skilled students work on approved challenges and develop
+                            practical solutions under faculty mentorship.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- ===== PLATFORM BENEFITS ===== -->
+
+                <h3>Platform Benefits</h3>
+
+                <div class="benefits">
+
+                    <div class="benefit-box">
+                        <h4>Real Industry Experience</h4>
+                        <p>
+                            Students work on real problems instead of only theoretical projects.
+                        </p>
+                    </div>
+
+                    <div class="benefit-box">
+                        <h4>Faculty Mentorship</h4>
+                        <p>
+                            Every project is guided by experienced faculty members.
+                        </p>
+                    </div>
+
+                    <div class="benefit-box">
+                        <h4>Industry Collaboration</h4>
+                        <p>
+                            Companies receive innovative solutions from university talent.
+                        </p>
+                    </div>
+
+                    <div class="benefit-box">
+                        <h4>Verified Certificates</h4>
+                        <p>
+                            Students receive official certificates from Poornima University.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDE IMAGE -->
+
+            <div class="about-image">
+
+                <img src="team.png" alt="Students solving real-world problems">
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===== WHO CAN USE Solvex-Ai ===== -->
+
+    <section class="roles" id="roles">
+
+        <h2>Who Can Use Solvex-Ai Platform</h2>
+
+        <p class="section-intro">
+            Solvex-Ai connects industry professionals, university faculty, and talented
+            students on a single platform to solve real-world Coding and IT challenges.
+        </p>
+
+        <div class="role-cards">
+
+            <!-- PROVIDER -->
+            <div class="role-card">
+                <div class="role-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+
+                <h3>Problem Providers</h3>
+
+                <p>
+                    Businesses, startups, NGOs, and organizations can submit
+                    real-world Coding or IT challenges that need innovative solutions.
+                </p>
+
+                <small>
+                    Every submitted problem is reviewed by faculty before being
+                    assigned to student teams.
+                </small>
+            </div>
+
+
+            <!-- FACULTY -->
+            <div class="role-card">
+
+                <div class="role-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+
+                <h3>Faculty Mentors</h3>
+
+                <p>
+                    Faculty members review submitted problems and guide students
+                    throughout the development process.
+                </p>
+
+                <small>
+                    Their mentorship ensures quality solutions, structured learning,
+                    and academic credibility.
+                </small>
+            </div>
+
+
+            <!-- STUDENTS -->
+            <div class="role-card">
+
+                <div class="role-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+
+                <h3>University Students</h3>
+
+                <p>
+                    Students collaborate in teams to develop practical solutions
+                    for real industry problems.
+                </p>
+
+                <small>
+                    This helps students gain real-world experience, technical
+                    skills, and verified project certificates.
+                </small>
+            </div>
+
+        </div>
+
+
+        <!-- ===== PLATFORM STATS ===== -->
+
+        <div class="platform-stats">
+
+            <div class="stat-box">
+                <h3>150+</h3>
+                <p>Problems Posted</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>1500+</h3>
+                <p>Students</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>70+</h3>
+                <p>Faculty</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>20+</h3>
+                <p>Industry Partners</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ============ PLATFORM GOALS ========== -->
+    <section class="leader" id="team" style="background:#f0f6ff;padding:80px 8%;">
+        <h2 style="text-align:center;font-size:32px;margin-bottom:10px;">Our <span class="blue">Platform</span> Goals</h2>
+        <p style="text-align:center;color:#555;margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto;">Solvex-AI ka mission — students, faculty aur industry ko ek powerful ecosystem mein connect karna</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;max-width:1100px;margin:0 auto;">
+          <div style="background:white;border-radius:18px;padding:26px;border:1px solid #e2e8f0;box-shadow:0 4px 16px rgba(37,99,235,.07);text-align:center;transition:transform .3s;animation:fadeUp .7s ease both;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="width:54px;height:54px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;">🎓</div>
+            <h3 style="font-size:16px;font-weight:800;color:#1e3a8a;margin-bottom:8px;">Student Empowerment</h3>
+            <p style="font-size:13px;color:#64748b;line-height:1.7;">Real industry experience, teamwork aur verified certificates — students ko job-ready banate hain.</p>
+          </div>
+          <div style="background:white;border-radius:18px;padding:26px;border:1px solid #e2e8f0;box-shadow:0 4px 16px rgba(16,185,129,.07);text-align:center;transition:transform .3s;animation:fadeUp .7s ease .1s both;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="width:54px;height:54px;background:#f0fdf4;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;">🤝</div>
+            <h3 style="font-size:16px;font-weight:800;color:#064e3b;margin-bottom:8px;">Industry-Academia Bridge</h3>
+            <p style="font-size:13px;color:#64748b;line-height:1.7;">Companies ko fresh talent milta hai, students ko real problems milti hain — dono ko benefit hota hai.</p>
+          </div>
+          <div style="background:white;border-radius:18px;padding:26px;border:1px solid #e2e8f0;box-shadow:0 4px 16px rgba(245,158,11,.07);text-align:center;transition:transform .3s;animation:fadeUp .7s ease .2s both;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="width:54px;height:54px;background:#fffbeb;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;">🏆</div>
+            <h3 style="font-size:16px;font-weight:800;color:#78350f;margin-bottom:8px;">Verified Certificates</h3>
+            <p style="font-size:13px;color:#64748b;line-height:1.7;">Faculty approval ke baad official certificates milte hain jo resume mein real value add karte hain.</p>
+          </div>
+          <div style="background:white;border-radius:18px;padding:26px;border:1px solid #e2e8f0;box-shadow:0 4px 16px rgba(139,92,246,.07);text-align:center;transition:transform .3s;animation:fadeUp .7s ease .3s both;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="width:54px;height:54px;background:#f5f3ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;">🚀</div>
+            <h3 style="font-size:16px;font-weight:800;color:#4c1d95;margin-bottom:8px;">Innovation Culture</h3>
+            <p style="font-size:13px;color:#64748b;line-height:1.7;">Creativity, research aur teamwork ko encourage karna — ideas ko reality mein badalna hamare platform ka core hai.</p>
+          </div>
+        </div>
+    </section>
+
+
+
+    <!-- === WHY CHOOSE Solvex-Ai === -->
+
+    <section class="why">
+
+        <h2>Why Choose Solvex-Ai?</h2>
+
+        <p class="why-intro">
+            Solvex-Ai connects industry problems with university talent,
+            creating real learning and innovation opportunities.
+        </p>
+
+        <div class="why-cards">
+
+            <div class="why-card">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Real Projects</h3>
+                <p>Students work on real Coding & IT problems.</p>
+            </div>
+
+            <div class="why-card">
+                <i class="fas fa-user-tie"></i>
+                <h3>Faculty Guidance</h3>
+                <p>Every project is reviewed by experienced faculty.</p>
+            </div>
+
+            <div class="why-card">
+                <i class="fas fa-sync"></i>
+                <h3>Reusable Platform</h3>
+                <p>Continuous innovation beyond one-time events.</p>
+            </div>
+
+            <div class="why-card">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Innovation Culture</h3>
+                <p>Encourages research, teamwork and creativity.</p>
+            </div>
+
+            <div class="why-card">
+                <i class="fas fa-building"></i>
+                <h3>Industry Value</h3>
+                <p>Companies get cost-effective technical solutions.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ============ FOOTER SECTION ============-->
+
+
+    <!-- ===== FOOTER ===== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <!-- About -->
+            <div class="footer-box">
+                <h3>About Solvex-Ai</h3>
+                <p>
+                    Solvex-Ai (Real-World Problem Solver Platform) connects industry,
+                    faculty and students of Poornima University to solve real
+                    Coding and IT challenges.
+                </p>
+            </div>
+
+
+            <!-- Quick Links -->
+            <div class="footer-box">
+                <h3>Quick Links</h3>
+
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#how">How It Works</a></li>
+                    <li><a href="#roles">Roles</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+
+            </div>
+
+
+            <!-- Contact -->
+            <div class="footer-box">
+
+                <h3>Contact</h3>
+
+                <p><i class="fas fa-envelope"></i> info@poornima.edu.in</p>
+
+                <p><i class="fas fa-phone"></i> +91 9351360177</p>
+
+                <p><i class="fas fa-map-marker-alt"></i> Jaipur, Rajasthan</p>
+
+            </div>
+
+
+            <!-- Map -->
+            <div class="footer-box">
+
+                <h3>Our Location</h3>
+
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3561.8946793276177!2d75.87444327401315!3d26.779626965799892!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396dc9d5c3d68749%3A0xa227c3f0db21d4fc!2sPoornima%20University%20%7C%20Best%20%26%20Top%20University%20in%20Jaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1772773022719!5m2!1sen!2sin"
+                    width="100%" height="300" style="border:0; border-radius:8px;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+
+            </div>
+
+
+            <!-- Social -->
+            <div class="footer-box">
+
+                <h3>Connect</h3>
+
+                <div class="social-links">
+
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Solvex-Ai | Developed at Poornima University
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ══ AIRA FLOATING CHATBOT ══ -->
+<button onclick="toggleChat()" id="chatBtn" title="Chat with AIRA">
+  <span style="position:relative;z-index:1;">🤖</span>
+</button>
+
+<!-- Query Popup Modal -->
+<div id="queryOverlay" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);z-index:10001;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:white;border-radius:20px;padding:26px 22px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:fadeUp .3s ease;">
+    <div style="text-align:center;margin-bottom:18px">
+      <div style="width:48px;height:48px;background:linear-gradient(135deg,#1e3a8a,#2563eb);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 10px">🤖</div>
+      <h3 style="color:#0f172a;font-size:16px;font-weight:800;margin:0">Send Your Question!</h3>
+      <p style="color:#64748b;font-size:12px;margin-top:5px">AIRA will forward it to our team ✨</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input id="qName"   type="text"  placeholder="👤 Your Name *"     style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#e2e8f0'">
+      <input id="qEmail"  type="email" placeholder="📧 Email Address *" style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#e2e8f0'">
+      <input id="qMobile" type="tel"   placeholder="📞 Mobile (optional)" style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#e2e8f0'">
+      <textarea id="qQuery" rows="3" placeholder="💬 Your Question *" style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;font-family:inherit;outline:none;resize:none;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#e2e8f0'"></textarea>
+    </div>
+    <div id="qMsg" style="display:none;margin-top:9px;padding:9px 13px;border-radius:9px;font-size:12px;text-align:center"></div>
+    <div style="display:flex;gap:9px;margin-top:14px">
+      <button onclick="closeQueryPopup()" style="flex:1;padding:11px;border:1.5px solid #e2e8f0;border-radius:10px;background:white;color:#64748b;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Later</button>
+      <button onclick="submitQuery()" id="qSubmitBtn" style="flex:2;padding:11px;border:none;border-radius:10px;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📨 Send Query</button>
+    </div>
+  </div>
+</div>
+
+<div id="chatBox" style="display:none;flex-direction:column;overflow:hidden;">
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🤖</div>
+      <div>
+        <div style="color:white;font-weight:800;font-size:14px;letter-spacing:.3px;">AIRA</div>
+        <div style="color:rgba(255,255,255,.65);font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;background:#10b981;border-radius:50%;display:inline-block;animation:chatPulse2 2s infinite;"></span>Online — Solvex-AI</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <a href="chatbot.html" title="Open full chat" style="background:rgba(255,255,255,.15);border:none;color:white;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;text-decoration:none;">⛶</a>
+      <button onclick="toggleChat()" style="background:rgba(255,255,255,.15);border:none;color:white;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div id="chatMsgs" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px;background:#f8fafc;">
+    <div style="background:white;border:1px solid #e2e8f0;border-radius:14px;border-bottom-left-radius:4px;padding:12px 14px;font-size:13px;line-height:1.65;color:#0f172a;box-shadow:0 2px 6px rgba(0,0,0,.04);max-width:90%;">
+      👋 <b>Hi! I'm AIRA</b> — your Solvex-AI assistant.<br>Ask me anything about signup, login, problems, teams or certificates!
+    </div>
+  </div>
+
+  <!-- Quick chips -->
+  <div style="padding:8px 10px;background:white;border-top:1px solid #e2e8f0;display:flex;flex-wrap:wrap;gap:5px;flex-shrink:0;">
+    <button onclick="chatAsk('What is Solvex?')" style="padding:5px 10px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:50px;font-size:11px;font-weight:600;color:#2563eb;cursor:pointer;font-family:inherit;">🤖 What is Solvex?</button>
+    <button onclick="chatAsk('How to signup?')" style="padding:5px 10px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:50px;font-size:11px;font-weight:600;color:#2563eb;cursor:pointer;font-family:inherit;">📝 Signup</button>
+    <button onclick="chatAsk('Certificate kab milega?')" style="padding:5px 10px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:50px;font-size:11px;font-weight:600;color:#2563eb;cursor:pointer;font-family:inherit;">🏆 Certificate</button>
+    <button onclick="chatAsk('Contact')" style="padding:5px 10px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:50px;font-size:11px;font-weight:600;color:#2563eb;cursor:pointer;font-family:inherit;">📞 Contact</button>
+  </div>
+
+  <!-- Input -->
+  <div style="padding:9px 11px;background:white;border-top:1px solid #e2e8f0;display:flex;gap:7px;flex-shrink:0;">
+    <input id="chatInp" type="text" placeholder="Ask AIRA anything..." style="flex:1;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:50px;font-size:13px;outline:none;font-family:inherit;background:#f8fafc;" onkeydown="if(event.key==='Enter')chatSend()" onfocus="this.style.borderColor='#2563eb';this.style.background='white';" onblur="this.style.borderColor='#e2e8f0';">
+    <button onclick="chatSend()" id="chatSendBtn" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(37,99,235,.3);">➤</button>
+  </div>
+</div>
+
+    <script>
+
+const sideMenu = document.getElementById("sideMenu");
+const menuIcon = document.querySelector(".menu-icon");
+
+
+/* OPEN CLOSE MENU */
+
+function toggleMenu(){
+
+if(sideMenu.style.right === "0px"){
+sideMenu.style.right = "-100%";
+}
+else{
+sideMenu.style.right = "0";
+}
+
+}
+
+
+/* CLOSE WHEN LINK CLICK */
+
+document.querySelectorAll(".sideLink").forEach(link=>{
+link.addEventListener("click",()=>{
+sideMenu.style.right = "-100%";
+});
+});
+
+
+/* CLOSE WHEN CLICK OUTSIDE */
+
+document.addEventListener("click", function(e){
+
+if(!sideMenu.contains(e.target) && !menuIcon.contains(e.target)){
+sideMenu.style.right = "-100%";
+}
+
+});
+
+
+/* SMOOTH SCROLL */
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+
+anchor.addEventListener("click", function (e) {
+
+const target = document.querySelector(this.getAttribute("href"));
+
+if(target){
+e.preventDefault();
+
+target.scrollIntoView({
+behavior: "smooth"
+});
+}
+
+});
+
+});
+
+
+/* ══ AIRA CHATBOT ══ */
+let chatOpen = false;
+
+function toggleChat(){
+  chatOpen = !chatOpen;
+  const box = document.getElementById("chatBox");
+  box.style.display = chatOpen ? "flex" : "none";
+  if(chatOpen) document.getElementById("chatInp").focus();
+}
+
+// Close chat if click outside
+document.addEventListener("click", function(e){
+  const box = document.getElementById("chatBox");
+  const btn = document.getElementById("chatBtn");
+  if(chatOpen && !box.contains(e.target) && !btn.contains(e.target)){
+    chatOpen = false;
+    box.style.display = "none";
+  }
+});
+
+async function chatSend(){
+  const inp  = document.getElementById("chatInp");
+  const msg  = inp.value.trim();
+  if(!msg) return;
+  inp.value  = "";
+  addChatMsg(msg, "user");
+  const typing = addTyping();
+  document.getElementById("chatSendBtn").disabled = true;
+  try{
+    const res  = await fetch("/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:msg})});
+    const data = await res.json();
+    setTimeout(()=>{
+      typing.remove();
+      if(data.no_answer){
+        addChatMsg("😕 I don't have an answer for that yet...<br>But you can <b>send your query directly to our team!</b> We'll reply soon 👇", "bot");
+        setTimeout(()=> openQueryPopup(msg), 900);
+      } else {
+        addChatMsg(data.reply, "bot");
+      }
+      document.getElementById("chatSendBtn").disabled = false;
+    }, 650);
+  }catch(e){
+    typing.remove();
+    addChatMsg("Server se connect nahi ho pa raha. app.py chal raha hai?", "bot");
+    document.getElementById("chatSendBtn").disabled = false;
+  }
+}
+
+function chatAsk(text){ document.getElementById("chatInp").value=text; chatSend(); }
+
+function addChatMsg(text, who){
+  const box = document.getElementById("chatMsgs");
+  const wrap = document.createElement("div");
+  wrap.style.cssText = "display:flex;flex-direction:column;animation:fadeUp .25s ease;";
+  const div = document.createElement("div");
+  if(who==="user"){
+    div.style.cssText="background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;border-radius:14px;border-bottom-right-radius:4px;padding:10px 14px;font-size:13px;align-self:flex-end;max-width:82%;line-height:1.5;";
+    div.textContent = text;
+  } else {
+    div.style.cssText="background:white;border:1px solid #e2e8f0;border-radius:14px;border-bottom-left-radius:4px;padding:11px 14px;font-size:13px;line-height:1.65;color:#0f172a;box-shadow:0 2px 6px rgba(0,0,0,.04);max-width:88%;";
+    div.innerHTML = text;
+  }
+  wrap.appendChild(div);
+  box.appendChild(wrap);
+  box.scrollTop = box.scrollHeight;
+  return wrap;
+}
+
+function addTyping(){
+  const box = document.getElementById("chatMsgs");
+  const div = document.createElement("div");
+  div.style.cssText="background:white;border:1px solid #e2e8f0;border-radius:14px;border-bottom-left-radius:4px;padding:12px 16px;display:flex;gap:5px;align-items:center;width:fit-content;box-shadow:0 2px 6px rgba(0,0,0,.04);";
+  div.innerHTML='<span style="width:7px;height:7px;background:#2563eb;border-radius:50%;animation:blink 1.2s infinite;display:inline-block;"></span><span style="width:7px;height:7px;background:#2563eb;border-radius:50%;animation:blink 1.2s .2s infinite;display:inline-block;"></span><span style="width:7px;height:7px;background:#2563eb;border-radius:50%;animation:blink 1.2s .4s infinite;display:inline-block;"></span>';
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+  return div;
+}
+
+/* ── QUERY POPUP ── */
+function openQueryPopup(prefill=''){
+  const ov = document.getElementById('queryOverlay');
+  ov.style.display='flex';
+  if(prefill) document.getElementById('qQuery').value=prefill;
+  document.getElementById('qName').focus();
+}
+function closeQueryPopup(){
+  document.getElementById('queryOverlay').style.display='none';
+  document.getElementById('qMsg').style.display='none';
+  document.getElementById('qSubmitBtn').disabled=false;
+  document.getElementById('qSubmitBtn').textContent='📨 Send Query';
+}
+document.getElementById('queryOverlay').addEventListener('click',function(e){if(e.target===this)closeQueryPopup();});
+
+async function submitQuery(){
+  const name   = document.getElementById('qName').value.trim();
+  const email  = document.getElementById('qEmail').value.trim();
+  const mobile = document.getElementById('qMobile').value.trim();
+  const query  = document.getElementById('qQuery').value.trim();
+  const msgEl  = document.getElementById('qMsg');
+  const btn    = document.getElementById('qSubmitBtn');
+  if(!name||!email||!query){
+    msgEl.style.cssText='display:block;background:#fef2f2;color:#dc2626;padding:9px 13px;border-radius:9px;font-size:12px;text-align:center;';
+    msgEl.textContent='⚠️ Name, Email and Question are required!';
+    return;
+  }
+  btn.disabled=true; btn.textContent='⏳ Sending...';
+  try{
+    const res  = await fetch('/chat-query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,mobile,query})});
+    const data = await res.json();
+    msgEl.style.display='block';
+    if(data.status==='success'){
+      msgEl.style.cssText='display:block;background:#f0fdf4;color:#16a34a;padding:9px 13px;border-radius:9px;font-size:12px;text-align:center;';
+      msgEl.textContent=data.message;
+      addChatMsg(`✅ <b>${name}</b>, your query has been sent! We'll reply on <b>${email}</b> soon 🙏`, 'bot');
+      setTimeout(closeQueryPopup, 2200);
+    } else {
+      msgEl.style.cssText='display:block;background:#fef2f2;color:#dc2626;padding:9px 13px;border-radius:9px;font-size:12px;text-align:center;';
+      msgEl.textContent=data.message;
+      btn.disabled=false; btn.textContent='📨 Send Query';
+    }
+  }catch(e){
+    msgEl.style.cssText='display:block;background:#fef2f2;color:#dc2626;padding:9px 13px;border-radius:9px;font-size:12px;text-align:center;';
+    msgEl.textContent='Network error. Please try again.';
+    btn.disabled=false; btn.textContent='📨 Send Query';
+  }
+}
+
+/* Scroll reveal animations */
+const revealEls = document.querySelectorAll(".why-card,.role-card,.stat-box,.step-box,.benefit-box");
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.style.opacity="1";
+      e.target.style.transform="translateY(0)";
+    }
+  });
+}, {threshold:0.15});
+revealEls.forEach(el => {
+  el.style.opacity="0";
+  el.style.transform="translateY(28px)";
+  el.style.transition="opacity .6s ease, transform .6s ease";
+  revObs.observe(el);
+});
+
+</script>
+
+</body>

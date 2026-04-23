@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel | Solvex-AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="../Solvex-Ai-logo.png">
+<style>
+:root{
+  --primary:#6366f1;--primary-dark:#3730a3;--primary-light:#a5b4fc;
+  --accent:#f43f5e;--success:#10b981;--warning:#f59e0b;--info:#0ea5e9;
+  --dark:#0f172a;--dark2:#1e293b;--dark3:#334155;
+  --bg:#f1f5f9;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;
+  --sidebar:260px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;font-family:inherit;}
+input,textarea,select{font-family:inherit;}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;top:0;left:0;width:var(--sidebar);height:100vh;
+  background:var(--dark);
+  display:flex;flex-direction:column;z-index:200;transition:transform .3s ease;overflow-y:auto;
+}
+.sidebar-brand{
+  padding:22px 20px 18px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:12px;
+}
+.brand-icon{
+  width:44px;height:44px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:white;font-weight:900;flex-shrink:0;
+}
+.brand-text{color:white;font-size:17px;font-weight:800;line-height:1.1;}
+.brand-text span{display:block;font-size:10px;font-weight:500;color:rgba(255,255,255,.4);letter-spacing:.5px;margin-top:2px;}
+.admin-profile{
+  margin:14px 16px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;
+}
+.admin-avatar{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--warning),#f97316);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:800;color:white;flex-shrink:0;
+}
+.admin-info h4{color:white;font-size:13px;font-weight:700;}
+.admin-info p{color:rgba(255,255,255,.4);font-size:11px;margin-top:1px;}
+.admin-badge{
+  margin-left:auto;background:var(--warning);color:white;
+  padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;
+}
+.sidebar-nav{padding:8px 12px;flex:1;}
+.nav-group{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.25);padding:14px 10px 6px;font-weight:700;}
+.nav-item{
+  display:flex;align-items:center;gap:11px;
+  padding:10px 14px;border-radius:10px;
+  color:rgba(255,255,255,.55);font-size:13.5px;font-weight:600;
+  margin-bottom:2px;transition:all .2s;cursor:pointer;position:relative;
+}
+.nav-item i{width:18px;text-align:center;font-size:14px;}
+.nav-item:hover{background:rgba(255,255,255,.08);color:white;}
+.nav-item.active{background:rgba(99,102,241,.25);color:#a5b4fc;}
+.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);height:60%;width:3px;background:var(--primary-light);border-radius:0 3px 3px 0;}
+.nav-pill{margin-left:auto;background:var(--accent);color:white;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
+.sidebar-footer{padding:14px 12px;border-top:1px solid rgba(255,255,255,.07);}
+.logout-btn{
+  width:100%;padding:11px;background:rgba(244,63,94,.15);color:#fda4af;
+  border-radius:10px;font-size:13.5px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;border:1px solid rgba(244,63,94,.2);
+}
+.logout-btn:hover{background:var(--accent);color:white;}
+
+/* TOPBAR */
+.topbar{
+  position:fixed;top:0;left:var(--sidebar);right:0;height:64px;
+  background:white;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;z-index:100;transition:left .3s;
+}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{display:none;background:none;font-size:20px;color:var(--dark);}
+.page-heading{font-size:18px;font-weight:800;color:var(--dark);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.icon-btn{
+  width:38px;height:38px;background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:15px;cursor:pointer;position:relative;transition:all .2s;
+}
+.icon-btn:hover{background:var(--dark);color:white;border-color:var(--dark);}
+.notif-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;position:absolute;top:6px;right:6px;border:2px solid white;}
+.topbar-chip{
+  background:linear-gradient(135deg,var(--primary-dark),var(--primary));
+  color:white;border-radius:50px;padding:7px 16px;
+  font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;
+}
+
+/* CONTENT */
+.content{margin-left:var(--sidebar);padding-top:64px;min-height:100vh;display:flex;flex-direction:column;}
+.page-body{padding:28px;flex:1;}
+.section{display:none;}
+.section.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* BANNER */
+.banner{
+  background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,#1e1b4b 100%);
+  border-radius:20px;padding:26px 30px;color:white;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:26px;position:relative;overflow:hidden;
+}
+.banner::before{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;background:rgba(99,102,241,.12);border-radius:50%;}
+.banner-text h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.banner-text p{font-size:13.5px;opacity:.7;max-width:450px;}
+.banner-icon{font-size:50px;position:relative;z-index:1;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:26px;}
+.stat-card{
+  background:white;border-radius:16px;padding:20px;border:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;
+  transition:transform .2s,box-shadow .2s;cursor:pointer;
+}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.09);}
+.stat-ico{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;}
+.ico-blue{background:#e0e7ff;color:var(--primary);}
+.ico-green{background:#d1fae5;color:var(--success);}
+.ico-yellow{background:#fef3c7;color:#b45309;}
+.ico-red{background:#fee2e2;color:var(--accent);}
+.ico-purple{background:#f3e8ff;color:#7c3aed;}
+.ico-teal{background:#ccfbf1;color:#0d9488;}
+.stat-info h2{font-size:28px;font-weight:800;line-height:1;}
+.stat-info p{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;}
+.stat-info .trend{font-size:11px;margin-top:4px;font-weight:700;}
+.trend-up{color:var(--success);}
+.trend-down{color:var(--accent);}
+
+/* SEC TITLE */
+.sec-title{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.sec-title-left{display:flex;align-items:center;gap:8px;}
+.sec-title-left i{color:var(--primary);font-size:15px;}
+
+/* CARD */
+.card{background:white;border-radius:16px;padding:22px;border:1px solid var(--border);margin-bottom:16px;transition:box-shadow .2s;}
+.card:hover{box-shadow:0 6px 18px rgba(0,0,0,.07);}
+
+/* TABLE */
+.table-wrap{background:white;border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:20px;}
+table{width:100%;border-collapse:collapse;}
+th{background:var(--dark);color:white;padding:13px 16px;font-size:12.5px;font-weight:700;text-align:left;}
+td{padding:11px 16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#f8fafc;}
+.table-search{
+  display:flex;align-items:center;gap:10px;padding:14px 16px;
+  border-bottom:1px solid var(--border);background:var(--bg);
+}
+.table-search input{
+  flex:1;padding:9px 14px;border:1.5px solid var(--border);border-radius:10px;
+  font-size:13px;background:white;transition:border-color .2s;
+}
+.table-search input:focus{outline:none;border-color:var(--primary-light);}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-blue{background:#e0e7ff;color:var(--primary);}
+.badge-green{background:#d1fae5;color:#065f46;}
+.badge-red{background:#fee2e2;color:#9b1c1c;}
+.badge-yellow{background:#fef3c7;color:#92400e;}
+.badge-purple{background:#f3e8ff;color:#6b21a8;}
+.badge-gray{background:#f1f5f9;color:#475569;}
+
+/* BUTTONS */
+.btn{padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .2s;}
+.btn-approve{background:#d1fae5;color:#065f46;}
+.btn-approve:hover{background:var(--success);color:white;}
+.btn-block{background:#fee2e2;color:#9b1c1c;}
+.btn-block:hover{background:var(--accent);color:white;}
+.btn-delete{background:#fee2e2;color:#9b1c1c;}
+.btn-delete:hover{background:#be123c;color:white;}
+.btn-verify{background:#e0e7ff;color:var(--primary);}
+.btn-verify:hover{background:var(--primary);color:white;}
+.btn-reply{background:#e0f2fe;color:#0369a1;}
+.btn-reply:hover{background:var(--info);color:white;}
+.btn-generate{background:linear-gradient(135deg,#1e1b4b,var(--primary));color:white;box-shadow:0 3px 8px rgba(99,102,241,.3);}
+.btn-generate:hover{box-shadow:0 6px 14px rgba(99,102,241,.4);transform:translateY(-1px);}
+.btn-primary{background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:white;padding:9px 20px;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 12px rgba(99,102,241,.3);transition:all .2s;}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);}
+.btn-sm{padding:6px 12px;font-size:11.5px;}
+
+/* PROGRESS */
+.prog-bar{height:8px;background:#e2e8f0;border-radius:10px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:10px;transition:width .4s;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal{background:white;border-radius:20px;padding:28px;max-width:560px;width:100%;max-height:85vh;overflow-y:auto;animation:fadeIn .25s ease;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.modal-title{font-size:17px;font-weight:800;color:var(--dark);}
+.modal-close{background:none;font-size:20px;color:var(--muted);transition:color .2s;}
+.modal-close:hover{color:var(--accent);}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px;color:var(--text);}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:var(--bg);transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--primary-light);background:white;}
+
+/* OVERVIEW GRID */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+.overview-card{background:white;border-radius:16px;border:1px solid var(--border);padding:20px;}
+.ov-title{font-size:13.5px;font-weight:800;color:var(--dark);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.ov-title i{color:var(--primary);}
+.activity-item{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);}
+.activity-item:last-child{border-bottom:none;}
+.activity-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.activity-text{font-size:13px;flex:1;}
+.activity-text b{font-weight:700;}
+.activity-time{font-size:11px;color:var(--muted);}
+.quick-act{display:flex;flex-wrap:wrap;gap:10px;}
+.qa-btn{
+  flex:1;min-width:110px;padding:12px;border-radius:12px;font-size:12.5px;font-weight:700;
+  display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s;
+  background:var(--bg);border:1px solid var(--border);color:var(--text);
+}
+.qa-btn i{font-size:20px;}
+.qa-btn:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.1);}
+.qa-btn.qa-blue{background:#e0e7ff;color:var(--primary);border-color:#c7d2fe;}
+.qa-btn.qa-green{background:#d1fae5;color:#065f46;border-color:#a7f3d0;}
+.qa-btn.qa-red{background:#fee2e2;color:var(--accent);border-color:#fecaca;}
+.qa-btn.qa-yellow{background:#fef3c7;color:#b45309;border-color:#fde68a;}
+
+/* CHART AREA */
+.chart-card{background:white;border-radius:16px;border:1px solid var(--border);padding:22px;margin-bottom:20px;}
+.simple-chart{display:flex;align-items:flex-end;gap:8px;height:80px;margin-top:14px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.bar-fill{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--primary),var(--primary-light));transition:height .5s ease;min-height:4px;}
+.bar-label{font-size:10px;color:var(--muted);font-weight:600;}
+
+/* FOOTER */
+footer{background:var(--dark);color:white;padding:32px 28px 16px;margin-top:auto;}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.08);}
+.footer-brand{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;color:white;}
+.footer-brand .dot{width:8px;height:8px;background:var(--success);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.4);transition:color .2s;}
+.footer-links a:hover{color:white;}
+.footer-copy{text-align:center;font-size:12px;color:rgba(255,255,255,.25);margin-top:14px;}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199;}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--dark);color:white;
+  padding:12px 20px;border-radius:12px;
+  font-size:13.5px;font-weight:600;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);
+  transform:translateY(80px);opacity:0;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  z-index:1000;pointer-events:none;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast i{font-size:16px;}
+.toast.success i{color:var(--success);}
+.toast.error i{color:var(--accent);}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .overlay.show{display:block;}
+  .content{margin-left:0;}
+  .topbar{left:0;}
+  .hamburger{display:flex;align-items:center;}
+  .page-body{padding:18px;}
+  .banner{flex-direction:column;gap:12px;text-align:center;}
+  .overview-grid{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .table-wrap{overflow-x:auto;}
+  table{min-width:600px;}
+  .topbar-chip span{display:none;}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Action</span>
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Done</span></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">S</div>
+    <div class="brand-text">Solvex-AI <span>ADMIN CONTROL PANEL</span></div>
+  </div>
+  <div class="admin-profile">
+    <div class="admin-avatar">A</div>
+    <div class="admin-info"><h4>Admin</h4><p>Super Administrator</p></div>
+    <span class="admin-badge">ROOT</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">Overview</div>
+    <div class="nav-item active" onclick="showSection('dashboard',this)"><i class="fa-solid fa-chart-pie"></i> Dashboard</div>
+    <div class="nav-group">Management</div>
+    <div class="nav-item" onclick="showSection('users',this)"><i class="fa-solid fa-users"></i> User Management <span class="nav-pill" id="pendingUsersPill">0</span></div>
+    <div class="nav-item" onclick="showSection('problems',this)"><i class="fa-solid fa-lightbulb"></i> Problems</div>
+    <div class="nav-item" onclick="showSection('projects',this)"><i class="fa-solid fa-code"></i> Projects</div>
+    <div class="nav-item" onclick="showSection('teams',this)"><i class="fa-solid fa-people-group"></i> Teams</div>
+    <div class="nav-group">Certifications</div>
+    <div class="nav-item" onclick="showSection('certificates',this)"><i class="fa-solid fa-certificate"></i> Certificates <span class="nav-pill" id="pendingCertsPill">0</span></div>
+    <div class="nav-group">Support</div>
+    <div class="nav-item" onclick="showSection('messages',this)"><i class="fa-solid fa-envelope"></i> Messages</div>
+    <div class="nav-item" onclick="showSection('settings',this)"><i class="fa-solid fa-gear"></i> Settings</div>
+    <div class="nav-item" onclick="showSection('revenue',this)"><i class="fa-solid fa-indian-rupee-sign"></i> Revenue Chart</div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+    <span class="page-heading" id="pageHeading">Dashboard</span>
+  </div>
+  <div class="topbar-right">
+    <div class="icon-btn" id="refreshBtn" onclick="refreshAll()" title="Refresh data"><i class="fa-solid fa-rotate-right"></i></div>
+    <div class="icon-btn"><i class="fa-regular fa-bell"></i><span class="notif-dot"></span></div>
+    <div class="topbar-chip"><i class="fa-solid fa-shield-halved"></i><span>Admin</span></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+<div class="page-body">
+
+<!-- ===== DASHBOARD ===== -->
+<div class="section active" id="dashboard">
+  <div class="banner">
+    <div class="banner-text">
+      <h1>Solvex-AI Admin Panel 🛡️</h1>
+      <p>Full control over users, problems, projects, teams, certificates, and platform settings.</p>
+    </div>
+    <div class="banner-icon">⚙️</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card" onclick="showSection('users',null)"><div class="stat-ico ico-blue"><i class="fa-solid fa-user-graduate"></i></div><div class="stat-info"><h2 id="statStudents">—</h2><p>Students</p><div class="trend trend-up" id="trendStudents"></div></div></div>
+    <div class="stat-card" onclick="showSection('users',null)"><div class="stat-ico ico-green"><i class="fa-solid fa-chalkboard-teacher"></i></div><div class="stat-info"><h2 id="statFaculty">—</h2><p>Faculty</p></div></div>
+    <div class="stat-card" onclick="showSection('problems',null)"><div class="stat-ico ico-yellow"><i class="fa-solid fa-lightbulb"></i></div><div class="stat-info"><h2 id="statProblems">—</h2><p>Problems</p></div></div>
+    <div class="stat-card" onclick="showSection('projects',null)"><div class="stat-ico ico-purple"><i class="fa-solid fa-laptop-code"></i></div><div class="stat-info"><h2 id="statProjects">—</h2><p>Projects</p></div></div>
+    <div class="stat-card" onclick="showSection('certificates',null)"><div class="stat-ico ico-teal"><i class="fa-solid fa-certificate"></i></div><div class="stat-info"><h2 id="statCerts">—</h2><p>Certificates</p></div></div>
+    <div class="stat-card"><div class="stat-ico ico-red"><i class="fa-solid fa-building"></i></div><div class="stat-info"><h2 id="statProviders">—</h2><p>Providers</p></div></div>
+  </div>
+
+  <div class="overview-grid">
+    <div class="overview-card">
+      <div class="ov-title"><i class="fa-solid fa-bolt"></i> Recent Activity</div>
+      <div id="activityFeed"><div class="activity-item"><div class="activity-dot" style="background:var(--muted)"></div><div class="activity-text" style="color:var(--muted)">Loading activity...</div></div></div>
+    </div>
+    <div class="overview-card">
+      <div class="ov-title"><i class="fa-solid fa-zap"></i> Quick Actions</div>
+      <div class="quick-act">
+        <button class="qa-btn qa-blue" onclick="showSection('users',null)"><i class="fa-solid fa-users"></i>Users</button>
+        <button class="qa-btn qa-green" onclick="showSection('certificates',null)"><i class="fa-solid fa-award"></i>Certs</button>
+        <button class="qa-btn qa-yellow" onclick="showSection('problems',null)"><i class="fa-solid fa-lightbulb"></i>Problems</button>
+        <button class="qa-btn qa-red" onclick="showSection('messages',null)"><i class="fa-solid fa-envelope"></i>Messages</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="sec-title">
+      <div class="sec-title-left"><i class="fa-solid fa-chart-bar"></i> Platform Overview</div>
+    </div>
+    <div class="simple-chart" id="overviewChart"></div>
+  </div>
+</div>
+
+<!-- ===== USERS ===== -->
+<div class="section" id="users">
+  <div class="sec-title">
+    <div class="sec-title-left"><i class="fa-solid fa-users"></i> User Management</div>
+    <button class="btn-primary btn-sm" onclick="openAddUserModal()"><i class="fa-solid fa-plus"></i> Add User</button>
+  </div>
+  <div class="table-wrap">
+    <div class="table-search">
+      <i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i>
+      <input type="text" id="userSearch" placeholder="Search by name, email or role..." oninput="filterUsers()">
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="usersTable"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:28px">Loading users...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== PROBLEMS ===== -->
+<div class="section" id="problems">
+  <div class="sec-title">
+    <div class="sec-title-left"><i class="fa-solid fa-lightbulb"></i> All Problems</div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-search">
+      <i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i>
+      <input type="text" id="probSearch" placeholder="Search problems..." oninput="filterProblems()">
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Title</th><th>Provider</th><th>Category</th><th>Budget</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="problemsTable"><tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px">Loading...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== PROJECTS ===== -->
+<div class="section" id="projects">
+  <div class="sec-title">
+    <div class="sec-title-left"><i class="fa-solid fa-code"></i> All Projects</div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Project</th><th>Student</th><th>Email</th><th>Progress</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="projectsTable"><tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px">Loading...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== TEAMS ===== -->
+<div class="section" id="teams">
+  <div class="sec-title">
+    <div class="sec-title-left"><i class="fa-solid fa-people-group"></i> All Teams</div>
+  </div>
+  <div id="teamsGrid"><p style="color:var(--muted);font-size:14px">Loading teams...</p></div>
+</div>
+
+<!-- ===== CERTIFICATES ===== -->
+<div class="section" id="certificates">
+  <div class="sec-title">
+    <div class="sec-title-left"><i class="fa-solid fa-certificate"></i> Certificate Management</div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Student</th><th>Email</th><th>Project</th><th>Faculty Status</th><th>Admin Actions</th></tr></thead>
+      <tbody id="certsTable"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:28px">Loading...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== MESSAGES ===== -->
+<div class="section" id="messages">
+  <div class="sec-title">
+    <div class="sec-title-left"><i class="fa-solid fa-envelope"></i> Contact Messages</div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Message</th><th>Actions</th></tr></thead>
+      <tbody id="messagesTable"><tr><td colspan="5" style="text-align:center;color:var(--muted);padding:28px">No messages yet.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div class="section" id="settings">
+  <div class="sec-title"><div class="sec-title-left"><i class="fa-solid fa-gear"></i> Platform Settings</div></div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="form-group"><label>Platform Name</label><input type="text" value="Solvex-AI" id="setPlatName"></div>
+      <div class="form-group"><label>Admin Email</label><input type="email" value="admin@solvexai.com" id="setEmail"></div>
+      <div class="form-group"><label>University Name</label><input type="text" value="Poornima University" id="setUniv"></div>
+      <div class="form-group"><label>Certificate Validity</label>
+        <select id="setCertValidity"><option>Lifetime</option><option>5 Years</option><option>3 Years</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>Platform Description</label><textarea rows="3" id="setDesc">Solvex-AI connects industry problems with student talent under faculty supervision.</textarea></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+      <button class="btn-primary" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i> Save Settings</button>
+      <button class="btn btn-block" onclick="if(confirm('Reset all settings?'))loadSettings()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="dot"></div>
+      Solvex-AI Admin
+    </div>
+    <div class="footer-links">
+      <a href="#">Documentation</a>
+      <a href="#">API</a>
+      <a href="#">Support</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+  <div class="footer-copy">© 2026 Solvex-AI – Poornima University. All Rights Reserved.</div>
+</footer>
+</div>
+
+<script>
+// ======= STATE =======
+let allUsers     = [];
+let allProblems  = [];
+let allProjects  = [];
+let allCerts     = [];
+
+// ======= SIDEBAR =======
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+
+// ======= SECTIONS =======
+const secTitles={dashboard:'Dashboard',users:'User Management',problems:'Problems',projects:'Projects',teams:'Teams',certificates:'Certificates',messages:'Messages',settings:'Settings'};
+function showSection(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el)el.classList.add('active');
+  document.getElementById('pageHeading').textContent=secTitles[id]||id;
+  closeSidebar();
+}
+
+// ======= MODAL =======
+function openModal(title,html){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=html;document.getElementById('modal').classList.add('show');}
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+
+// ======= TOAST =======
+let toastTimer;
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.className='toast show '+type;
+  t.querySelector('i').className=type==='success'?'fa-solid fa-circle-check':'fa-solid fa-circle-xmark';
+  document.getElementById('toastMsg').textContent=msg;
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ======= LOGOUT =======
+function logout(){sessionStorage.clear();window.location.href='signin.html';}
+
+// ======= FETCH HELPERS =======
+async function apiFetch(url,opts={}){
+  try{const r=await fetch(url,opts);return await r.json();}catch(e){console.error(e);return null;}
+}
+
+// ======= LOAD ALL DATA =======
+async function loadDashboard(){
+  const [problems, projects, certs, users] = await Promise.all([
+    apiFetch('/admin/all-problems'),
+    apiFetch('/get-projects'),
+    apiFetch('/get-certificates'),
+    apiFetch('/get-users')
+  ]);
+  allUsers    = users||[];
+  allProblems = problems||[];
+  allProjects = projects||[];
+  allCerts    = Array.isArray(certs)?certs:[];
+
+  const students  = allUsers.filter(u=>u.role==='student');
+  const faculty   = allUsers.filter(u=>u.role==='faculty');
+  const providers = allUsers.filter(u=>u.role==='provider');
+
+  document.getElementById('statStudents').textContent  = students.length;
+  document.getElementById('statFaculty').textContent   = faculty.length;
+  document.getElementById('statProblems').textContent  = allProblems.length;
+  document.getElementById('statProjects').textContent  = allProjects.length;
+  document.getElementById('statCerts').textContent     = allCerts.length;
+  document.getElementById('statProviders').textContent = providers.length;
+
+  const pendingCerts=allCerts.filter(c=>!c.approved&&c.status!=='approved').length;
+  document.getElementById('pendingCertsPill').textContent=pendingCerts||'';
+  document.getElementById('pendingCertsPill').style.display=pendingCerts?'inline':'none';
+
+  // Activity feed
+  const feed=document.getElementById('activityFeed');
+  const activities=[];
+  allProblems.slice(-3).reverse().forEach(p=>activities.push({color:'var(--warning)',text:`<b>${p.title}</b> posted by ${p.provider||'Provider'}`,time:'Recently'}));
+  allProjects.slice(-3).reverse().forEach(p=>activities.push({color:'var(--success)',text:`<b>${p.student||'Student'}</b> submitted a project`,time:'Recently'}));
+  if(activities.length===0){feed.innerHTML='<div class="activity-item"><div class="activity-dot" style="background:var(--muted)"></div><div class="activity-text" style="color:var(--muted)">No recent activity.</div></div>';return;}
+  feed.innerHTML=activities.slice(0,5).map(a=>`
+    <div class="activity-item">
+      <div class="activity-dot" style="background:${a.color}"></div>
+      <div class="activity-text">${a.text}</div>
+      <div class="activity-time">${a.time}</div>
+    </div>`).join('');
+
+  // Chart
+  const approved=allProblems.filter(p=>p.status==='approved').length;
+  const pending=allProblems.filter(p=>!p.status||p.status==='pending').length;
+  const rejected=allProblems.filter(p=>p.status==='rejected').length;
+  const bars=[
+    {label:'Students',val:students.length,max:Math.max(students.length,50),color:'var(--primary)'},
+    {label:'Problems',val:allProblems.length,max:Math.max(allProblems.length,20),color:'var(--warning)'},
+    {label:'Projects',val:allProjects.length,max:Math.max(allProjects.length,20),color:'var(--success)'},
+    {label:'Approved',val:approved,max:Math.max(allProblems.length,1),color:'#10b981'},
+    {label:'Pending',val:pending,max:Math.max(allProblems.length,1),color:'var(--accent)'},
+    {label:'Certs',val:allCerts.length,max:Math.max(allCerts.length,10),color:'#7c3aed'},
+  ];
+  document.getElementById('overviewChart').innerHTML=bars.map(b=>`
+    <div class="bar-col">
+      <div class="bar-fill" style="height:${Math.max(8,Math.round((b.val/b.max)*76))}px;background:${b.color}"></div>
+      <div class="bar-label">${b.label}<br><b style="color:var(--dark)">${b.val}</b></div>
+    </div>`).join('');
+}
+
+// ======= USERS =======
+async function loadUsers(){
+  const users = await apiFetch('/get-users');
+  allUsers = users||[];
+  document.getElementById('pendingUsersPill').textContent = '';
+  document.getElementById('pendingUsersPill').style.display = 'none';
+  renderUsersTable(allUsers);
+}
+
+function renderUsersTable(users){
+  const tbody=document.getElementById('usersTable');
+  if(!users.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:28px">No users found.</td></tr>';return;}
+  tbody.innerHTML=users.map((u,i)=>{
+    const isBlocked = u.is_blocked === 1 || u.is_blocked === true;
+    return `<tr>
+      <td>${i+1}</td>
+      <td><b>${u.username||u.name||'—'}</b></td>
+      <td style="font-size:12px">${u.email||'—'}</td>
+      <td><span class="badge ${u.role==='student'?'badge-blue':u.role==='faculty'?'badge-green':u.role==='provider'?'badge-yellow':'badge-purple'}">${u.role||'student'}</span></td>
+      <td><span class="badge ${isBlocked?'badge-red':'badge-green'}">${isBlocked?'Blocked':'Active'}</span></td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        ${isBlocked?`<button class="btn btn-approve btn-sm" onclick="approveUser('${u.email}','${u.username||u.name||''}')"><i class="fa-solid fa-lock-open"></i> Unblock</button>`
+        :`<button class="btn btn-block btn-sm" onclick="blockUser('${u.email}','${u.username||u.name||''}')"><i class="fa-solid fa-ban"></i> Block</button>`}
+        <button class="btn btn-delete btn-sm" onclick="deleteUser('${u.email}','${u.username||u.name||''}')"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function filterUsers(){
+  const q=document.getElementById('userSearch').value.toLowerCase();
+  renderUsersTable(allUsers.filter(u=>(u.username||u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.role||'').toLowerCase().includes(q)));
+}
+
+async function approveUser(email,name){
+  await apiFetch('/admin/approve-user',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+  showToast(`✅ ${name||email} unblocked successfully!`);
+  loadUsers();
+}
+
+async function blockUser(email,name){
+  if(!confirm(`Block ${name||email}?`))return;
+  await apiFetch('/admin/block-user',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+  showToast(`${name||email} blocked.`,'error');
+  loadUsers();
+}
+
+async function deleteUser(email,name){
+  if(!confirm(`Delete ${name||email}? This cannot be undone.`))return;
+  await apiFetch('/admin/delete-user',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+  showToast(`${name||email} deleted.`,'error');
+  loadUsers();
+}
+
+function openAddUserModal(){
+  openModal('Add New User',`
+    <div class="form-group"><label>Full Name</label><input type="text" id="newName" placeholder="Full Name"></div>
+    <div class="form-group"><label>Email</label><input type="email" id="newEmail" placeholder="email@example.com"></div>
+    <div class="form-group"><label>Role</label>
+      <select id="newRole"><option>student</option><option>faculty</option><option>provider</option><option>admin</option></select>
+    </div>
+    <div class="form-group"><label>Password</label><input type="password" id="newPass" placeholder="Set password"></div>
+    <button class="btn-primary" onclick="addUser()"><i class="fa-solid fa-plus"></i> Add User</button>
+  `);
+}
+
+async function addUser(){
+  const name=document.getElementById('newName').value;
+  const email=document.getElementById('newEmail').value;
+  const role=document.getElementById('newRole').value;
+  const password=document.getElementById('newPass').value;
+  if(!name||!email||!password){showToast('Fill all fields!','error');return;}
+  await apiFetch('/admin/add-user',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,role,password})});
+  showToast(`${name} added as ${role}!`);
+  closeModal();loadUsers();
+}
+
+// ======= PROBLEMS =======
+function renderProblemsTable(problems){
+  const tbody=document.getElementById('problemsTable');
+  if(!problems.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px">No problems found.</td></tr>';return;}
+  tbody.innerHTML=problems.map((p,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td><b>${p.title||'—'}</b></td>
+      <td>${p.provider||p.provider_email||'—'}</td>
+      <td><span class="badge badge-blue">${p.category||'—'}</span></td>
+      <td>₹${p.budget||0}</td>
+      <td><span class="badge ${p.status==='approved'?'badge-green':p.status==='rejected'?'badge-red':'badge-yellow'}">${p.status||'pending'}</span></td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-approve btn-sm" onclick="adminApproveProblem(${p.id})"><i class="fa-solid fa-check"></i></button>
+        <button class="btn btn-delete btn-sm" onclick="adminDeleteProblem(${p.id},'${p.title}')"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+function filterProblems(){
+  const q=document.getElementById('probSearch').value.toLowerCase();
+  renderProblemsTable(allProblems.filter(p=>(p.title||'').toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q)||(p.provider||'').toLowerCase().includes(q)));
+}
+
+async function adminApproveProblem(id){
+  await apiFetch('/approve-problem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({problem_id:id})});
+  showToast('Problem approved!');
+  allProblems = await apiFetch('/admin/all-problems')||[];
+  renderProblemsTable(allProblems);
+}
+
+async function adminDeleteProblem(id,title){
+  if(!confirm(`Delete "${title}"?`))return;
+  await apiFetch('/admin/delete-problem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
+  showToast(`"${title}" deleted.`,'error');
+  allProblems = await apiFetch('/admin/all-problems')||[];
+  renderProblemsTable(allProblems);
+}
+
+// ======= PROJECTS =======
+function renderProjectsTable(projects){
+  const tbody=document.getElementById('projectsTable');
+  if(!projects.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px">No projects yet.</td></tr>';return;}
+  tbody.innerHTML=projects.map((p,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><b>${p.description||'—'}</b></td>
+      <td>${p.student||'—'}</td>
+      <td>${p.email||p.student_email||'—'}</td>
+      <td>
+        <div class="prog-bar" style="width:100px"><div class="prog-fill" style="width:${p.progress||'0%'}"></div></div>
+        <span style="font-size:11px;color:var(--muted)">${p.progress||'0%'}</span>
+      </td>
+      <td><span class="badge ${p.status==='completed'?'badge-green':p.status==='rejected'?'badge-red':'badge-yellow'}">${p.status||'pending'}</span></td>
+      <td>
+        <button class="btn btn-generate btn-sm" onclick="adminIssueCert('${p.student_email||p.email}','${p.student||'Student'}','${(p.description||'Project').replace(/'/g,'`')}')"><i class="fa-solid fa-award"></i> Cert</button>
+      </td>
+    </tr>`).join('');
+}
+
+// ======= TEAMS =======
+function renderTeams(projects){
+  const box=document.getElementById('teamsGrid');
+  const teams=projects.filter(p=>p.team_members&&p.team_members.trim()!=='');
+  if(!teams.length){box.innerHTML='<p style="color:var(--muted);font-size:14px">No teams formed yet.</p>';return;}
+  box.innerHTML=teams.map(t=>`
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <b style="font-size:15px">${t.student||'Team Lead'}</b>
+        <span class="badge badge-blue">Active</span>
+      </div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:4px"><b style="color:var(--text)">Email:</b> ${t.email||t.student_email||'—'}</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:4px"><b style="color:var(--text)">Project:</b> ${t.description||'—'}</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:10px"><b style="color:var(--text)">GitHub:</b> <a href="${t.github}" target="_blank" style="color:var(--primary)">${t.github||'—'}</a></div>
+      <div>
+        <div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--muted)">MEMBERS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          ${t.team_members.split(',').map(m=>`<span style="background:#e0e7ff;color:var(--primary);border-radius:8px;padding:4px 12px;font-size:12px;font-weight:600">${m.trim()}</span>`).join('')}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ======= CERTIFICATES =======
+function renderCertsTable(certs, projects){
+  const tbody=document.getElementById('certsTable');
+  const allEntries = certs.length>0 ? certs : projects.map(p=>({student_name:p.student,student_email:p.email||p.student_email,project:p.description,status:'pending',id:p.id}));
+  if(!allEntries.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:28px">No certificate requests.</td></tr>';return;}
+  tbody.innerHTML=allEntries.map((c,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td><b>${c.student_name||c.student||'—'}</b></td>
+      <td>${c.student_email||c.email||'—'}</td>
+      <td>${c.project||c.description||'—'}</td>
+      <td><span class="badge ${c.faculty_approved?'badge-green':c.status==='approved'?'badge-green':'badge-yellow'}">${c.faculty_approved||c.status==='approved'?'Faculty Approved':'Pending Faculty'}</span></td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-generate btn-sm" onclick="adminIssueCert('${c.student_email||c.email}','${c.student_name||c.student||'Student'}','${(c.project||c.description||'Project').replace(/'/g,'`')}')"><i class="fa-solid fa-award"></i> Issue</button>
+        <button class="btn btn-delete btn-sm" onclick="deleteCert(${c.id||0},'${c.student_name||''}')"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+async function adminIssueCert(email,name,project){
+  if(!email){showToast('No email found!','error');return;}
+  await apiFetch('/issue-certificate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({student_email:email,student_name:name,project,approved:true})});
+  showToast(`✅ Certificate issued to ${name}!`);
+  allCerts=await apiFetch('/get-certificates')||[];
+  renderCertsTable(allCerts,allProjects);
+}
+
+async function deleteCert(id,name){
+  if(!confirm(`Delete certificate for ${name}?`))return;
+  await apiFetch('/admin/delete-certificate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
+  showToast(`Certificate deleted.`,'error');
+  allCerts=await apiFetch('/get-certificates')||[];
+  renderCertsTable(allCerts,allProjects);
+}
+
+// ======= MESSAGES =======
+async function loadMessages(){
+  const msgs=await apiFetch('/get-messages')||[];
+  const tbody=document.getElementById('messagesTable');
+  if(!msgs.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:28px">No messages yet.</td></tr>';return;}
+  tbody.innerHTML=msgs.map((m,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td><b>${m.name||'—'}</b></td>
+      <td>${m.email||'—'}</td>
+      <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.message||'—'}</td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-reply btn-sm" onclick="replyMsg('${m.email}','${m.name||''}')"><i class="fa-solid fa-reply"></i></button>
+        <button class="btn btn-delete btn-sm" onclick="deleteMsg(${m.id||0})"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+function replyMsg(email,name){
+  openModal(`Reply to ${name}`,`
+    <div class="form-group"><label>To</label><input type="text" value="${email}" readonly></div>
+    <div class="form-group"><label>Subject</label><input type="text" id="replySubj" placeholder="Re: Your query"></div>
+    <div class="form-group"><label>Message</label><textarea rows="4" id="replyBody" placeholder="Your reply..."></textarea></div>
+    <button class="btn-primary" onclick="sendReply('${email}')"><i class="fa-solid fa-paper-plane"></i> Send Reply</button>
+  `);
+}
+
+async function sendReply(email){
+  const subj=document.getElementById('replySubj').value;
+  const body=document.getElementById('replyBody').value;
+  await apiFetch('/admin/send-reply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:email,subject:subj,message:body})});
+  showToast('Reply sent!');closeModal();
+}
+
+async function deleteMsg(id){
+  await apiFetch('/admin/delete-message',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
+  showToast('Message deleted.','error');loadMessages();
+}
+
+// ======= SETTINGS =======
+function loadSettings(){
+  document.getElementById('setPlatName').value='Solvex-AI';
+  document.getElementById('setEmail').value='admin@solvexai.com';
+  document.getElementById('setUniv').value='Poornima University';
+}
+
+async function saveSettings(){
+  const d={
+    platform_name:document.getElementById('setPlatName').value,
+    admin_email:document.getElementById('setEmail').value,
+    university:document.getElementById('setUniv').value,
+    cert_validity:document.getElementById('setCertValidity').value,
+    description:document.getElementById('setDesc').value
+  };
+  await apiFetch('/admin/save-settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+  showToast('Settings saved!');
+}
+
+// ======= REFRESH =======
+async function refreshAll(){
+  const btn=document.getElementById('refreshBtn').querySelector('i');
+  btn.style.transition='transform .6s';
+  btn.style.transform='rotate(360deg)';
+  await loadDashboard();
+  renderProblemsTable(allProblems);
+  renderProjectsTable(allProjects);
+  renderTeams(allProjects);
+  renderCertsTable(allCerts,allProjects);
+  await loadMessages();
+  setTimeout(()=>{btn.style.transform='';},700);
+  showToast('Data refreshed!');
+}
+
+// ======= REVENUE CHARTS =======
+let revPieChartInst = null, revBarChartInst = null;
+
+async function loadRevenue(){
+  try{
+    const data = await apiFetch('/admin/revenue');
+    if(!data) return;
+
+    const {monthly, totals, students, faculty} = data;
+
+    // Update stat cards
+    document.getElementById('revGrandTotal').textContent   = '₹'+(totals.grand_total||0).toLocaleString('en-IN');
+    document.getElementById('revStudentTotal').textContent = '₹'+(totals.student_total||0).toLocaleString('en-IN');
+    document.getElementById('revFacultyTotal').textContent = '₹'+(totals.faculty_total||0).toLocaleString('en-IN');
+    document.getElementById('revUniTotal').textContent     = '₹'+(totals.university_total||0).toLocaleString('en-IN');
+    document.getElementById('revTotalProjects').textContent= totals.total_projects||0;
+
+    // Pie Chart
+    const pieCtx = document.getElementById('revPieChart').getContext('2d');
+    if(revPieChartInst) revPieChartInst.destroy();
+    revPieChartInst = new Chart(pieCtx,{
+      type:'doughnut',
+      data:{
+        labels:['Students (45%)','Faculty (25%)','University (30%)'],
+        datasets:[{
+          data:[totals.student_total||0, totals.faculty_total||0, totals.university_total||0],
+          backgroundColor:['rgba(99,102,241,0.85)','rgba(245,158,11,0.85)','rgba(239,68,68,0.85)'],
+          borderWidth:2, borderColor:'white', hoverOffset:8
+        }]
+      },
+      options:{
+        responsive:true,
+        plugins:{
+          legend:{display:false},
+          tooltip:{callbacks:{label:c=>'₹'+c.raw.toLocaleString('en-IN')+' ('+c.label+')'}}
+        }
+      }
+    });
+
+    // Custom legend
+    const colors=['#6366f1','#f59e0b','#ef4444'];
+    const labels=['Students (45%)','Faculty (25%)','University (30%)'];
+    const vals=[totals.student_total,totals.faculty_total,totals.university_total];
+    document.getElementById('revLegend').innerHTML=labels.map((l,i)=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:12px;height:12px;border-radius:3px;background:${colors[i]}"></div>
+          <span style="font-size:13px;color:#374151">${l}</span>
+        </div>
+        <b style="font-size:13px;color:${colors[i]}">₹${(vals[i]||0).toLocaleString('en-IN')}</b>
+      </div>`).join('');
+
+    // Bar Chart (Monthly)
+    const barCtx = document.getElementById('revBarChart').getContext('2d');
+    if(revBarChartInst) revBarChartInst.destroy();
+    const mLabels = monthly.length ? monthly.map(m=>m.month) : ['Koi Data Nahi'];
+    revBarChartInst = new Chart(barCtx,{
+      type:'bar',
+      data:{
+        labels: mLabels,
+        datasets:[
+          {label:'Total Budget ₹', data: monthly.map(m=>m.total_budget||0), backgroundColor:'rgba(99,102,241,0.7)', borderRadius:6, borderSkipped:false},
+          {label:'Students (45%) ₹', data: monthly.map(m=>m.total_student||0), backgroundColor:'rgba(34,197,94,0.7)', borderRadius:6, borderSkipped:false},
+          {label:'Faculty (25%) ₹', data: monthly.map(m=>m.total_faculty||0), backgroundColor:'rgba(245,158,11,0.7)', borderRadius:6, borderSkipped:false},
+          {label:'University (30%) ₹', data: monthly.map(m=>m.total_university||0), backgroundColor:'rgba(239,68,68,0.7)', borderRadius:6, borderSkipped:false},
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{display:true,position:'top'}, tooltip:{callbacks:{label:c=>'₹'+c.raw.toLocaleString('en-IN')}}},
+        scales:{y:{beginAtZero:true, ticks:{callback:v=>'₹'+v.toLocaleString('en-IN')}}}
+      }
+    });
+
+    // Students table
+    const stuBox = document.getElementById('revStudentTable');
+    if(!students.length){
+      stuBox.innerHTML='<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Koi data nahi</p>';
+    } else {
+      stuBox.innerHTML=`<table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="background:#f8fafc;padding:10px 12px;font-size:12px;text-align:left;color:var(--muted)">#</th>
+          <th style="background:#f8fafc;padding:10px 12px;font-size:12px;text-align:left;color:var(--muted)">Student</th>
+          <th style="background:#f8fafc;padding:10px 12px;font-size:12px;text-align:left;color:var(--muted)">Projects</th>
+          <th style="background:#f8fafc;padding:10px 12px;font-size:12px;text-align:left;color:var(--muted)">Earned (45%)</th>
+        </tr></thead>
+        <tbody>${students.map((s,i)=>`<tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:10px 12px;font-size:13px;color:var(--muted)">${i+1}</td>
+          <td style="padding:10px 12px;font-size:13px"><b>${s.username||s.user_email}</b><br><span style="color:var(--muted);font-size:11px">${s.user_email}</span></td>
+          <td style="padding:10px 12px;font-size:13px">${s.projects}</td>
+          <td style="padding:10px 12px;font-size:13px;color:#6366f1;font-weight:800">₹${(s.earned||0).toLocaleString('en-IN')}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+    }
+
+    // Faculty table
+    const facBox = document.getElementById('revFacultyTable');
+    if(!faculty.length){
+      facBox.innerHTML='<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Koi data nahi</p>';
+    } else {
+      facBox.innerHTML=`<table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="background:#f8fafc;padding:10px 12px;font-size:12px;text-align:left;color:var(--muted)">#</th>
+          <th style="background:#f8fafc;padding:10px 12px;font-size:12px;text-align:left;color:var(--muted)">Faculty</th>
+          <th style="background:#f8fafc;padding:10px 12px;font-size:12px;text-align:left;color:var(--muted)">Projects</th>
+          <th style="background:#f8fafc;padding:10px 12px;font-size:12px;text-align:left;color:var(--muted)">Earned (25%)</th>
+        </tr></thead>
+        <tbody>${faculty.map((f,i)=>`<tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:10px 12px;font-size:13px;color:var(--muted)">${i+1}</td>
+          <td style="padding:10px 12px;font-size:13px"><b>${f.username||f.user_email}</b><br><span style="color:var(--muted);font-size:11px">${f.user_email}</span></td>
+          <td style="padding:10px 12px;font-size:13px">${f.projects}</td>
+          <td style="padding:10px 12px;font-size:13px;color:#f59e0b;font-weight:800">₹${(f.earned||0).toLocaleString('en-IN')}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+    }
+
+    // Monthly table
+    const monBox = document.getElementById('revMonthTable');
+    if(!monthly.length){
+      monBox.innerHTML='<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Abhi koi completed project nahi hai. Jab student ka project complete hoga tab yahan data aayega.</p>';
+    } else {
+      monBox.innerHTML=`<div style="overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:600px">
+        <thead><tr>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;text-align:left">Month</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;text-align:left">Projects</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;text-align:left">Total Budget</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;text-align:left">Students (45%)</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;text-align:left">Faculty (25%)</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;text-align:left">University (30%)</th>
+        </tr></thead>
+        <tbody>${monthly.map(m=>`<tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:11px 16px;font-size:13px;font-weight:700">${m.month}</td>
+          <td style="padding:11px 16px;font-size:13px">${m.projects_count}</td>
+          <td style="padding:11px 16px;font-size:13px;font-weight:700">₹${(m.total_budget||0).toLocaleString('en-IN')}</td>
+          <td style="padding:11px 16px;font-size:13px;color:#6366f1;font-weight:700">₹${(m.total_student||0).toLocaleString('en-IN')}</td>
+          <td style="padding:11px 16px;font-size:13px;color:#f59e0b;font-weight:700">₹${(m.total_faculty||0).toLocaleString('en-IN')}</td>
+          <td style="padding:11px 16px;font-size:13px;color:#ef4444;font-weight:700">₹${(m.total_university||0).toLocaleString('en-IN')}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+    }
+  }catch(err){console.log('Revenue load error:',err);}
+}
+
+// Override showSection to load revenue when tab opens
+const _adminOrigShow = showSection;
+showSection = function(id,el){
+  _adminOrigShow(id,el);
+  if(id==='revenue') loadRevenue();
+};
+
+// ======= INIT =======
+window.onload=async function(){
+  await loadDashboard();
+  renderProblemsTable(allProblems);
+  renderProjectsTable(allProjects);
+  renderTeams(allProjects);
+  renderCertsTable(allCerts,allProjects);
+  await loadMessages();
+  renderUsersTable(allUsers);
+  await loadRevenue();
+};
+</script>
+</body>
+</html>

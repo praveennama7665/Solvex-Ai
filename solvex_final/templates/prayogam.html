@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Prayogam | Solvex-Ai</title>
+<link rel="icon" href="../Solvex-Ai-logo.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins;
+}
+
+body{
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#2563eb,#1e40af);
+color:white;
+text-align:center;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:650px;
+padding:40px;
+}
+
+/* TITLE */
+
+.container h1{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.container span{
+color:#ffd166;
+}
+
+/* TEXT */
+
+.container p{
+margin-top:10px;
+opacity:.9;
+font-size:17px;
+}
+
+/* COUNTDOWN */
+
+.countdown{
+display:flex;
+justify-content:center;
+gap:25px;
+margin:35px 0;
+}
+
+.box{
+background:white;
+color:#1e2d4d;
+padding:20px;
+border-radius:10px;
+min-width:80px;
+}
+
+.box h2{
+font-size:28px;
+}
+
+.box p{
+font-size:12px;
+}
+
+/* BUTTON */
+
+.btn{
+display:inline-block;
+margin-top:15px;
+padding:12px 22px;
+background:#ffd166;
+color:#1e2d4d;
+border-radius:30px;
+text-decoration:none;
+font-weight:600;
+transition:.3s;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* FLOATING ANIMATION */
+
+.circle{
+position:absolute;
+border-radius:50%;
+background:rgba(255,255,255,0.15);
+animation:float 6s infinite ease-in-out;
+}
+
+.circle1{
+width:120px;
+height:120px;
+top:10%;
+left:10%;
+}
+
+.circle2{
+width:80px;
+height:80px;
+bottom:15%;
+right:15%;
+animation-delay:2s;
+}
+
+@keyframes float{
+
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0);}
+
+}
+
+@media(max-width:600px){
+
+.container h1{
+font-size:32px;
+}
+
+.countdown{
+gap:10px;
+}
+
+.box{
+padding:15px;
+min-width:60px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+
+<div class="container">
+
+<h1>🚀 Prayogam <span>Coming Soon</span></h1>
+
+<p>
+The Prayogam innovation event page is currently under development.
+We are preparing something exciting for you.
+</p>
+
+<p>
+Stay tuned — it will be launched very soon on the Solvex-Ai platform.
+</p>
+
+<div class="countdown">
+
+<div class="box">
+<h2 id="days">10</h2>
+<p>Days</p>
+</div>
+
+<div class="box">
+<h2 id="hours">12</h2>
+<p>Hours</p>
+</div>
+
+<div class="box">
+<h2 id="minutes">30</h2>
+<p>Minutes</p>
+</div>
+
+<div class="box">
+<h2 id="seconds">10</h2>
+<p>Seconds</p>
+</div>
+
+</div>
+
+<a href="index.html" class="btn">⬅ Back to Home</a>
+
+</div>
+
+<script>
+
+/* COUNTDOWN */
+
+let launchDate = new Date();
+
+launchDate.setFullYear(launchDate.getFullYear()+1);
+
+function updateCountdown(){
+
+let now = new Date().getTime();
+let distance = launchDate - now;
+
+let days = Math.floor(distance/(1000*60*60*24));
+let hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+let minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+let seconds = Math.floor((distance%(1000*60))/1000);
+
+document.getElementById("days").innerText = days;
+document.getElementById("hours").innerText = hours;
+document.getElementById("minutes").innerText = minutes;
+document.getElementById("seconds").innerText = seconds;
+
+}
+
+setInterval(updateCountdown,1000);
+
+</script>
+
+</body>
+</html>

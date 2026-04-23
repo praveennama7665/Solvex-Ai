@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | Solvex-AI</title>
+<link rel="icon" href="../Solvex-Ai-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ══ ROOT ══ */
+:root{
+  --navy:#1e3a8a;
+  --navy-dark:#1e2d4d;
+  --blue:#2563eb;
+  --blue-light:#3b82f6;
+  --sky:#0ea5e9;
+  --amber:#f59e0b;
+  --amber-dark:#d97706;
+  --rose:#f43f5e;
+  --green:#10b981;
+  --bg:#f8faff;
+  --bg2:#f1f5ff;
+  --white:#ffffff;
+  --text:#0f172a;
+  --text2:#334155;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --border2:#dbeafe;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;font-family:inherit;}
+img{max-width:100%;}
+
+/* ══ HEADER ══ */
+header{
+  position:sticky;top:0;z-index:999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 8%;height:72px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 12px rgba(37,99,235,.07);
+}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+.logo img{width:34px;border-radius:8px;}
+.logo .l1{color:var(--blue);}
+.logo .l2{color:var(--navy-dark);}
+nav{display:flex;align-items:center;gap:4px;}
+.nav-link{
+  padding:8px 16px;border-radius:8px;
+  font-size:14px;font-weight:500;color:var(--text2);
+  transition:all .2s;
+}
+.nav-link:hover{color:var(--blue);background:rgba(37,99,235,.06);}
+.nav-link.active{color:var(--blue);font-weight:600;}
+.nav-cta{
+  margin-left:8px;padding:9px 22px;
+  background:linear-gradient(135deg,var(--navy-dark),var(--blue));
+  color:white;border-radius:10px;font-size:14px;font-weight:600;
+  box-shadow:0 4px 14px rgba(30,45,77,.25);
+  transition:all .25s;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(30,45,77,.3);}
+.hamburger{display:none;flex-direction:column;gap:5px;width:32px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;height:2px;border-radius:2px;background:var(--text);transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-nav{
+  display:none;position:fixed;
+  top:72px;left:0;right:0;
+  background:rgba(255,255,255,.98);
+  border-bottom:1px solid var(--border);
+  padding:16px 8%;flex-direction:column;gap:4px;
+  z-index:998;animation:slideDown .3s ease;
+}
+.mobile-nav.show{display:flex;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══ HERO ══ */
+.hero{
+  position:relative;
+  padding:90px 8% 80px;
+  background:linear-gradient(135deg,#f0f7ff 0%,#e8f0fe 40%,#fef3e2 100%);
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;right:-100px;top:-100px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.08),transparent 70%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;left:-80px;bottom:-80px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,158,11,.07),transparent 70%);
+  pointer-events:none;
+}
+.hero-inner{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2);
+  border-radius:50px;padding:6px 18px;
+  font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--blue);margin-bottom:22px;
+}
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(32px,4.5vw,54px);font-weight:800;
+  line-height:1.15;margin-bottom:20px;color:var(--navy-dark);
+}
+.hero h1 .highlight{
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero p{font-size:17px;color:var(--muted);line-height:1.75;margin-bottom:32px;max-width:480px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-primary{
+  padding:13px 28px;background:linear-gradient(135deg,var(--navy-dark),var(--blue));
+  color:white;border-radius:12px;font-size:14px;font-weight:700;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 6px 18px rgba(30,45,77,.25);
+  transition:all .3s;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(30,45,77,.3);}
+.btn-outline{
+  padding:13px 28px;border:2px solid var(--border2);
+  background:white;color:var(--blue);border-radius:12px;
+  font-size:14px;font-weight:700;
+  display:flex;align-items:center;gap:8px;
+  transition:all .3s;
+}
+.btn-outline:hover{border-color:var(--blue);background:rgba(37,99,235,.04);transform:translateY(-3px);}
+
+/* hero visual */
+.hero-visual{position:relative;}
+.hero-card-main{
+  background:white;border-radius:24px;padding:32px;
+  box-shadow:0 20px 60px rgba(30,45,77,.12);
+  border:1px solid var(--border2);
+}
+.hero-card-main h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;}
+.hero-card-main p{font-size:13px;color:var(--muted);}
+.hc-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;color:white;margin-bottom:16px;
+  box-shadow:0 6px 16px rgba(37,99,235,.3);
+}
+.hero-badge{
+  position:absolute;top:-16px;right:-16px;
+  background:linear-gradient(135deg,var(--amber),#f97316);
+  border-radius:16px;padding:12px 18px;
+  color:white;font-size:12px;font-weight:700;
+  box-shadow:0 8px 20px rgba(245,158,11,.35);
+}
+.hero-badge-2{
+  position:absolute;bottom:-16px;left:-20px;
+  background:white;border:1px solid var(--border);
+  border-radius:14px;padding:12px 18px;
+  font-size:12px;font-weight:600;color:var(--text2);
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+  display:flex;align-items:center;gap:8px;
+}
+.hero-badge-2 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse2 2s infinite;}
+@keyframes pulse2{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* ══ STATS ══ */
+.stats-section{
+  padding:0 8%;
+  margin-top:-40px;position:relative;z-index:2;
+}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:white;border-radius:20px;overflow:hidden;
+  box-shadow:0 8px 32px rgba(30,45,77,.1);
+  border:1px solid var(--border);
+}
+.stat-box{
+  padding:32px 24px;text-align:center;
+  border-right:1px solid var(--border);
+  transition:background .25s;
+}
+.stat-box:last-child{border-right:none;}
+.stat-box:hover{background:var(--bg2);}
+.stat-num{
+  font-family:'Syne',sans-serif;font-size:36px;font-weight:800;
+  background:linear-gradient(135deg,var(--navy-dark),var(--blue));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.stat-lbl{font-size:13px;color:var(--muted);margin-top:5px;font-weight:500;}
+
+/* ══ SECTIONS SHARED ══ */
+.section{padding:90px 8%;}
+.sec-header{text-align:center;margin-bottom:56px;}
+.sec-tag{
+  display:inline-block;
+  background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);
+  border-radius:50px;padding:5px 18px;
+  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--blue);margin-bottom:14px;
+}
+.sec-header h2{
+  font-family:'Syne',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;
+  color:var(--navy-dark);margin-bottom:12px;
+}
+.sec-header p{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto;line-height:1.7;}
+
+/* ══ WHAT IS ══ */
+.what-section{background:white;padding:90px 8%;}
+.what-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;
+}
+.what-left p{
+  font-size:16px;color:var(--text2);line-height:1.8;margin-bottom:18px;
+}
+.what-left p span{color:var(--blue);font-weight:600;}
+.what-features{display:flex;flex-direction:column;gap:14px;margin-top:28px;}
+.wf-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:16px 20px;background:var(--bg2);border-radius:12px;
+  border:1px solid var(--border2);transition:all .25s;
+}
+.wf-item:hover{background:white;box-shadow:0 6px 20px rgba(37,99,235,.08);transform:translateX(6px);}
+.wf-icon{
+  width:40px;height:40px;flex-shrink:0;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+}
+.wf-text h4{font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:3px;}
+.wf-text p{font-size:12.5px;color:var(--muted);}
+
+/* right side illustration boxes */
+.what-right{display:flex;flex-direction:column;gap:16px;}
+.wr-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:16px;padding:22px 24px;
+  display:flex;align-items:center;gap:18px;
+  transition:all .3s;
+}
+.wr-card:hover{background:white;box-shadow:0 8px 24px rgba(30,45,77,.08);transform:translateY(-3px);}
+.wr-icon{
+  width:52px;height:52px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+.wr-card h4{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;}
+.wr-card p{font-size:13px;color:var(--muted);}
+
+/* ══ HOW IT WORKS ══ */
+.how-section{background:var(--bg);}
+.steps-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:0;position:relative;
+}
+.steps-grid::after{
+  content:'';position:absolute;
+  top:50px;left:10%;right:10%;height:2px;
+  background:linear-gradient(90deg,var(--border2),var(--blue-light),var(--border2));
+  z-index:0;
+}
+.step-card{
+  background:white;border:1px solid var(--border);
+  border-radius:20px;padding:32px 24px;text-align:center;
+  position:relative;z-index:1;margin:0 8px;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 2px 12px rgba(0,0,0,.04);
+}
+.step-card:hover{transform:translateY(-10px);box-shadow:0 20px 40px rgba(30,45,77,.12);}
+.step-num{
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--navy-dark),var(--blue));
+  color:white;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;
+  box-shadow:0 6px 18px rgba(37,99,235,.3);
+  transition:transform .3s;
+}
+.step-card:hover .step-num{transform:scale(1.1) rotate(5deg);}
+.step-card h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;}
+.step-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* ══ FOUNDER ══ */
+.founder-section{background:white;padding:90px 8%;}
+.founder-inner{
+  display:grid;grid-template-columns:auto 1fr;gap:60px;align-items:center;
+  max-width:900px;margin:0 auto;
+}
+.founder-photo{
+  position:relative;flex-shrink:0;
+}
+.founder-img-wrap{
+  width:220px;height:260px;border-radius:24px;overflow:hidden;
+  box-shadow:0 20px 50px rgba(30,45,77,.18);
+  border:3px solid var(--border2);
+  background:linear-gradient(135deg,#dbeafe,#eff6ff);
+  display:flex;align-items:center;justify-content:center;
+}
+.founder-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.founder-placeholder{font-family:'Syne',sans-serif;font-size:72px;font-weight:800;color:var(--blue);opacity:.3;}
+.founder-badge-float{
+  position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--amber),#f97316);
+  color:white;border-radius:50px;padding:8px 20px;
+  font-size:12px;font-weight:700;white-space:nowrap;
+  box-shadow:0 6px 16px rgba(245,158,11,.35);
+}
+.founder-info .f-tag{
+  display:inline-block;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);
+  border-radius:50px;padding:5px 16px;font-size:11px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:14px;
+}
+.founder-info h2{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:var(--navy-dark);margin-bottom:6px;}
+.founder-info .f-role{font-size:15px;color:var(--blue);font-weight:600;margin-bottom:18px;}
+.founder-info p{font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:20px;}
+.founder-chips{display:flex;gap:10px;flex-wrap:wrap;}
+.f-chip{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:50px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--blue);
+}
+
+/* ══ TESTIMONIALS ══ */
+.test-section{background:var(--bg);padding:90px 8%;}
+.test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.test-card{
+  background:white;border:1px solid var(--border);border-radius:20px;
+  padding:30px;position:relative;overflow:hidden;
+  transition:all .35s;
+  box-shadow:0 2px 12px rgba(0,0,0,.04);
+}
+.test-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),var(--sky));
+  transform:scaleX(0);transform-origin:left;transition:transform .35s;
+}
+.test-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(30,45,77,.1);}
+.test-card:hover::before{transform:scaleX(1);}
+.test-quote{
+  font-size:36px;color:var(--blue);opacity:.25;
+  font-family:'Syne',sans-serif;line-height:1;margin-bottom:12px;
+}
+.test-card p{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:20px;font-style:italic;}
+.test-author{display:flex;align-items:center;gap:12px;}
+.test-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--navy-dark),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;color:white;flex-shrink:0;
+}
+.test-name{font-size:13px;font-weight:700;color:var(--navy-dark);}
+.test-role{font-size:11.5px;color:var(--muted);}
+.stars{color:var(--amber);font-size:12px;margin-bottom:10px;}
+
+/* ══ TIMELINE ══ */
+.timeline-section{background:white;padding:90px 8%;}
+.timeline{position:relative;max-width:760px;margin:0 auto;}
+.timeline::before{
+  content:'';position:absolute;left:50%;transform:translateX(-50%);
+  top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--border2),var(--blue),var(--border2));
+}
+.tl-item{
+  display:grid;grid-template-columns:1fr 40px 1fr;
+  gap:0;margin-bottom:40px;align-items:center;
+}
+.tl-left{padding-right:32px;text-align:right;}
+.tl-right{padding-left:32px;}
+.tl-item:nth-child(even) .tl-left{order:3;padding-right:0;padding-left:32px;text-align:left;}
+.tl-item:nth-child(even) .tl-dot{order:2;}
+.tl-item:nth-child(even) .tl-right{order:1;padding-left:0;padding-right:32px;text-align:right;}
+.tl-dot{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--navy-dark),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-size:14px;
+  box-shadow:0 4px 14px rgba(37,99,235,.35);
+  z-index:1;position:relative;flex-shrink:0;
+  transition:transform .3s;
+}
+.tl-item:hover .tl-dot{transform:scale(1.2);}
+.tl-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:14px;padding:20px 22px;
+  transition:all .3s;
+}
+.tl-item:hover .tl-card{background:white;box-shadow:0 8px 24px rgba(30,45,77,.08);}
+.tl-year{
+  font-size:11px;font-weight:700;color:var(--blue);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;
+}
+.tl-card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--navy-dark);margin-bottom:5px;}
+.tl-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+.tl-empty{/* empty side */}
+
+/* ══ CTA SECTION ══ */
+.cta-section{
+  padding:90px 8%;
+  background:linear-gradient(135deg,var(--navy-dark) 0%,#1d4ed8 50%,var(--sky) 100%);
+  text-align:center;position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;right:-100px;top:-100px;
+  width:400px;height:400px;border-radius:50%;
+  background:rgba(255,255,255,.05);pointer-events:none;
+}
+.cta-section h2{
+  font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,46px);
+  font-weight:800;color:white;margin-bottom:16px;
+}
+.cta-section p{font-size:17px;color:rgba(255,255,255,.8);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.cta-btn-white{
+  padding:14px 32px;background:white;color:var(--navy-dark);
+  border-radius:12px;font-size:15px;font-weight:700;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+  transition:all .3s;display:flex;align-items:center;gap:8px;
+}
+.cta-btn-white:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(0,0,0,.25);}
+.cta-btn-outline{
+  padding:14px 32px;border:2px solid rgba(255,255,255,.5);
+  color:white;border-radius:12px;font-size:15px;font-weight:700;
+  transition:all .3s;display:flex;align-items:center;gap:8px;
+}
+.cta-btn-outline:hover{background:rgba(255,255,255,.1);border-color:white;transform:translateY(-3px);}
+
+/* ══ FOOTER ══ */
+footer{background:var(--navy-dark);color:white;padding:64px 8% 0;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
+.footer-col h3{
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--amber);margin-bottom:18px;
+}
+.footer-brand{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:18px;font-weight:800;
+  margin-bottom:14px;
+}
+.footer-brand img{width:28px;border-radius:6px;}
+.footer-col p{font-size:13.5px;color:rgba(255,255,255,.55);line-height:1.7;}
+.footer-col a{
+  display:block;font-size:13.5px;color:rgba(255,255,255,.55);
+  margin-bottom:10px;transition:all .2s;
+}
+.footer-col a:hover{color:white;padding-left:5px;}
+.footer-social{display:flex;gap:10px;margin-top:18px;}
+.fsoc{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:rgba(255,255,255,.6);transition:all .25s;
+}
+.fsoc:hover{background:rgba(255,255,255,.15);color:white;transform:translateY(-3px);}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);padding:20px 0;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.footer-bottom p{font-size:13px;color:rgba(255,255,255,.35);}
+.fb-links{display:flex;gap:20px;}
+.fb-links a{font-size:13px;color:rgba(255,255,255,.35);transition:color .2s;}
+.fb-links a:hover{color:white;}
+
+/* ══ REVEAL ANIMATION ══ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1024px){
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .stat-box{border-bottom:1px solid var(--border);}
+  .stats-grid .stat-box:nth-child(3),.stats-grid .stat-box:nth-child(4){border-bottom:none;}
+}
+@media(max-width:768px){
+  header{padding:0 5%;}
+  nav{display:none;}
+  .hamburger{display:flex;}
+  .hero{padding:60px 5% 60px;}
+  .hero-inner{grid-template-columns:1fr;gap:40px;text-align:center;}
+  .hero p{max-width:100%;}
+  .hero-btns{justify-content:center;}
+  .hero-visual{display:none;}
+  .stats-section{padding:0 5%;margin-top:-30px;}
+  .stats-grid{grid-template-columns:1fr 1fr;border-radius:16px;}
+  .section,.what-section,.founder-section,.test-section,.timeline-section,.how-section{padding:70px 5%;}
+  .what-inner{grid-template-columns:1fr;gap:40px;}
+  .founder-inner{grid-template-columns:1fr;text-align:center;}
+  .founder-photo{margin:0 auto;}
+  .founder-chips{justify-content:center;}
+  .timeline::before{left:20px;}
+  .tl-item{grid-template-columns:32px 1fr;gap:16px;}
+  .tl-item .tl-left,.tl-item:nth-child(even) .tl-left{display:none;}
+  .tl-item .tl-right,.tl-item:nth-child(even) .tl-right{order:1;padding:0;text-align:left;}
+  .tl-item .tl-dot,.tl-item:nth-child(even) .tl-dot{order:0;width:32px;height:32px;font-size:12px;}
+  .tl-dot{margin-top:4px;}
+  .steps-grid::after{display:none;}
+  .step-card{margin:0;}
+  footer{padding:50px 5% 0;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .cta-section{padding:70px 5%;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+  .fb-links{justify-content:center;}
+}
+@media(max-width:520px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .founder-img-wrap{width:180px;height:220px;}
+  .hero h1{font-size:30px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <img src="../Solvex-Ai-logo.png" alt="Logo">
+    <span class="l1">Solvex-</span>
+    <span class="l2">Ai</span>
+  </div>
+  <nav id="desktopNav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="project.html" class="nav-link">Projects</a>
+    <a href="about.html" class="nav-link active">About</a>
+    <a href="team.html" class="nav-link">Team</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+    <a href="signin.html" class="nav-cta">Login</a>
+  </nav>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="project.html" class="nav-link">Projects</a>
+  <a href="about.html" class="nav-link active">About</a>
+  <a href="team.html" class="nav-link">Team</a>
+  <a href="contact.html" class="nav-link">Contact</a>
+  <a href="signin.html" class="nav-cta" style="text-align:center;margin-top:8px;">Login</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag reveal"><i class="fa-solid fa-circle-info"></i> About Us</div>
+      <h1 class="reveal">Bridging Industry &amp;<br><span class="highlight">Student Innovation</span></h1>
+      <p class="reveal">Solvex-AI connects real-world industry challenges with the creativity and technical power of university students — creating solutions that actually matter.</p>
+      <div class="hero-btns reveal">
+        <a href="team.html" class="btn-primary"><i class="fa-solid fa-users"></i> Meet the Team</a>
+        <a href="project.html" class="btn-outline"><i class="fa-solid fa-folder-open"></i> View Projects</a>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      <div style="position:relative;padding:20px 20px 30px;">
+        <div class="hero-card-main">
+          <div class="hc-icon"><i class="fa-solid fa-rocket"></i></div>
+          <h3>Real Problems. Real Solutions.</h3>
+          <p>Students work on verified industry challenges and earn certificates.</p>
+          <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;">
+            <span style="background:#eff6ff;border:1px solid #dbeafe;border-radius:50px;padding:4px 14px;font-size:11.5px;font-weight:600;color:var(--blue)">Industry Verified</span>
+            <span style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50px;padding:4px 14px;font-size:11.5px;font-weight:600;color:#065f46">Faculty Supervised</span>
+          </div>
+        </div>
+        <div class="hero-badge">🏆 200+ Problems Solved</div>
+        <div class="hero-badge-2"><div class="dot"></div> Platform Live</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats-grid reveal">
+    <div class="stat-box">
+      <div class="stat-num" data-target="120">0</div>
+      <div class="stat-lbl">Projects Submitted</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" data-target="45">0</div>
+      <div class="stat-lbl">Industry Problems</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" data-target="300">0</div>
+      <div class="stat-lbl">Student Contributors</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" data-target="95">0</div>
+      <div class="stat-lbl">Solutions Delivered</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT IS SOLVEX-AI -->
+<section class="what-section">
+  <div class="what-inner">
+    <div class="what-left reveal">
+      <div class="sec-tag">Our Mission</div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--navy-dark);margin-bottom:18px;">What is <span style="color:var(--blue)">Solvex-AI?</span></h2>
+      <p>Solvex-AI is a <span>Real-World Problem Solver Platform</span> that bridges the gap between industries and university students. Industries face real challenges — students have creativity and innovation power.</p>
+      <p>We bring them together so students can <span>work on real problems</span>, gain professional experience, and deliver impactful solutions while earning verified certificates.</p>
+      <div class="what-features">
+        <div class="wf-item">
+          <div class="wf-icon" style="background:#eff6ff;color:var(--blue)"><i class="fa-solid fa-building"></i></div>
+          <div class="wf-text"><h4>Industry-Posted Problems</h4><p>Real companies post their challenges on our platform for students to solve.</p></div>
+        </div>
+        <div class="wf-item">
+          <div class="wf-icon" style="background:#f0fdf4;color:#059669"><i class="fa-solid fa-chalkboard-teacher"></i></div>
+          <div class="wf-text"><h4>Faculty Supervision</h4><p>Every problem is reviewed and approved by qualified faculty before assignment.</p></div>
+        </div>
+        <div class="wf-item">
+          <div class="wf-icon" style="background:#fef9c3;color:#a16207"><i class="fa-solid fa-certificate"></i></div>
+          <div class="wf-text"><h4>Verified Certificates</h4><p>Students earn industry-recognized certificates on project completion.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="what-right reveal">
+      <div class="wr-card">
+        <div class="wr-icon" style="background:#eff6ff;color:var(--blue)"><i class="fa-solid fa-lightbulb"></i></div>
+        <div><h4>Problem Discovery</h4><p>Browse approved real-world industry problems and choose what excites you.</p></div>
+      </div>
+      <div class="wr-card">
+        <div class="wr-icon" style="background:#fef3c7;color:#d97706"><i class="fa-solid fa-people-group"></i></div>
+        <div><h4>Team Building</h4><p>Form teams with classmates, assign roles, and collaborate on solutions.</p></div>
+      </div>
+      <div class="wr-card">
+        <div class="wr-icon" style="background:#f0fdf4;color:#059669"><i class="fa-solid fa-code"></i></div>
+        <div><h4>Build & Submit</h4><p>Develop your solution, upload progress, and submit to faculty for review.</p></div>
+      </div>
+      <div class="wr-card">
+        <div class="wr-icon" style="background:#fdf2f8;color:#9d174d"><i class="fa-solid fa-award"></i></div>
+        <div><h4>Get Certified</h4><p>Receive your digital certificate and industry recognition upon completion.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section section">
+  <div class="sec-header reveal">
+    <div class="sec-tag">Process</div>
+    <h2>How It Works</h2>
+    <p>A simple 4-step journey from problem to certified solution</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card reveal" style="transition-delay:.0s">
+      <div class="step-num">1</div>
+      <h3>Industry Posts Problem</h3>
+      <p>Companies submit real challenges they need solved — from software to automation.</p>
+    </div>
+    <div class="step-card reveal" style="transition-delay:.1s">
+      <div class="step-num">2</div>
+      <h3>Faculty Approves</h3>
+      <p>Faculty reviews and approves problems to ensure they are appropriate and achievable.</p>
+    </div>
+    <div class="step-card reveal" style="transition-delay:.2s">
+      <div class="step-num">3</div>
+      <h3>Students Build</h3>
+      <p>Students form teams, accept problems, and build their solutions with faculty guidance.</p>
+    </div>
+    <div class="step-card reveal" style="transition-delay:.3s">
+      <div class="step-num">4</div>
+      <h3>Certificate Earned</h3>
+      <p>Completed solutions are verified and students receive industry-recognized certificates.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM GOALS (founder section hatakar yeh daala) -->
+<section class="founder-section">
+  <div class="sec-header reveal">
+    <div class="sec-tag">Our Vision</div>
+    <h2>Platform Goals & Mission</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:16px;">
+    <div class="reveal" style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:20px;padding:28px;border:1px solid #bfdbfe;transition-delay:.0s">
+      <div style="width:50px;height:50px;background:#2563eb;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;">🎓</div>
+      <h3 style="font-size:17px;font-weight:800;color:#1e3a8a;margin-bottom:8px;">Student Empowerment</h3>
+      <p style="font-size:14px;color:#334155;line-height:1.7;">Students ko real industry problems solve karne ka mauka milna chahiye — sirf theory nahi, practical experience bhi. Solvex-AI yahi deta hai.</p>
+    </div>
+    <div class="reveal" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:20px;padding:28px;border:1px solid #bbf7d0;transition-delay:.1s">
+      <div style="width:50px;height:50px;background:#10b981;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;">🤝</div>
+      <h3 style="font-size:17px;font-weight:800;color:#064e3b;margin-bottom:8px;">Industry-Academia Bridge</h3>
+      <p style="font-size:14px;color:#334155;line-height:1.7;">Companies ko talented students se connect karna aur university talent ko industry-ready banana — yeh hamare platform ki core mission hai.</p>
+    </div>
+    <div class="reveal" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-radius:20px;padding:28px;border:1px solid #fde68a;transition-delay:.2s">
+      <div style="width:50px;height:50px;background:#f59e0b;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;">🏆</div>
+      <h3 style="font-size:17px;font-weight:800;color:#78350f;margin-bottom:8px;">Verified Achievements</h3>
+      <p style="font-size:14px;color:#334155;line-height:1.7;">Har approved project ke baad students ko official Poornima University certificate milta hai — jo unke career mein value add karta hai.</p>
+    </div>
+    <div class="reveal" style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-radius:20px;padding:28px;border:1px solid #ddd6fe;transition-delay:.3s">
+      <div style="width:50px;height:50px;background:#8b5cf6;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;">🚀</div>
+      <h3 style="font-size:17px;font-weight:800;color:#4c1d95;margin-bottom:8px;">Innovation Culture</h3>
+      <p style="font-size:14px;color:#334155;line-height:1.7;">Research, creativity aur teamwork ko encourage karna — Solvex-AI ek aise ecosystem ki shuruaat hai jahan ideas reality bante hain.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="test-section">
+  <div class="sec-header reveal">
+    <div class="sec-tag">Social Proof</div>
+    <h2>What Industry Says</h2>
+    <p>Feedback from the companies and mentors who have used Solvex-AI</p>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal" style="transition-delay:.0s">
+      <div class="stars">★★★★★</div>
+      <div class="test-quote">"</div>
+      <p>The students delivered a smart inventory automation solution that we actually deployed in production. Incredibly impressed by the quality.</p>
+      <div class="test-author">
+        <div class="test-avatar">A</div>
+        <div><div class="test-name">Amit Sharma</div><div class="test-role">CTO, ABC Logistics</div></div>
+      </div>
+    </div>
+    <div class="test-card reveal" style="transition-delay:.1s">
+      <div class="stars">★★★★★</div>
+      <div class="test-quote">"</div>
+      <p>Solvex-AI perfectly connects industry needs with student creativity. The faculty supervision ensures every solution is practical and well-documented.</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:linear-gradient(135deg,#059669,#10b981)">R</div>
+        <div><div class="test-name">Riya Mehta</div><div class="test-role">Product Manager, TechStart</div></div>
+      </div>
+    </div>
+    <div class="test-card reveal" style="transition-delay:.2s">
+      <div class="stars">★★★★★</div>
+      <div class="test-quote">"</div>
+      <p>This platform helps companies discover innovative ideas they would never think of internally. The student perspective brings fresh thinking.</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:linear-gradient(135deg,#d97706,#f59e0b)">S</div>
+        <div><div class="test-name">Suresh Patel</div><div class="test-role">Director, City Hospital</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+  <div class="sec-header reveal">
+    <div class="sec-tag">Our Journey</div>
+    <h2>Innovation Timeline</h2>
+    <p>From a single idea to a platform changing how students learn</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-left">
+        <div class="tl-card">
+          <div class="tl-year">2024 — Q1</div>
+          <h3>The Idea</h3>
+          <p>Concept of connecting industry and students born at Poornima University.</p>
+        </div>
+      </div>
+      <div class="tl-dot"><i class="fa-solid fa-lightbulb"></i></div>
+      <div class="tl-right tl-empty"></div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-left tl-empty"></div>
+      <div class="tl-dot"><i class="fa-solid fa-code"></i></div>
+      <div class="tl-right">
+        <div class="tl-card">
+          <div class="tl-year">2024 — Q3</div>
+          <h3>Platform Development</h3>
+          <p>Building the Solvex-AI web platform with full-stack architecture.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-left">
+        <div class="tl-card">
+          <div class="tl-year">2025 — Q1</div>
+          <h3>Student Collaboration</h3>
+          <p>Students forming teams, accepting problems, and submitting solutions.</p>
+        </div>
+      </div>
+      <div class="tl-dot"><i class="fa-solid fa-people-group"></i></div>
+      <div class="tl-right tl-empty"></div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-left tl-empty"></div>
+      <div class="tl-dot"><i class="fa-solid fa-trophy"></i></div>
+      <div class="tl-right">
+        <div class="tl-card">
+          <div class="tl-year">2025 — Q3</div>
+          <h3>Industry Impact</h3>
+          <p>200+ problems solved. Real solutions deployed by companies.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-left">
+        <div class="tl-card">
+          <div class="tl-year">2026</div>
+          <h3>Scale & Grow</h3>
+          <p>Expanding to more universities and industries across India.</p>
+        </div>
+      </div>
+      <div class="tl-dot" style="background:linear-gradient(135deg,var(--amber),#f97316)"><i class="fa-solid fa-rocket"></i></div>
+      <div class="tl-right tl-empty"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="reveal">Ready to Solve Real Problems?</h2>
+  <p class="reveal">Join Solvex-AI today and turn your skills into real-world impact.</p>
+  <div class="cta-btns reveal">
+    <a href="signin.html" class="cta-btn-white"><i class="fa-solid fa-user-plus"></i> Get Started Free</a>
+    <a href="team.html" class="cta-btn-outline"><i class="fa-solid fa-users"></i> Meet the Team</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-brand">
+        <img src="Solvex-Ai-logo.png" alt="logo">
+        <span style="color:#38bdf8">Solvex</span><span>-AI</span>
+      </div>
+      <p>Innovation platform connecting industries and students to build real-world solutions at Poornima University.</p>
+      <div class="footer-social">
+        <a href="#" class="fsoc"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="fsoc"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="#" class="fsoc"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="#" class="fsoc"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <a href="index.html">Home</a>
+      <a href="project.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="team.html">Team</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h3>University</h3>
+      <a href="#">Poornima University</a>
+      <a href="#">Faculty of Engineering</a>
+      <a href="#">Innovation Cell</a>
+      <a href="#">Student Projects</a>
+    </div>
+    <div class="footer-col">
+      <h3>Contact</h3>
+      <a href="mailto:Solvex-Ai@poornima.edu.in"><i class="fa-solid fa-envelope" style="margin-right:6px;color:var(--amber)"></i>Email Us</a>
+      <a href="#"><i class="fa-solid fa-headset" style="margin-right:6px;color:var(--amber)"></i>Support</a>
+      <a href="#"><i class="fa-solid fa-circle-question" style="margin-right:6px;color:var(--amber)"></i>FAQ</a>
+      <a href="#"><i class="fa-solid fa-life-ring" style="margin-right:6px;color:var(--amber)"></i>Help Center</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Poornima University | Solvex-AI Platform</p>
+    <div class="fb-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Mobile menu ── */
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileNav').classList.toggle('show');
+}
+document.querySelectorAll('#mobileNav a').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileNav').classList.remove('show');
+  });
+});
+
+/* ── Scroll reveal ── */
+const revEls = document.querySelectorAll('.reveal');
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}
+  });
+},{threshold:0.1});
+revEls.forEach(el=>revObs.observe(el));
+
+/* ── Counter animation ── */
+function animCount(el, target, dur=1600){
+  let start=null;
+  const step=ts=>{
+    if(!start) start=ts;
+    const prog=Math.min((ts-start)/dur,1);
+    const ease=1-Math.pow(1-prog,3);
+    el.textContent=Math.round(ease*target)+(el.dataset.suffix||'');
+    if(prog<1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ── Live stats from API ── */
+async function loadStats(){
+  try{
+    const [projRes,probRes] = await Promise.all([
+      fetch('/get-projects'),
+      fetch('/get-pending-problems')
+    ]);
+    const projects  = await projRes.json();
+    const problems  = await probRes.json();
+    const pCount = Array.isArray(projects) ? projects.length : 0;
+    const prCount= Array.isArray(problems) ? problems.length : 0;
+
+    const targets = [pCount||120, prCount||45, (pCount*3)||300, pCount||95];
+    document.querySelectorAll('.stat-num').forEach((el,i)=>{
+      el.dataset.target = targets[i];
+    });
+  }catch(e){/* use default data-targets */}
+
+  /* animate counters when stats section enters viewport */
+  const statsGrid = document.querySelector('.stats-grid');
+  if(!statsGrid) return;
+  const statsObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        document.querySelectorAll('.stat-num').forEach(el=>{
+          animCount(el, parseInt(el.dataset.target)||parseInt(el.textContent)||100);
+        });
+        statsObs.disconnect();
+      }
+    });
+  },{threshold:0.4});
+  statsObs.observe(statsGrid);
+}
+
+window.onload = loadStats;
+</script>
+</body>
+</html>

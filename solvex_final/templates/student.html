@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | Solvex-AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="../Solvex-Ai-logo.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--primary:#6366f1;--primary-dark:#4338ca;--primary-light:#a5b4fc;--accent:#f43f5e;--accent2:#f59e0b;--success:#10b981;--bg:#f8fafc;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--sidebar:256px;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}button{cursor:pointer;border:none;font-family:inherit;}input,textarea,select{font-family:inherit;}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar);height:100vh;background:linear-gradient(180deg,#0f172a 0%,#1e1b4b 50%,#312e81 100%);display:flex;flex-direction:column;z-index:200;transition:transform .3s;overflow-y:auto;}
+.sidebar-brand{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px;}
+.brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:800;flex-shrink:0;}
+.brand-name{color:white;font-size:16px;font-weight:800;line-height:1.1;}
+.brand-name span{display:block;font-size:11px;font-weight:400;color:rgba(255,255,255,.45);}
+.student-badge{margin:14px;background:rgba(255,255,255,.08);border-radius:14px;padding:16px;text-align:center;}
+.stu-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;overflow:hidden;}
+.stu-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.stu-name{color:white;font-size:14px;font-weight:700;}
+.stu-email{color:rgba(255,255,255,.45);font-size:11px;margin-top:2px;}
+.sidebar-nav{padding:8px 12px;flex:1;}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.3);padding:12px 10px 6px;font-weight:700;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;color:rgba(255,255,255,.6);font-size:13.5px;font-weight:600;margin-bottom:2px;transition:all .2s;cursor:pointer;}
+.nav-item i{width:18px;text-align:center;font-size:14px;}
+.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.15);color:white;}
+.sidebar-footer{padding:14px 12px;border-top:1px solid rgba(255,255,255,.1);}
+.logout-btn{width:100%;padding:11px;background:var(--accent);color:white;border-radius:10px;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;}
+.logout-btn:hover{background:#e11d48;}
+.topbar{position:fixed;top:0;left:var(--sidebar);right:0;height:64px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:100;}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{display:none;background:none;font-size:20px;color:var(--primary);}
+.page-heading{font-size:18px;font-weight:800;color:var(--primary-dark);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.topbar-chip{background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:7px;}
+.icon-btn{width:38px;height:38px;background:var(--bg);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:15px;cursor:pointer;position:relative;}
+.icon-btn:hover{background:var(--primary);color:white;border-color:var(--primary);}
+.notif-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;position:absolute;top:5px;right:5px;border:2px solid white;}
+.content{margin-left:var(--sidebar);padding-top:64px;min-height:100vh;display:flex;flex-direction:column;}
+.page-body{padding:28px;flex:1;}
+.section{display:none;}.section.active{display:block;}
+.banner{background:linear-gradient(135deg,#312e81,var(--primary));border-radius:20px;padding:26px 30px;color:white;display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;position:relative;overflow:hidden;}
+.banner::after{content:'';position:absolute;right:80px;bottom:-50px;width:140px;height:140px;background:rgba(255,255,255,.05);border-radius:50%;}
+.banner-text h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.banner-text p{font-size:13.5px;opacity:.8;max-width:400px;}
+.banner-icon{font-size:50px;position:relative;z-index:1;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:16px;margin-bottom:26px;}
+.stat-card{background:white;border-radius:16px;padding:18px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:transform .2s;}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(99,102,241,.12);}
+.stat-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.ico-blue{background:#e0e7ff;color:var(--primary);}.ico-red{background:#fee2e2;color:var(--accent);}
+.ico-green{background:#d1fae5;color:var(--success);}.ico-yellow{background:#fef3c7;color:#b45309;}
+.stat-info h2{font-size:24px;font-weight:800;line-height:1;}
+.stat-info p{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px;}
+.sec-title{font-size:16px;font-weight:800;color:var(--primary-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-title i{color:var(--accent);font-size:15px;}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-blue{background:#e0e7ff;color:var(--primary);}.badge-green{background:#d1fae5;color:var(--success);}
+.badge-red{background:#fee2e2;color:var(--accent);}.badge-yellow{background:#fef3c7;color:#b45309;}
+.card{background:white;border-radius:16px;padding:20px;border:1px solid var(--border);margin-bottom:14px;transition:transform .2s;}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.06);}
+.card-title{font-size:15px;font-weight:700;margin-bottom:8px;}
+.card-meta{font-size:13px;color:var(--muted);margin-bottom:5px;}
+.card-meta b{color:var(--text);}
+.prob-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:28px;}
+.prob-card{background:white;border-radius:16px;padding:20px;border:1px solid var(--border);transition:transform .2s,box-shadow .2s;}
+.prob-card:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(99,102,241,.1);}
+.prob-card h3{font-size:14.5px;font-weight:700;margin-bottom:8px;}
+.prob-card p{font-size:12.5px;color:var(--muted);margin-bottom:4px;}
+.prob-card p b{color:var(--text);}
+.btn-primary{padding:10px 22px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:white;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 12px rgba(99,102,241,.3);transition:opacity .2s;}
+.btn-primary:hover{opacity:.9;}
+.btn-success{padding:9px 18px;background:var(--success);color:white;border-radius:9px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;}
+.btn-danger{padding:9px 18px;background:var(--accent);color:white;border-radius:9px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;}
+.btn-sm{padding:7px 14px;font-size:12px;}
+.form-card{background:white;border-radius:18px;padding:26px;border:1px solid var(--border);margin-bottom:24px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13.5px;background:var(--bg);}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--primary-light);background:white;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.prog-bar{height:9px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin:6px 0;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:10px;transition:width .4s;}
+.member-tag{background:#f1f5f9;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;margin:4px;}
+.member-tag i{color:var(--primary);}
+.member-tag .rm{color:var(--accent);cursor:pointer;margin-left:4px;}
+.req-card{background:white;border-radius:14px;padding:18px;border:1px solid var(--border);margin-bottom:12px;}
+/* Profile */
+.profile-banner{background:linear-gradient(135deg,var(--primary-dark),var(--primary));border-radius:20px;padding:26px;color:white;display:flex;align-items:center;gap:24px;margin-bottom:22px;}
+.profile-logo{width:80px;height:80px;border-radius:16px;border:3px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:30px;overflow:hidden;flex-shrink:0;}
+.profile-logo img{width:100%;height:100%;object-fit:cover;border-radius:13px;}
+.profile-info h2{font-size:20px;font-weight:800;margin-bottom:4px;}
+.profile-info p{font-size:13px;opacity:.8;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.info-box{background:white;border-radius:12px;padding:14px;border:1px solid var(--border);}
+.info-box label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);}
+.info-box p{font-size:13.5px;font-weight:600;margin-top:3px;}
+/* Notif */
+.notif-box{position:fixed;top:70px;right:20px;width:300px;background:white;border-radius:16px;border:1px solid var(--border);box-shadow:0 10px 40px rgba(0,0,0,.12);z-index:300;display:none;}
+.notif-box.show{display:block;}
+.notif-header{padding:14px 18px;border-bottom:1px solid var(--border);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:space-between;}
+.notif-item{padding:12px 18px;border-bottom:1px solid var(--border);font-size:13px;}
+.notif-item:last-child{border-bottom:none;}
+footer{background:linear-gradient(160deg,#1e1b4b,#0f0e2e);color:white;padding:38px 28px 18px;margin-top:auto;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:28px;margin-bottom:26px;}
+.footer-col h3{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--primary-light);margin-bottom:12px;}
+.footer-col a,.footer-col p{display:block;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px;}
+.footer-col a:hover{color:white;}
+.newsletter-input{width:100%;padding:10px 12px;border-radius:8px;border:none;margin-bottom:8px;background:rgba(255,255,255,.1);color:white;font-family:inherit;font-size:13px;}
+.newsletter-btn{width:100%;padding:10px;background:var(--accent);color:white;border-radius:8px;font-size:13px;font-weight:700;}
+.copyright{text-align:center;font-size:12px;color:rgba(255,255,255,.3);padding-top:18px;border-top:1px solid rgba(255,255,255,.07);}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:199;}
+@media(max-width:960px){.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}.overlay.show{display:block;}.content{margin-left:0;}.topbar{left:0;}.hamburger{display:flex;align-items:center;}.page-body{padding:18px;}.form-row{grid-template-columns:1fr;}.profile-banner{flex-direction:column;text-align:center;}.profile-grid{grid-template-columns:1fr;}}
+@media(max-width:520px){.stats-grid{grid-template-columns:1fr 1fr;}.prob-grid{grid-template-columns:1fr;}.topbar-chip{display:none;}}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="notif-box" id="notifBox">
+  <div class="notif-header">Notifications <span onclick="toggleNotif()" style="cursor:pointer;color:var(--muted)"><i class="fa-solid fa-xmark"></i></span></div>
+  <div id="notifList"><div class="notif-item">Koi notification nahi.</div></div>
+</div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">S</div>
+    <div class="brand-name">Solvex-AI <span>Student Portal</span></div>
+  </div>
+  <div class="student-badge">
+    <div class="stu-avatar" id="stuAvatar">S</div>
+    <div class="stu-name" id="stuName">Student</div>
+    <div class="stu-email" id="stuEmail">email@example.com</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Main</div>
+    <div class="nav-item active" onclick="showSection('dashboard',this)"><i class="fa-solid fa-house"></i> Dashboard</div>
+    <div class="nav-item" onclick="showSection('problems',this)"><i class="fa-solid fa-fire"></i> Available Problems</div>
+    <div class="nav-item" onclick="showSection('project',this)"><i class="fa-solid fa-folder-open"></i> My Project</div>
+    <div class="nav-label">Team</div>
+    <div class="nav-item" onclick="showSection('myTeam',this)"><i class="fa-solid fa-people-group"></i> My Team</div>
+    <div class="nav-item" onclick="showSection('requests',this)"><i class="fa-solid fa-bell"></i> Requests <span id="reqBadge" style="margin-left:auto;background:var(--accent);color:white;padding:2px 7px;border-radius:12px;font-size:10px;font-weight:700;display:none">0</span></div>
+    <div class="nav-label">Progress</div>
+    <div class="nav-item" onclick="showSection('submitted',this)"><i class="fa-solid fa-inbox"></i> Submitted</div>
+    <div class="nav-item" onclick="showSection('earnings',this)"><i class="fa-solid fa-indian-rupee-sign"></i> My Earnings</div>
+    <div class="nav-item" onclick="showSection('myProfile',this)"><i class="fa-solid fa-user"></i> My Profile</div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+  </div>
+</aside>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+    <span class="page-heading" id="pageHeading">Dashboard</span>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-chip"><i class="fa-solid fa-graduation-cap"></i><span id="topbarName">Student</span></div>
+    <div class="icon-btn" onclick="toggleNotif()"><i class="fa-regular fa-bell"></i><span class="notif-dot" id="notifDot" style="display:none"></span></div>
+  </div>
+</div>
+
+<div class="content">
+<div class="page-body">
+
+  <!-- DASHBOARD -->
+  <div class="section active" id="dashboard">
+    <div class="banner">
+      <div class="banner-text">
+        <h1>Welcome back, <span id="welcomeName">Student</span>! 👋</h1>
+        <p>Real-world problems solve karo, team banao, aur verified certificates pao Solvex-AI pe.</p>
+      </div>
+      <div class="banner-icon">🎓</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-ico ico-blue"><i class="fa-solid fa-clipboard-list"></i></div><div class="stat-info"><h2 id="statProblems">0</h2><p>Available Problems</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-green"><i class="fa-solid fa-check-circle"></i></div><div class="stat-info"><h2 id="statAccepted">0</h2><p>My Active Problems</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-red"><i class="fa-solid fa-award"></i></div><div class="stat-info"><h2 id="statCerts">0</h2><p>Certificates</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-yellow"><i class="fa-solid fa-people-group"></i></div><div class="stat-info"><h2 id="statTeamSize">0</h2><p>Team Members</p></div></div>
+    </div>
+    <div class="sec-title"><i class="fa-solid fa-bolt"></i> My Active Problems</div>
+    <div id="activeProblemBox"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- PROBLEMS -->
+  <div class="section" id="problems">
+    <div class="sec-title"><i class="fa-solid fa-fire"></i> Approved Problems</div>
+    <div class="prob-grid" id="problemGrid"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- PROJECT -->
+  <div class="section" id="project">
+    <div class="sec-title"><i class="fa-solid fa-folder-open"></i> My Project Work</div>
+    <div class="form-card">
+      <div class="form-group"><label>Select Problem (optional)</label>
+        <select id="projProblem"><option value="">-- Koi problem select karein --</option></select>
+      </div>
+      <div class="form-group"><label>Project Description *</label><textarea rows="3" id="projDesc" placeholder="Apna project progress describe karein..."></textarea></div>
+      <div class="form-group"><label>GitHub Repository Link *</label><input type="text" id="projGithub" placeholder="https://github.com/username/project"></div>
+      <div class="form-group">
+        <label>Project Progress — <span id="progVal">0%</span></label>
+        <input type="range" min="0" max="100" value="0" id="progressRange" oninput="setProgress(this.value)" style="width:100%;accent-color:var(--primary);margin-top:8px;cursor:pointer;">
+        <div class="prog-bar" style="margin-top:8px"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+      </div>
+      <button class="btn-primary" onclick="saveProject()"><i class="fa-solid fa-paper-plane"></i> Submit to Faculty</button>
+    </div>
+  </div>
+
+  <!-- MY TEAM -->
+  <div class="section" id="myTeam">
+    <div class="sec-title"><i class="fa-solid fa-people-group"></i> My Team</div>
+    <div class="form-card" style="margin-bottom:20px">
+      <div class="sec-title" style="font-size:14px;margin-bottom:14px"><i class="fa-solid fa-user-plus"></i> Team Request Bhejna</div>
+      <div class="form-row">
+        <div class="form-group"><label>Student Email *</label><input type="email" id="inviteEmail" placeholder="student@email.com"></div>
+        <div class="form-group"><label>Student Name</label><input type="text" id="inviteName" placeholder="Naam"></div>
+      </div>
+      <div class="form-group"><label>Message</label><input type="text" id="inviteMsg" placeholder="Join my team for this project!"></div>
+      <button class="btn-primary" onclick="sendTeamRequest()"><i class="fa-solid fa-paper-plane"></i> Request Bhejo</button>
+    </div>
+    <div class="sec-title" style="font-size:14px"><i class="fa-solid fa-users"></i> Current Team Members</div>
+    <div id="teamMembersList"><p style="color:var(--muted);font-size:14px">Koi member nahi abhi.</p></div>
+  </div>
+
+  <!-- REQUESTS -->
+  <div class="section" id="requests">
+    <div class="sec-title"><i class="fa-solid fa-bell"></i> Team Requests Received</div>
+    <div id="requestsList"><p style="color:var(--muted);font-size:14px">Koi request nahi aayi.</p></div>
+  </div>
+
+  <!-- SUBMITTED -->
+  <div class="section" id="submitted">
+    <div class="sec-title"><i class="fa-solid fa-inbox"></i> Submitted Projects</div>
+    <div id="submittedList"><p style="color:var(--muted);font-size:14px">Koi project submit nahi hua.</p></div>
+  </div>
+
+  <!-- EARNINGS -->
+  <div class="section" id="earnings">
+    <div class="banner" style="margin-bottom:24px">
+      <div class="banner-text">
+        <h1>💰 Meri Earnings</h1>
+        <p>Har approved project par aapko 45% share milta hai total budget ka.</p>
+      </div>
+      <div class="banner-icon">📊</div>
+    </div>
+    <div class="stats-grid" style="margin-bottom:24px">
+      <div class="stat-card"><div class="stat-ico ico-green"><i class="fa-solid fa-indian-rupee-sign"></i></div><div class="stat-info"><h2 id="earTotal">₹0</h2><p>Total Earned (45%)</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-blue"><i class="fa-solid fa-folder-check"></i></div><div class="stat-info"><h2 id="earProjects">0</h2><p>Projects Completed</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-yellow"><i class="fa-solid fa-chalkboard-teacher"></i></div><div class="stat-info"><h2 id="earFacShare">₹0</h2><p>Faculty Share (25%)</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-red"><i class="fa-solid fa-university"></i></div><div class="stat-info"><h2 id="earUniShare">₹0</h2><p>University Share (30%)</p></div></div>
+    </div>
+    <div class="sec-title"><i class="fa-solid fa-chart-bar"></i> Monthly Earnings Chart</div>
+    <div style="background:white;border-radius:16px;padding:22px;border:1px solid var(--border);margin-bottom:22px">
+      <canvas id="studentEarningsChart" height="100"></canvas>
+    </div>
+    <div class="sec-title"><i class="fa-solid fa-list"></i> Earning Details</div>
+    <div id="earningDetails"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- MY PROFILE -->
+  <div class="section" id="myProfile">
+    <div id="profileView">
+      <div class="profile-banner">
+        <div class="profile-logo" id="stuProfileLogo">🎓</div>
+        <div class="profile-info">
+          <h2 id="pdispName">Student</h2>
+          <p id="pdispEmail">—</p>
+          <p style="margin-top:4px;opacity:.8" id="pdispDept">—</p>
+        </div>
+      </div>
+      <div class="profile-grid">
+        <div class="info-box"><label>Full Name</label><p id="pdispFullname">—</p></div>
+        <div class="info-box"><label>📞 Mobile</label><p id="pdispMobile" style="font-size:16px;font-weight:800;color:var(--primary-dark)">—</p></div>
+        <div class="info-box"><label>Email</label><p id="pdispEmail2">—</p></div>
+        <div class="info-box"><label>Department</label><p id="pdispDept2">—</p></div>
+        <div class="info-box"><label>City</label><p id="pdispCity">—</p></div>
+        <div class="info-box"><label>About Me</label><p id="pdispAbout">—</p></div>
+      </div>
+      <div id="stuProfileUpdateInfo" style="background:#fef3c7;border:1px solid #fde68a;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#92400e;display:none">
+        <i class="fa-solid fa-clock" style="margin-right:6px"></i><span id="stuProfileUpdateMsg"></span>
+      </div>
+      <button class="btn-primary" onclick="toggleProfileEdit()"><i class="fa-solid fa-pen"></i> Edit Profile</button>
+    </div>
+    <div id="profileEdit" style="display:none;margin-top:20px">
+      <div class="form-card">
+        <div class="sec-title" style="font-size:14px"><i class="fa-solid fa-pen"></i> Edit My Profile</div>
+        <div class="form-group"><label>Profile Photo</label><input type="file" id="stuLogoInput" accept="image/*"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Full Name</label><input type="text" id="pfName"></div>
+          <div class="form-group"><label>Mobile</label><input type="text" id="pfMobile"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Department</label><input type="text" id="pfDept"></div>
+          <div class="form-group"><label>City</label><input type="text" id="pfCity"></div>
+        </div>
+        <div class="form-group"><label>About Me</label><textarea rows="2" id="pfAbout"></textarea></div>
+        <div style="display:flex;gap:12px">
+          <button class="btn-primary" onclick="saveStudentProfile()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          <button class="btn-danger" onclick="toggleProfileEdit()"><i class="fa-solid fa-xmark"></i> Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h3>Quick Links</h3><a href="#">About Us</a><a href="#">Contact Us</a><a href="#">Privacy Policy</a></div>
+    <div class="footer-col"><h3>Contact</h3><p>📍 Jaipur, Rajasthan</p><p>📞 +91 9351360177</p><p>✉️ praveennama7665@gmail.com</p></div>
+    <div class="footer-col"><h3>Newsletter</h3><input type="email" class="newsletter-input" id="newsEmail" placeholder="Your email"><button class="newsletter-btn" onclick="alert('✅ Subscribed!')">Subscribe</button></div>
+  </div>
+  <div class="copyright">© Solvex-AI – Poornima University | All Rights Reserved</div>
+</footer>
+</div>
+
+<script>
+const studentEmail = sessionStorage.getItem('email')||'';
+const studentName  = sessionStorage.getItem('username')||'Student';
+let myTeam=[]; let profileData={};
+
+// Init
+document.getElementById('stuName').textContent    = studentName;
+document.getElementById('stuEmail').textContent   = studentEmail;
+document.getElementById('welcomeName').textContent= studentName;
+document.getElementById('topbarName').textContent = studentName;
+document.getElementById('stuAvatar').textContent  = studentName.charAt(0).toUpperCase();
+
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+function showSection(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el)el.classList.add('active');
+  const t={dashboard:'Dashboard',problems:'Available Problems',project:'My Project',myTeam:'My Team',requests:'Requests',submitted:'Submitted Projects',earnings:'My Earnings',myProfile:'My Profile'};
+  document.getElementById('pageHeading').textContent=t[id]||id;
+  closeSidebar();
+}
+function toggleNotif(){document.getElementById('notifBox').classList.toggle('show');}
+function logout(){sessionStorage.clear();window.location.href='signin.html';}
+function setProgress(v){document.getElementById('progFill').style.width=v+'%';document.getElementById('progVal').textContent=v+'%';}
+
+// ── LOAD PROFILE ──
+async function loadStudentProfile(){
+  try{
+    const res = await fetch('/get-profile?email='+encodeURIComponent(studentEmail));
+    const d   = await res.json();
+    if(d.email){ profileData=d; renderStudentProfile(); }
+  }catch(e){console.log(e);}
+}
+
+function renderStudentProfile(){
+  const p=profileData;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v||'—';};
+  set('pdispName',p.username); set('pdispEmail',p.email);
+  set('pdispDept',p.department); set('pdispFullname',p.username);
+  set('pdispMobile',p.mobile); set('pdispEmail2',p.email);
+  set('pdispDept2',p.department); set('pdispCity',p.city);
+  set('pdispAbout',p.about);
+  if(p.logo_data){
+    document.getElementById('stuAvatar').innerHTML=`<img src="${p.logo_data}" alt="">`;
+    document.getElementById('stuProfileLogo').innerHTML=`<img src="${p.logo_data}" alt="">`;
+  }
+  const fv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+  fv('pfName',p.username); fv('pfMobile',p.mobile);
+  fv('pfDept',p.department); fv('pfCity',p.city); fv('pfAbout',p.about);
+  // 15-din restriction
+  const infoBox=document.getElementById('stuProfileUpdateInfo');
+  const msgEl=document.getElementById('stuProfileUpdateMsg');
+  if(infoBox && p.profile_updated_at){
+    const last=new Date(p.profile_updated_at);
+    const daysSince=Math.floor((new Date()-last)/(1000*60*60*24));
+    const daysLeft=15-daysSince;
+    if(daysLeft>0){infoBox.style.display='block';msgEl.textContent=`Aapne ${daysSince} din pehle profile update ki thi. ${daysLeft} din baad dobara update kar sakte hain.`;}
+    else{infoBox.style.display='none';}
+  }
+}
+
+function toggleProfileEdit(){
+  const edit=document.getElementById('profileEdit');
+  const view=document.getElementById('profileView');
+  const isEdit=edit.style.display!=='none';
+  edit.style.display=isEdit?'none':'block';
+  view.style.display=isEdit?'block':'none';
+}
+
+async function saveStudentProfile(){
+  const logoInput=document.getElementById('stuLogoInput');
+  let logoData=profileData.logo_data||'';
+  if(logoInput.files[0]){
+    logoData=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(logoInput.files[0]);});
+  }
+  const payload={
+    email:studentEmail,
+    username:document.getElementById('pfName').value,
+    mobile:document.getElementById('pfMobile').value,
+    department:document.getElementById('pfDept').value,
+    city:document.getElementById('pfCity').value,
+    about:document.getElementById('pfAbout').value,
+    logo_data:logoData
+  };
+  try{
+    const res=await fetch('/update-profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const d=await res.json();
+    if(d.status==='success'){
+      profileData={...profileData,...payload};
+      renderStudentProfile();
+      toggleProfileEdit();
+      document.getElementById('stuName').textContent=payload.username||studentName;
+      alert('✅ Profile save ho gayi!');
+    }else{
+      alert(d.message||'Profile update nahi ho payi!');
+    }
+  }catch(e){alert('Server error!');}
+}
+
+// ── LOAD PROBLEMS ──
+async function loadProblems(){
+  try{
+    const res=await fetch('/get-problems?student_email='+encodeURIComponent(studentEmail));
+    const probs=await res.json();
+    document.getElementById('statProblems').textContent=probs.length;
+    const grid=document.getElementById('problemGrid');
+    if(probs.length===0){grid.innerHTML='<p style="color:var(--muted);font-size:14px">Koi approved problem nahi abhi.</p>';return;}
+    grid.innerHTML=probs.map(p=>`
+      <div class="prob-card">
+        <h3>${p.title}</h3>
+        <span class="badge badge-blue">${p.category||'General'}</span>
+        <p style="margin-top:8px"><b>Provider:</b> ${p.provider||'—'}</p>
+        <p><b>Budget:</b> ₹${p.budget||'—'}</p>
+        <p><b>Timeline:</b> ${p.timeline||'—'}</p>
+        <p><b>Difficulty:</b> ${p.difficulty||'Intermediate'}</p>
+        <p style="margin-top:6px;font-size:12px;color:var(--muted)">${(p.description||'').substring(0,80)}${(p.description||'').length>80?'...':''}</p>
+        <div style="margin-top:14px">
+          <button class="btn-primary btn-sm" onclick="acceptProblem(${p.id},'${p.title.replace(/'/g,"\\'")}')">
+            <i class="fa-solid fa-hand-pointer"></i> Accept Problem
+          </button>
+        </div>
+      </div>`).join('');
+    // Populate problem dropdown in project form
+    const sel=document.getElementById('projProblem');
+    sel.innerHTML='<option value="">-- Koi problem select karein --</option>'+
+      probs.map(p=>`<option value="${p.id}">${p.title}</option>`).join('');
+  }catch(e){console.log(e);}
+}
+
+// ── ACCEPT PROBLEM ──
+async function acceptProblem(id,title){
+  try{
+    const res=await fetch('/accept-problem',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({problem_id:id,student_email:studentEmail})});
+    const data=await res.json();
+    if(data.status==='success'){
+      alert('✅ Problem accept kar li!');
+      await loadProblems();
+      await loadActiveProblems();
+    }else{alert(data.message||'Error!');}
+  }catch(e){console.log(e);}
+}
+
+// ── LOAD ACTIVE PROBLEMS (accepted by this student) ──
+async function loadActiveProblems(){
+  try{
+    const res=await fetch('/get-accepted-problems?email='+encodeURIComponent(studentEmail));
+    const probs=await res.json();
+    document.getElementById('statAccepted').textContent=probs.length;
+    const box=document.getElementById('activeProblemBox');
+    if(probs.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi active problem nahi. Pehle problem accept karo!</p>';return;}
+    box.innerHTML=probs.map(p=>`
+      <div class="card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+          <div class="card-title">${p.title}</div>
+          <span class="badge badge-green">Active ✅</span>
+        </div>
+        <div class="card-meta"><b>Provider:</b> ${p.provider||'—'}</div>
+        <div class="card-meta"><b>Budget:</b> ₹${p.budget||'—'} &nbsp;|&nbsp; <b>Timeline:</b> ${p.timeline||'—'}</div>
+        <div style="margin-top:12px">
+          <button class="btn-primary btn-sm" onclick="showSection('project',document.querySelector('.nav-item:nth-child(4)'))">
+            <i class="fa-solid fa-arrow-right"></i> Submit Project
+          </button>
+        </div>
+      </div>`).join('');
+  }catch(e){console.log(e);}
+}
+
+// ── SAVE PROJECT ──
+async function saveProject(){
+  const desc=document.getElementById('projDesc').value.trim();
+  const git =document.getElementById('projGithub').value.trim();
+  const prog=document.getElementById('progFill').style.width||'0%';
+  const probId=document.getElementById('projProblem').value||null;
+  if(!desc){alert('Project description likho!');return;}
+  if(!git){alert('GitHub link daalo!');return;}
+  if(!prog||prog==='0%'){alert('Progress set karo!');return;}
+  try{
+    const res=await fetch('/submit-project',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({student_name:studentName,student_email:studentEmail,description:desc,
+        github:git,progress:prog,team_members:myTeam,problem_id:probId})});
+    const data=await res.json();
+    if(data.status==='success'){
+      alert('✅ Project submit ho gaya Faculty ke paas!');
+      document.getElementById('projDesc').value='';
+      document.getElementById('projGithub').value='';
+      document.getElementById('progFill').style.width='0%';
+      document.getElementById('progVal').textContent='0%';
+      document.getElementById('progressRange').value=0;
+      loadSubmitted();
+    }
+  }catch(e){alert('Server error!');}
+}
+
+// ── TEAM REQUEST ──
+async function sendTeamRequest(){
+  const email=document.getElementById('inviteEmail').value.trim();
+  const name =document.getElementById('inviteName').value.trim();
+  const msg  =document.getElementById('inviteMsg').value.trim();
+  if(!email){alert('Email daalo!');return;}
+  if(email===studentEmail){alert("Apne aap ko invite nahi kar sakte!");return;}
+  try{
+    const res=await fetch('/send-team-request',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({from_email:studentEmail,from_name:studentName,to_email:email,to_name:name,message:msg})});
+    const data=await res.json();
+    if(data.status==='success'){
+      alert('✅ Request send ho gayi '+email+' ko!');
+      document.getElementById('inviteEmail').value='';
+      document.getElementById('inviteName').value='';
+      document.getElementById('inviteMsg').value='';
+    }else{alert(data.message||'Error!');}
+  }catch(e){alert('Server error!');}
+}
+
+// ── LOAD TEAM ──
+async function loadTeam(){
+  try{
+    const res=await fetch('/get-team?email='+encodeURIComponent(studentEmail));
+    const team=await res.json();
+    myTeam=Array.isArray(team)?team:[];
+    document.getElementById('statTeamSize').textContent=myTeam.length;
+    const box=document.getElementById('teamMembersList');
+    if(myTeam.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi member nahi. Request bhejo!</p>';return;}
+    box.innerHTML=`<div class="card"><div style="display:flex;flex-wrap:wrap;gap:6px">${myTeam.map(m=>`
+      <span class="member-tag"><i class="fa-solid fa-user-graduate"></i>${m.name||m.email}
+        <span class="rm" onclick="removeFromTeam('${m.email}')">✕</span>
+      </span>`).join('')}</div></div>`;
+  }catch(e){console.log(e);}
+}
+
+async function removeFromTeam(email){
+  if(!confirm('Remove karein is member ko?'))return;
+  try{
+    await fetch('/remove-team-member',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({team_leader:studentEmail,member_email:email})});
+    loadTeam();
+  }catch(e){}
+}
+
+// ── LOAD REQUESTS ──
+async function loadRequests(){
+  try{
+    const res=await fetch('/get-team-requests?email='+encodeURIComponent(studentEmail));
+    const reqs=await res.json();
+    const pending=Array.isArray(reqs)?reqs.filter(r=>r.status==='pending'):[];
+    const badge=document.getElementById('reqBadge');
+    const dot  =document.getElementById('notifDot');
+    if(pending.length>0){badge.style.display='inline';badge.textContent=pending.length;dot.style.display='block';}
+    else{badge.style.display='none';dot.style.display='none';}
+    const box=document.getElementById('requestsList');
+    const notifList=document.getElementById('notifList');
+    if(!reqs||reqs.length===0){
+      box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi request nahi aayi abhi.</p>';
+      notifList.innerHTML='<div class="notif-item">Koi notification nahi.</div>';
+      return;
+    }
+    box.innerHTML=reqs.map(r=>`
+      <div class="req-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:14px;font-weight:700"><i class="fa-solid fa-user" style="color:var(--primary);margin-right:6px"></i>${r.from_name||r.from_email}</div>
+          <span class="badge ${r.status==='pending'?'badge-yellow':r.status==='accepted'?'badge-green':'badge-red'}">${r.status}</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted)">From: ${r.from_email}</div>
+        <div style="font-size:13px;color:var(--text);margin-top:6px">${r.message||'Aapki team mein join karna chahte hain'}</div>
+        ${r.status==='pending'?`<div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn-success btn-sm" onclick="respondRequest(${r.id},'accept')"><i class="fa-solid fa-check"></i> Accept</button>
+          <button class="btn-danger btn-sm" onclick="respondRequest(${r.id},'reject')"><i class="fa-solid fa-xmark"></i> Decline</button>
+        </div>`:''}
+      </div>`).join('');
+    notifList.innerHTML=pending.length>0
+      ?pending.map(r=>`<div class="notif-item"><b>${r.from_name||r.from_email}</b> ne team request bheji.</div>`).join('')
+      :'<div class="notif-item">Koi nayi notification nahi.</div>';
+  }catch(e){console.log('Requests load error:',e);}
+}
+
+async function respondRequest(id,action){
+  try{
+    await fetch('/respond-team-request',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({request_id:id,action,student_email:studentEmail})});
+    alert(action==='accept'?'✅ Request accept ki! Member team mein add ho gaya.':'❌ Request decline kar di.');
+    loadRequests(); loadTeam();
+  }catch(e){console.log(e);}
+}
+
+// ── LOAD SUBMITTED ──
+async function loadSubmitted(){
+  try{
+    const res=await fetch('/get-my-projects?email='+encodeURIComponent(studentEmail));
+    const mine=await res.json();
+    const box=document.getElementById('submittedList');
+    const completed=mine.filter(p=>p.status==='completed');
+    document.getElementById('statCerts').textContent=completed.length;
+    if(mine.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi project submit nahi hua abhi.</p>';return;}
+    box.innerHTML=mine.map(p=>`
+      <div class="card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+          <div class="card-title">${p.description||'My Project'}</div>
+          <span class="badge ${p.status==='completed'?'badge-green':p.status==='rejected'?'badge-red':'badge-yellow'}">${p.status==='completed'?'✅ Approved':p.status||'Pending'}</span>
+        </div>
+        ${p.problem_title?`<div class="card-meta"><b>Problem:</b> ${p.problem_title}</div>`:''}
+        <div class="card-meta"><b>GitHub:</b> <a href="${p.github}" target="_blank" style="color:var(--primary)">${p.github||'—'}</a></div>
+        <div class="card-meta"><b>Team:</b> ${p.team_members||'Solo'}</div>
+        <div style="margin:10px 0">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);display:flex;justify-content:space-between"><span>Progress</span><span>${p.progress||'0%'}</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:${p.progress||'0%'}"></div></div>
+        </div>
+        ${p.faculty_remark?`<div style="background:#f0fdf4;border-radius:10px;padding:10px 14px;margin-top:8px;font-size:13px"><b style="color:#047857">Faculty Remark:</b> ${p.faculty_remark}</div>`:''}
+        ${p.status==='completed'?`<div style="margin-top:12px;background:#f0fdf4;border-radius:10px;padding:12px;text-align:center"><span style="font-size:14px;font-weight:700;color:#047857">🏆 Certificate Issue Ho Gayi!</span></div>`:''}
+      </div>`).join('');
+  }catch(e){console.log(e);}
+}
+
+// ── INIT ──
+// ── STUDENT EARNINGS ──
+let stuEarningsChart = null;
+async function loadStudentEarnings(){
+  try{
+    const [detRes, sumRes] = await Promise.all([
+      fetch('/get-earnings?email='+encodeURIComponent(studentEmail)+'&role=student'),
+      fetch('/get-earnings-summary?email='+encodeURIComponent(studentEmail)+'&role=student')
+    ]);
+    const details = await detRes.json();
+    const summary = await sumRes.json();
+
+    const totalEarned  = details.reduce((s,e)=>s+(e.student_share||0),0);
+    const totalFacShare= details.reduce((s,e)=>s+(e.faculty_share||0),0);
+    const totalUniShare= details.reduce((s,e)=>s+(e.university_share||0),0);
+
+    document.getElementById('earTotal').textContent    = '₹'+totalEarned.toLocaleString('en-IN');
+    document.getElementById('earProjects').textContent = details.length;
+    document.getElementById('earFacShare').textContent = '₹'+totalFacShare.toLocaleString('en-IN');
+    document.getElementById('earUniShare').textContent = '₹'+totalUniShare.toLocaleString('en-IN');
+
+    const months = summary.map(s=>s.month);
+    const earned = summary.map(s=>s.my_earning_student||0);
+    const ctx = document.getElementById('studentEarningsChart').getContext('2d');
+    if(stuEarningsChart) stuEarningsChart.destroy();
+    stuEarningsChart = new Chart(ctx,{
+      type:'bar',
+      data:{
+        labels: months.length ? months : ['Koi Data Nahi'],
+        datasets:[
+          {label:'Aapki Earning (45%) ₹', data: earned.length ? earned : [0], backgroundColor:'rgba(99,102,241,0.8)', borderRadius:8, borderSkipped:false},
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{display:true}, tooltip:{callbacks:{label:c=>'₹'+c.raw.toLocaleString('en-IN')}}},
+        scales:{y:{beginAtZero:true, ticks:{callback:v=>'₹'+v.toLocaleString('en-IN')}}}
+      }
+    });
+
+    const box = document.getElementById('earningDetails');
+    if(details.length===0){
+      box.innerHTML='<div style="background:white;border-radius:16px;padding:30px;border:1px solid var(--border);text-align:center"><p style="color:var(--muted);font-size:14px">🏆 Koi earning nahi abhi tak. Faculty se project approve karwao!</p><p style="font-size:13px;color:var(--muted);margin-top:8px">Jab aapka project approve hoga, tab yahan monthly earning chart aur breakdown dikhe ga.</p></div>';
+      return;
+    }
+    box.innerHTML=`<div style="background:white;border-radius:16px;border:1px solid var(--border);overflow:auto">
+      <table style="width:100%;border-collapse:collapse;min-width:500px">
+        <thead><tr>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Month</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Problem</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Total Budget</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Aapka (45%)</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Faculty (25%)</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">University (30%)</th>
+        </tr></thead>
+        <tbody>${details.map(e=>`<tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:11px 16px;font-size:13px">${e.month||'—'}</td>
+          <td style="padding:11px 16px;font-size:13px"><b>${e.problem_title||'—'}</b></td>
+          <td style="padding:11px 16px;font-size:13px">₹${(e.budget||0).toLocaleString('en-IN')}</td>
+          <td style="padding:11px 16px;font-size:13px;color:var(--primary);font-weight:800">₹${(e.student_share||0).toLocaleString('en-IN')}</td>
+          <td style="padding:11px 16px;font-size:13px">₹${(e.faculty_share||0).toLocaleString('en-IN')}</td>
+          <td style="padding:11px 16px;font-size:13px">₹${(e.university_share||0).toLocaleString('en-IN')}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  }catch(e){console.log('Earnings error:',e);}
+}
+
+window.onload=async function(){
+  await loadStudentProfile();
+  await loadProblems();
+  await loadActiveProblems();
+  await loadTeam();
+  await loadRequests();
+  await loadSubmitted();
+  await loadStudentEarnings();
+  setInterval(loadRequests, 30000);
+};
+</script>
+</body>
+</html>

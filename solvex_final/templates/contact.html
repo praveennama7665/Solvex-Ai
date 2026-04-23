@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | Solvex-AI</title>
+<link rel="icon" href="../Solvex-Ai-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--blue:#2563eb;--navy:#1e3a8a;--sky:#38bdf8;--green:#10b981;--amber:#f59e0b;--rose:#f43f5e;--purple:#8b5cf6;--bg:#f0f6ff;--white:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+a{text-decoration:none;color:inherit;}button{cursor:pointer;border:none;font-family:inherit;}img{max-width:100%;display:block;}
+
+/* NAV */
+nav{background:white;padding:16px 7%;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.07);position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;}
+.nav-logo img{width:36px;border-radius:8px;}
+.nav-logo .sky{color:var(--blue);}
+.nav-links{display:flex;align-items:center;gap:26px;list-style:none;}
+.nav-links a{font-size:14px;font-weight:600;color:var(--muted);transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--blue);}
+.nav-links .btn-nav{background:var(--blue);color:white;padding:9px 20px;border-radius:9px;font-size:13.5px;font-weight:700;transition:background .2s;}
+.nav-links .btn-nav:hover{background:var(--navy);}
+
+/* HERO */
+.page-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 60%,#0284c7 100%);padding:80px 7% 100px;position:relative;overflow:hidden;}
+.page-hero::before{content:'';position:absolute;right:-100px;top:-100px;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.05);}
+.page-hero::after{content:'';position:absolute;left:-60px;bottom:-80px;width:300px;height:300px;border-radius:50%;background:rgba(56,189,248,.1);}
+.hero-inner{position:relative;z-index:1;text-align:center;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:7px 18px;font-size:12px;font-weight:600;color:rgba(255,255,255,.9);margin-bottom:20px;}
+.page-hero h1{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:800;color:white;line-height:1.15;margin-bottom:14px;}
+.page-hero h1 span{color:var(--sky);}
+.page-hero p{font-size:16px;color:rgba(255,255,255,.75);max-width:520px;margin:0 auto;}
+
+/* CONTACT CARDS */
+.contact-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;padding:0 7%;margin-top:-50px;position:relative;z-index:10;}
+.c-card{background:white;border-radius:20px;padding:28px 22px;text-align:center;box-shadow:0 8px 30px rgba(30,58,138,.1);border:1px solid var(--border);transition:transform .3s,box-shadow .3s;animation:riseUp .6s ease both;}
+.c-card:nth-child(1){animation-delay:.1s;}.c-card:nth-child(2){animation-delay:.2s;}.c-card:nth-child(3){animation-delay:.3s;}.c-card:nth-child(4){animation-delay:.4s;}
+@keyframes riseUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.c-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(30,58,138,.15);}
+.c-card-ico{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px;}
+.c-card h3{font-size:15px;font-weight:800;color:var(--text);margin-bottom:5px;}
+.c-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+.c-card a{color:var(--blue);font-weight:600;}
+.c-card a:hover{text-decoration:underline;}
+
+/* MAIN */
+.main-section{padding:70px 7%;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;}
+
+/* FORM */
+.form-wrap{background:white;border-radius:24px;padding:38px 34px;box-shadow:0 8px 30px rgba(30,58,138,.08);border:1px solid var(--border);}
+.section-tag{display:inline-flex;align-items:center;gap:6px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:50px;padding:5px 14px;font-size:11.5px;font-weight:700;color:var(--blue);margin-bottom:14px;}
+.form-wrap h2{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:5px;}
+.form-wrap .sub{font-size:13.5px;color:var(--muted);margin-bottom:26px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:6px;}
+.input-wrap{position:relative;}
+.input-wrap .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;transition:color .2s;}
+.input-wrap input,.input-wrap select,.input-wrap textarea{width:100%;padding:13px 14px 13px 40px;border:1.5px solid var(--border);border-radius:11px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--bg);transition:all .2s;resize:vertical;}
+.input-wrap textarea{padding-top:13px;min-height:110px;}
+.input-wrap input:focus,.input-wrap select:focus,.input-wrap textarea:focus{outline:none;border-color:var(--blue);background:white;box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.input-wrap:focus-within .ico{color:var(--blue);}
+.subject-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px;}
+.sub-btn{padding:10px 10px;border:1.5px solid var(--border);border-radius:10px;font-size:12.5px;font-weight:600;color:var(--muted);background:var(--bg);transition:all .2s;}
+.sub-btn:hover{border-color:var(--blue);color:var(--blue);background:#eff6ff;}
+.sub-btn.sel{border-color:var(--blue);background:#eff6ff;color:var(--blue);}
+.send-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--blue));color:white;border-radius:12px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 6px 18px rgba(37,99,235,.3);transition:all .3s;}
+.send-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(37,99,235,.38);}
+.send-btn .spin{display:none;}
+.send-btn.loading .txt{display:none;}.send-btn.loading .spin{display:inline;}
+.success-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:20px;text-align:center;display:none;margin-top:16px;}
+.success-box.show{display:block;}
+.success-box h3{color:#065f46;font-size:16px;font-weight:800;margin-bottom:5px;}
+.success-box p{color:#047857;font-size:13px;}
+
+/* INFO */
+.info-card{background:white;border-radius:18px;padding:20px;border:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:16px;transition:transform .25s,box-shadow .25s;animation:riseUp .6s ease both;}
+.info-card:nth-child(2){animation-delay:.1s;}.info-card:nth-child(3){animation-delay:.2s;}.info-card:nth-child(4){animation-delay:.3s;}.info-card:nth-child(5){animation-delay:.4s;}
+.info-card:hover{transform:translateX(5px);box-shadow:0 8px 24px rgba(30,58,138,.1);}
+.info-ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.info-card h4{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px;}
+.info-card p,.info-card a{font-size:13px;color:var(--muted);display:block;line-height:1.6;}
+.info-card a:hover{color:var(--blue);}
+.soc-btn{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;transition:transform .2s,opacity .2s;}
+.soc-btn:hover{transform:translateY(-3px);opacity:.85;}
+.map-box{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:18px;padding:28px;text-align:center;color:white;margin-top:16px;}
+.map-box i{font-size:34px;margin-bottom:10px;opacity:.8;}
+.map-box h4{font-weight:800;font-size:15px;margin-bottom:4px;}
+.map-box p{font-size:13px;opacity:.7;}
+.map-box a{display:inline-block;margin-top:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:9px 20px;border-radius:9px;color:white;font-size:13px;font-weight:700;transition:.2s;}
+.map-box a:hover{background:rgba(255,255,255,.25);}
+
+/* FAQ */
+.faq-section{padding:60px 7%;background:white;}
+.sec-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:8px;}
+.sec-sub{font-size:15px;color:var(--muted);text-align:center;margin-bottom:40px;}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:900px;margin:0 auto;}
+.faq-item{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:.2s;}
+.faq-q{padding:18px 20px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.faq-q i{color:var(--blue);font-size:13px;transition:transform .3s;flex-shrink:0;}
+.faq-a{padding:0 20px;font-size:13.5px;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:all .3s;}
+.faq-item.open .faq-a{padding:0 20px 18px;max-height:200px;}
+.faq-item.open .faq-q i{transform:rotate(180deg);}
+.faq-item.open{border-color:var(--blue);}
+
+/* FOOTER */
+footer{background:linear-gradient(160deg,var(--navy),#0f0e2e);color:white;padding:50px 7% 0;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;margin-bottom:40px;}
+.footer-col h3{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--sky);margin-bottom:14px;}
+.footer-col p,.footer-col a{font-size:13px;color:rgba(255,255,255,.5);display:block;margin-bottom:8px;transition:color .2s;}
+.footer-col a:hover{color:white;}
+.news-input{width:100%;padding:10px 12px;border-radius:8px;border:none;margin-bottom:8px;background:rgba(255,255,255,.1);color:white;font-family:inherit;font-size:13px;}
+.news-input::placeholder{color:rgba(255,255,255,.35);}
+.news-btn{width:100%;padding:10px;background:var(--blue);color:white;border-radius:8px;font-size:13px;font-weight:700;transition:background .2s;}
+.news-btn:hover{background:#1d4ed8;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:center;font-size:13px;color:rgba(255,255,255,.3);}
+
+@media(max-width:860px){.main-section{grid-template-columns:1fr;gap:36px;}}
+@media(max-width:640px){.form-row{grid-template-columns:1fr;}.form-wrap{padding:24px 18px;}.contact-cards{grid-template-columns:1fr 1fr;}.nav-links{display:none;}.faq-grid{grid-template-columns:1fr;}.subject-grid{grid-template-columns:1fr 1fr;}}
+
+.menu-btn{
+  display:none;
+  font-size:22px;
+}
+
+@media(max-width:640px){
+  .menu-btn{display:block;}
+  .nav-links{
+    position:absolute;
+    top:70px;
+    right:0;
+    background:white;
+    width:100%;
+    flex-direction:column;
+    gap:15px;
+    padding:20px;
+    display:none;
+  }
+  .nav-links.show{display:flex;}
+}
+@media(max-width:640px){
+  .page-hero{
+    padding:50px 5% 70px;
+  }
+}
+@media(max-width:480px){
+  .contact-cards{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:640px){
+  .form-wrap{
+    padding:20px 14px;
+  }
+}
+@media(max-width:480px){
+  h1{font-size:26px;}
+  h2{font-size:20px;}
+  p{font-size:13px;}
+}
+@media(max-width:640px){
+  .faq-q{
+    padding:14px;
+    font-size:13px;
+  }
+}
+@media(max-width:480px){
+  .send-btn{
+    font-size:14px;
+    padding:12px;
+  }
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo"><img src="../Solvex-Ai-logo.png" alt="Logo"><span class="sky">Solvex</span><span>-AI</span></div>
+
+  <i class="fa-solid fa-bars menu-btn" onclick="toggleMenu()"></i>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+    <li><a href="signin.html" class="btn-nav">Login</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><i class="fa-solid fa-envelope"></i> Get In Touch</div>
+    <h1>Contact <span>Solvex-AI</span></h1>
+    <p>Solvex-AI team is always availableto help you. Reply within 24 hours.</p>
+  </div>
+</div>
+
+<div class="contact-cards">
+  <div class="c-card">
+    <div class="c-card-ico" style="background:#eff6ff;color:#2563eb;"><i class="fa-solid fa-phone"></i></div>
+    <h3>Call Us</h3><p><a href="tel:+919351360177">+91 9351360177</a></p><p style="font-size:12px;margin-top:4px;">Mon–Sat, 9am–6pm</p>
+  </div>
+  <div class="c-card">
+    <div class="c-card-ico" style="background:#f0fdf4;color:#10b981;"><i class="fa-solid fa-envelope"></i></div>
+    <h3>Email Us</h3><p><a href="mailto:praveennama7665@gmail.com">praveennama7665@gmail.com</a></p><p style="font-size:12px;margin-top:4px;">Reply in 24hrs</p>
+  </div>
+  <div class="c-card">
+    <div class="c-card-ico" style="background:#fffbeb;color:#f59e0b;"><i class="fa-solid fa-location-dot"></i></div>
+    <h3>Visit Us</h3><p>Solvex-AI</p><p>Jaipur, Rajasthan 302022</p>
+  </div>
+  <div class="c-card">
+    <div class="c-card-ico" style="background:#f5f3ff;color:#8b5cf6;"><i class="fa-brands fa-whatsapp"></i></div>
+    <h3>WhatsApp</h3><p><a href="https://wa.me/917891038514" target="_blank">+91 7891038514</a></p><p style="font-size:12px;margin-top:4px;">Quick replies</p>
+  </div>
+</div>
+
+<div class="main-section">
+  <div class="form-wrap">
+    <div class="section-tag"><i class="fa-solid fa-paper-plane"></i> Send Message</div>
+    <h2>Talk to Us</h2>
+    <p class="sub">Fill out the form — we will get back to you shortly 💬</p>
+    <div class="form-row">
+      <div class="form-group"><label>Your Name</label><div class="input-wrap"><i class="fa-solid fa-user ico"></i><input type="text" id="cName" placeholder="Full name"></div></div>
+      <div class="form-group"><label>Email Address</label><div class="input-wrap"><i class="fa-solid fa-envelope ico"></i><input type="email" id="cEmail" placeholder="your@email.com"></div></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Phone (optional)</label><div class="input-wrap"><i class="fa-solid fa-phone ico"></i><input type="tel" id="cPhone" placeholder="Mobile number"></div></div>
+      <div class="form-group"><label>You are a</label><div class="input-wrap"><i class="fa-solid fa-user-tag ico"></i><select id="cRole"><option value="">Select role</option><option>Student</option><option>Faculty</option><option>Provider / Industry</option><option>Other</option></select></div></div>
+    </div>
+    <div class="form-group">
+      <label>Subject</label>
+      <div class="subject-grid">
+        <button class="sub-btn sel" onclick="selSubject(this,'General Inquiry')">💬 General</button>
+        <button class="sub-btn" onclick="selSubject(this,'Technical Support')">🛠️ Support</button>
+        <button class="sub-btn" onclick="selSubject(this,'Partnership')">🤝 Partnership</button>
+        <button class="sub-btn" onclick="selSubject(this,'Feedback')">⭐ Feedback</button>
+      </div>
+    </div>
+    <div class="form-group"><label>Your Message</label><div class="input-wrap"><i class="fa-solid fa-message ico" style="top:18px;transform:none;"></i><textarea id="cMsg" placeholder="Apna message yahan likho..."></textarea></div></div>
+    <button class="send-btn" id="sendBtn" onclick="sendMsg()">
+      <span class="txt"><i class="fa-solid fa-paper-plane"></i> Send Message</span>
+      <span class="spin"><i class="fa-solid fa-spinner fa-spin"></i> Sending...</span>
+    </button>
+    <div class="success-box" id="successBox"><div style="font-size:36px;margin-bottom:10px;">✅</div><h3>Message Sent!</h3><p>Our team will contact you shortly 🙏</p></div>
+  </div>
+
+  <div>
+    <div class="section-tag"><i class="fa-solid fa-circle-info"></i> Contact Info</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:5px;">Get to Know Us</h2>
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:24px;">Our Solvex-AI team is always here to assist youvex-AI team hamesha available hai aapki madad ke liye.</p>
+    <div class="info-card"><div class="info-ico" style="background:#eff6ff;color:#2563eb;"><i class="fa-solid fa-phone-volume"></i></div><div><h4>Phone</h4><a href="tel:+919351360177">+91 9351360177</a><p>Mon–Sat: 9AM – 6PM</p></div></div>
+    <div class="info-card"><div class="info-ico" style="background:#f0fdf4;color:#10b981;"><i class="fa-solid fa-envelope-open-text"></i></div><div><h4>Email</h4><a href="mailto:praveennama7665@gmail.com">praveennama7665@gmail.com</a><p>We reply within 24 hour</p></div></div>
+    <div class="info-card"><div class="info-ico" style="background:#fffbeb;color:#f59e0b;"><i class="fa-solid fa-building-columns"></i></div><div><h4>Address</h4><p>Poornima University, ISI-6</p><p>RIICO Institutional Area, Sitapura</p><p>Jaipur, Rajasthan 302022</p></div></div>
+    <div class="info-card"><div class="info-ico" style="background:#f5f3ff;color:#8b5cf6;"><i class="fa-solid fa-share-nodes"></i></div><div><h4>Social Media</h4><div style="display:flex;gap:10px;margin-top:8px;"><a href="https://linkedin.com" target="_blank" class="soc-btn" style="background:#0a66c2;color:white;"><i class="fa-brands fa-linkedin-in"></i></a><a href="https://github.com" target="_blank" class="soc-btn" style="background:#1f2937;color:white;"><i class="fa-brands fa-github"></i></a><a href="https://wa.me/917891038514" target="_blank" class="soc-btn" style="background:#25d366;color:white;"><i class="fa-brands fa-whatsapp"></i></a><a href="mailto:praveennama7665@gmail.com" class="soc-btn" style="background:#ea4335;color:white;"><i class="fa-solid fa-envelope"></i></a></div></div></div>
+    <div class="map-box"><i class="fa-solid fa-map-location-dot"></i><h4>Poornima University</h4><p>Jaipur, Rajasthan — ISI-6, RIICO Institutional Area</p><a href="https://maps.google.com/?q=Poornima+University+Jaipur" target="_blank"><i class="fa-solid fa-map-pin"></i> Open in Google Maps</a></div>
+  </div>
+</div>
+
+<div class="faq-section">
+  <h2 class="sec-title">Frequently Asked <span style="color:var(--blue);">Questions</span></h2>
+  <p class="sec-sub">Common questions that are frequently asked</p>
+  <div class="faq-grid">
+    <div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)">What is Solvex-AI? <i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">Solvex-AI ek platform hai jo Poornima University ke students ko real industry problems solve karne ka mauka deta hai. Students team banate hain, faculty guide karte hain, companies problems deti hain.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How can students join? <i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">Signup page pe jao, apni Poornima email use karo (jaise 2022cs001@poornima.edu.in), Student role select karo aur account banao. Phir login karke problems browse karo.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How to post an industry problem? <i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">Provider account banao company email se, login karo, Provider Dashboard se "Post Problem" click karo. Faculty approve karti hai phir students dekh paenge.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">When will I receive the certificate? <i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">Project submit karne ke baad faculty review karti hai. Approve hone par automatically certificate generate hota hai jo PDF mein download kar sakte ho.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the role of faculty? <i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">Faculty problems approve/reject karte hain, student projects review karte hain aur certificates issue karte hain. Poornima email hona chahiye.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is the platform completely free? <i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">Haan! Students aur Faculty ke liye Solvex-AI bilkul free hai. Industry providers ke liye bhi abhi free hai.</div></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h3>Solvex-AI</h3><p>Real-World Problem Solver Platform — Poornima University ka initiative.</p></div>
+    <div class="footer-col"><h3>Quick Links</h3><a href="index.html">Home</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="signup.html">Sign Up</a></div>
+    <div class="footer-col"><h3>Contact</h3><p>📍 Jaipur, Rajasthan</p><p>📞 +91 9351360177</p><p>✉️ praveennama7665@gmail.com</p></div>
+    <div class="footer-col"><h3>Newsletter</h3><input type="email" class="news-input" id="newsEmail" placeholder="Your email address"><button class="news-btn" onclick="subscribeNews()">Subscribe</button></div>
+  </div>
+  <div class="footer-bottom">© 2026 Solvex-AI | Poornima University | All Rights Reserved</div>
+</footer>
+
+<script>
+let selectedSubject='General Inquiry';
+function selSubject(btn,val){selectedSubject=val;document.querySelectorAll('.sub-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+async function sendMsg(){
+  const name=document.getElementById('cName').value.trim();
+  const email=document.getElementById('cEmail').value.trim();
+  const msg=document.getElementById('cMsg').value.trim();
+  if(!name||!email||!msg){alert('Name, email aur message bharo!');return;}
+  const btn=document.getElementById('sendBtn');
+  btn.classList.add('loading');btn.disabled=true;
+  await new Promise(r=>setTimeout(r,1200));
+  btn.classList.remove('loading');btn.disabled=false;
+  document.getElementById('successBox').classList.add('show');
+  ['cName','cEmail','cPhone','cMsg'].forEach(id=>document.getElementById(id).value='');
+}
+function subscribeNews(){const v=document.getElementById('newsEmail').value;if(!v){alert('Email bharo!');return;}alert('✅ Subscribed!');document.getElementById('newsEmail').value='';}
+
+
+
+
+
+function toggleMenu(){
+  document.querySelector('.nav-links').classList.toggle('show');
+}
+</script>
+</body>
+</html>

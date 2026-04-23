@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Provider Dashboard | Solvex-AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="../Solvex-Ai-logo.png">
+<style>
+:root{--primary:#6366f1;--primary-dark:#4338ca;--primary-light:#a5b4fc;--accent:#f43f5e;--accent2:#f59e0b;--success:#10b981;--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--sidebar:256px;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}button{cursor:pointer;border:none;font-family:inherit;}input,textarea,select{font-family:inherit;}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar);height:100vh;background:linear-gradient(180deg,#1e1b4b 0%,#312e81 60%,#4338ca 100%);display:flex;flex-direction:column;z-index:200;transition:transform .3s;overflow-y:auto;}
+.sidebar-brand{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px;}
+.brand-icon{width:40px;height:40px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:800;flex-shrink:0;}
+.brand-name{color:white;font-size:16px;font-weight:800;line-height:1.1;}
+.brand-name span{display:block;font-size:11px;font-weight:400;color:rgba(255,255,255,.45);}
+.sidebar-user{margin:14px;background:rgba(255,255,255,.08);border-radius:14px;padding:16px;text-align:center;}
+.user-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;overflow:hidden;}
+.user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.user-name{color:white;font-size:14px;font-weight:700;}
+.user-role{color:rgba(255,255,255,.45);font-size:11px;margin-top:2px;}
+.sidebar-nav{padding:8px 12px;flex:1;}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.3);padding:12px 10px 6px;font-weight:700;}
+.nav-link{display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;color:rgba(255,255,255,.6);font-size:13.5px;font-weight:600;margin-bottom:2px;transition:all .2s;cursor:pointer;}
+.nav-link i{width:18px;text-align:center;font-size:14px;}
+.nav-link:hover,.nav-link.active{background:rgba(255,255,255,.15);color:white;}
+.nav-link .badge-pill{margin-left:auto;background:var(--accent);color:white;padding:2px 7px;border-radius:12px;font-size:10px;font-weight:700;}
+.sidebar-footer{padding:14px 12px;border-top:1px solid rgba(255,255,255,.1);}
+.logout-btn{width:100%;padding:11px;background:var(--accent);color:white;border-radius:10px;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;}
+.logout-btn:hover{background:#e11d48;}
+.topbar{position:fixed;top:0;left:var(--sidebar);right:0;height:64px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:100;}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{display:none;background:none;font-size:20px;color:var(--primary);}
+.page-heading{font-size:18px;font-weight:800;color:var(--primary-dark);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.topbar-chip{background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:7px;}
+.content{margin-left:var(--sidebar);padding-top:64px;min-height:100vh;display:flex;flex-direction:column;}
+.page-body{padding:28px;flex:1;}
+.section{display:none;}.section.active{display:block;}
+.banner{background:linear-gradient(135deg,var(--primary-dark),var(--primary));border-radius:20px;padding:26px 30px;color:white;display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;position:relative;overflow:hidden;}
+.banner::before{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;background:rgba(255,255,255,.05);border-radius:50%;}
+.banner-text h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.banner-text p{font-size:13.5px;opacity:.8;max-width:400px;}
+.banner-icon{font-size:50px;position:relative;z-index:1;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:16px;margin-bottom:26px;}
+.stat-card{background:white;border-radius:16px;padding:18px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:transform .2s,box-shadow .2s;}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(99,102,241,.12);}
+.stat-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.ico-blue{background:#e0e7ff;color:var(--primary);}.ico-red{background:#fee2e2;color:var(--accent);}
+.ico-green{background:#d1fae5;color:var(--success);}.ico-yellow{background:#fef3c7;color:#b45309;}
+.stat-info h2{font-size:24px;font-weight:800;line-height:1;}
+.stat-info p{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px;}
+.sec-title{font-size:16px;font-weight:800;color:var(--primary-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-title i{color:var(--accent);font-size:15px;}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-blue{background:#e0e7ff;color:var(--primary);}.badge-green{background:#d1fae5;color:var(--success);}
+.badge-red{background:#fee2e2;color:var(--accent);}.badge-yellow{background:#fef3c7;color:#b45309;}
+.card{background:white;border-radius:16px;padding:22px;border:1px solid var(--border);margin-bottom:16px;transition:transform .2s,box-shadow .2s;}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.06);}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.card-title{font-size:15px;font-weight:700;}
+.card-meta{font-size:13px;color:var(--muted);margin-bottom:5px;}
+.card-meta b{color:var(--text);}
+.prog-bar{height:8px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin:6px 0;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:10px;}
+.form-card{background:white;border-radius:18px;padding:26px;border:1px solid var(--border);max-width:700px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13.5px;background:var(--bg);color:var(--text);transition:border-color .2s;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--primary-light);background:white;}
+.btn-primary{padding:11px 24px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:white;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 12px rgba(99,102,241,.3);transition:opacity .2s;}
+.btn-primary:hover{opacity:.9;}
+.btn-danger{padding:9px 18px;background:var(--accent);color:white;border-radius:8px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;}
+.btn-info{padding:8px 16px;background:#0ea5e9;color:white;border-radius:8px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;}
+/* Profile styles */
+.profile-banner{background:linear-gradient(135deg,var(--primary-dark),var(--primary));border-radius:20px;padding:28px;color:white;display:flex;align-items:center;gap:24px;margin-bottom:24px;}
+.profile-logo{width:90px;height:90px;border-radius:18px;border:3px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:32px;overflow:hidden;flex-shrink:0;}
+.profile-logo img{width:100%;height:100%;object-fit:cover;border-radius:15px;}
+.profile-info h2{font-size:22px;font-weight:800;margin-bottom:4px;}
+.profile-info p{font-size:13px;opacity:.8;}
+.profile-stats{display:flex;gap:28px;margin-top:12px;}
+.p-stat strong{display:block;font-size:22px;font-weight:800;}
+.p-stat span{font-size:12px;opacity:.7;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.info-box{background:white;border-radius:14px;padding:16px;border:1px solid var(--border);}
+.info-box label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);}
+.info-box p{font-size:14px;font-weight:600;margin-top:4px;}
+/* Team card */
+.team-card{background:white;border-radius:16px;border:1px solid var(--border);padding:20px;margin-bottom:14px;}
+/* Table */
+.table-wrap{background:white;border-radius:16px;border:1px solid var(--border);overflow:auto;margin-bottom:20px;}
+table{width:100%;border-collapse:collapse;min-width:500px;}
+th{background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left;}
+td{padding:11px 16px;font-size:13px;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#f8faff;}
+footer{background:linear-gradient(160deg,#1e1b4b,#0f0e2e);color:white;padding:38px 28px 18px;margin-top:auto;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:28px;margin-bottom:26px;}
+.footer-col h3{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--primary-light);margin-bottom:12px;}
+.footer-col a,.footer-col p{display:block;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px;}
+.footer-col a:hover{color:white;}
+.newsletter-input{width:100%;padding:10px 12px;border-radius:8px;border:none;margin-bottom:8px;background:rgba(255,255,255,.1);color:white;font-family:inherit;font-size:13px;}
+.newsletter-btn{width:100%;padding:10px;background:var(--accent);color:white;border-radius:8px;font-size:13px;font-weight:700;}
+.copyright{text-align:center;font-size:12px;color:rgba(255,255,255,.3);padding-top:18px;border-top:1px solid rgba(255,255,255,.07);}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:199;}
+@media(max-width:960px){.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}.overlay.show{display:block;}.content{margin-left:0;}.topbar{left:0;}.hamburger{display:flex;align-items:center;}.page-body{padding:18px;}.form-row{grid-template-columns:1fr;}.profile-grid{grid-template-columns:1fr;}.profile-banner{flex-direction:column;text-align:center;}.profile-stats{justify-content:center;}}
+@media(max-width:520px){.stats-grid{grid-template-columns:1fr 1fr;}.banner{flex-direction:column;gap:12px;text-align:center;}.topbar-chip{display:none;}}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">S</div>
+    <div class="brand-name">Solvex-AI <span>Provider Portal</span></div>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="sidebarAvatar"><span id="sidebarInitial">P</span></div>
+    <div class="user-name" id="sidebarCompanyName">Company</div>
+    <div class="user-role" id="sidebarIndustry">Industry</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Main</div>
+    <div class="nav-link active" onclick="showSection('dashboard',this)"><i class="fa-solid fa-house"></i> Dashboard</div>
+    <div class="nav-link" onclick="showSection('post',this)"><i class="fa-solid fa-plus-circle"></i> Post Problem</div>
+    <div class="nav-link" onclick="showSection('myProblems',this)"><i class="fa-solid fa-list-check"></i> My Problems</div>
+    <div class="nav-label">Teams</div>
+    <div class="nav-link" onclick="showSection('applications',this)"><i class="fa-solid fa-users"></i> Applications <span class="badge-pill" id="appCount">0</span></div>
+    <div class="nav-link" onclick="showSection('teams',this)"><i class="fa-solid fa-people-group"></i> My Teams</div>
+    <div class="nav-label">Account</div>
+    <div class="nav-link" onclick="showSection('profile',this)"><i class="fa-solid fa-building"></i> Company Profile</div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+  </div>
+</aside>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+    <span class="page-heading" id="pageHeading">Dashboard</span>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-chip"><i class="fa-solid fa-building"></i><span id="topbarName">Provider</span></div>
+  </div>
+</div>
+
+<div class="content">
+<div class="page-body">
+
+  <!-- DASHBOARD -->
+  <div class="section active" id="dashboard">
+    <div class="banner">
+      <div class="banner-text">
+        <h1>Welcome, <span id="welcomeName">Provider</span>! 🏢</h1>
+        <p>Apni problems manage karein, teams track karein aur students ke saath collaborate karein.</p>
+      </div>
+      <div class="banner-icon">💼</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-ico ico-blue"><i class="fa-solid fa-clipboard-list"></i></div><div class="stat-info"><h2 id="statProblems">0</h2><p>Problems Posted</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-green"><i class="fa-solid fa-check-circle"></i></div><div class="stat-info"><h2 id="statApproved">0</h2><p>Approved</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-yellow"><i class="fa-solid fa-people-group"></i></div><div class="stat-info"><h2 id="statTeams">0</h2><p>Active Teams</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-red"><i class="fa-solid fa-indian-rupee-sign"></i></div><div class="stat-info"><h2 id="statInvest">₹0</h2><p>Total Investment</p></div></div>
+    </div>
+    <div class="sec-title"><i class="fa-solid fa-fire"></i> Recent Activity</div>
+    <div id="recentActivity"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- POST PROBLEM -->
+  <div class="section" id="post">
+    <div class="sec-title"><i class="fa-solid fa-plus-circle"></i> Post New Problem</div>
+    <div class="form-card">
+      <div class="form-group"><label>Problem Title *</label><input type="text" id="probTitle" placeholder="e.g. Inventory Management System"></div>
+      <div class="form-group"><label>Description *</label><textarea rows="4" id="probDesc" placeholder="Problem describe karein..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Category</label>
+          <select id="probCategory"><option>Software</option><option>Automation</option><option>Data</option><option>Mechanical</option><option>AI/ML</option><option>Web Development</option></select>
+        </div>
+        <div class="form-group"><label>Budget (₹) *</label><input type="number" id="probBudget" placeholder="50000"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Timeline</label>
+          <select id="probTimeline"><option>1 Month</option><option>2 Months</option><option>3 Months</option><option>6 Months</option></select>
+        </div>
+        <div class="form-group"><label>Difficulty</label>
+          <select id="probDiff"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="postProblem()"><i class="fa-solid fa-paper-plane"></i> Submit for Approval</button>
+    </div>
+  </div>
+
+  <!-- MY PROBLEMS -->
+  <div class="section" id="myProblems">
+    <div class="sec-title"><i class="fa-solid fa-list-check"></i> My Problems</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Title</th><th>Category</th><th>Budget</th><th>Status</th><th>Timeline</th></tr></thead>
+        <tbody id="problemTableBody"><tr><td colspan="5" style="text-align:center;color:var(--muted)">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- APPLICATIONS -->
+  <div class="section" id="applications">
+    <div class="sec-title"><i class="fa-solid fa-users"></i> Student Applications</div>
+    <div id="applicationsList"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- MY TEAMS -->
+  <div class="section" id="teams">
+    <div class="sec-title"><i class="fa-solid fa-people-group"></i> Teams Working on My Problems</div>
+    <div id="teamsList"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="section" id="profile">
+    <div id="profileView">
+      <div class="profile-banner">
+        <div class="profile-logo" id="profileLogoDisplay">🏢</div>
+        <div class="profile-info">
+          <h2 id="dispCompany">Company Name</h2>
+          <p id="dispIndustry">Industry</p>
+          <div class="profile-stats">
+            <div class="p-stat"><strong id="dispProbCount">0</strong><span>Problems</span></div>
+            <div class="p-stat"><strong id="dispTeamCount">0</strong><span>Teams</span></div>
+            <div class="p-stat"><strong id="dispInvestDisplay">₹0</strong><span>Investment</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="profile-grid">
+        <div class="info-box"><label>Contact Person</label><p id="dispContact">—</p></div>
+        <div class="info-box"><label>📞 Mobile</label><p id="dispPhone" style="font-size:16px;font-weight:800;color:var(--primary-dark)">—</p></div>
+        <div class="info-box"><label>Email</label><p id="dispEmail">—</p></div>
+        <div class="info-box"><label>City</label><p id="dispCity">—</p></div>
+        <div class="info-box"><label>Tech Stack</label><p id="dispTech">—</p></div>
+        <div class="info-box"><label>Budget Range</label><p id="dispBudget">—</p></div>
+        <div class="info-box"><label>Collaboration Type</label><p id="dispCollab">—</p></div>
+        <div class="info-box"><label>About Company</label><p id="dispAbout">—</p></div>
+      </div>
+      <div id="provProfileUpdateInfo" style="background:#fef3c7;border:1px solid #fde68a;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#92400e;display:none">
+        <i class="fa-solid fa-clock" style="margin-right:6px"></i><span id="provProfileUpdateMsg"></span>
+      </div>
+      <button class="btn-primary" onclick="toggleEdit()"><i class="fa-solid fa-pen"></i> Edit Profile</button>
+    </div>
+    <div id="profileEdit" style="display:none;margin-top:20px">
+      <div class="form-card">
+        <div class="sec-title"><i class="fa-solid fa-pen"></i> Edit Company Profile</div>
+        <div class="form-group"><label>Company Logo</label><input type="file" id="logoInput" accept="image/*"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Company Name</label><input type="text" id="fCompany"></div>
+          <div class="form-group"><label>Industry</label><input type="text" id="fIndustry"></div>
+        </div>
+        <div class="form-group"><label>About Company</label><textarea rows="3" id="fAbout"></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Contact Person</label><input type="text" id="fContact"></div>
+          <div class="form-group"><label>Mobile</label><input type="text" id="fMobile"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>City</label><input type="text" id="fCity"></div>
+          <div class="form-group"><label>Tech Stack</label><input type="text" id="fTech"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Budget Range</label>
+            <select id="fBudgetRange"><option>₹10k - ₹50k</option><option>₹50k - ₹1L</option><option>₹1L - ₹5L</option><option>₹5L+</option></select>
+          </div>
+          <div class="form-group"><label>Collaboration Type</label>
+            <select id="fCollab"><option>Internship</option><option>Paid Project</option><option>Research</option><option>Volunteer</option></select>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="btn-primary" onclick="saveProfile()"><i class="fa-solid fa-floppy-disk"></i> Save Profile</button>
+          <button class="btn-danger" onclick="toggleEdit()"><i class="fa-solid fa-xmark"></i> Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h3>Quick Links</h3><a href="#">About Us</a><a href="#">Contact Us</a><a href="#">Privacy Policy</a></div>
+    <div class="footer-col"><h3>Contact</h3><p>📍 Jaipur, Rajasthan</p><p>📞 +91 9351360177</p><p>✉️ praveennama7665@gmail.com</p></div>
+    <div class="footer-col"><h3>Newsletter</h3><input type="email" class="newsletter-input" id="newsEmail" placeholder="Your email"><button class="newsletter-btn" onclick="alert('✅ Subscribed!')">Subscribe</button></div>
+  </div>
+  <div class="copyright">© Solvex-AI – Poornima University | All Rights Reserved</div>
+</footer>
+</div>
+
+<script>
+const providerEmail = sessionStorage.getItem('email')||'';
+let profileData = {};
+let myProblems  = [];
+
+// Sidebar
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+function showSection(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el)el.classList.add('active');
+  const t={dashboard:'Dashboard',post:'Post Problem',myProblems:'My Problems',applications:'Applications',teams:'My Teams',profile:'Company Profile'};
+  document.getElementById('pageHeading').textContent=t[id]||id;
+  closeSidebar();
+}
+function logout(){sessionStorage.clear();window.location.href='signin.html';}
+
+// ── LOAD PROFILE from DB ──
+async function loadProfile(){
+  try{
+    const res = await fetch('/get-profile?email='+encodeURIComponent(providerEmail));
+    const data = await res.json();
+    if(data.email){
+      profileData = data;
+      renderProfile();
+    }
+  }catch(e){console.log(e);}
+}
+
+function renderProfile(){
+  const p = profileData;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v||'—';};
+  set('dispCompany', p.company);
+  set('dispIndustry', p.industry);
+  set('dispContact', p.username);
+  set('dispPhone', p.mobile);
+  set('dispEmail', p.email||providerEmail);
+  set('dispCity', p.city);
+  set('dispTech', p.tech_stack);
+  set('dispBudget', p.budget_range);
+  set('dispCollab', p.collab_type);
+  set('dispAbout', p.about);
+  set('sidebarCompanyName', p.company||'Company');
+  set('sidebarIndustry', p.industry||'Industry');
+  set('welcomeName', p.company||p.username||'Provider');
+  set('topbarName', p.company||p.username||'Provider');
+  const ini = document.getElementById('sidebarInitial');
+  if(ini) ini.textContent=(p.company||p.username||'P').charAt(0).toUpperCase();
+
+  if(p.logo_data){
+    const logo = document.getElementById('profileLogoDisplay');
+    if(logo) logo.innerHTML=`<img src="${p.logo_data}" alt="logo">`;
+    const av = document.getElementById('sidebarAvatar');
+    if(av) av.innerHTML=`<img src="${p.logo_data}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+  }
+
+  // Fill edit form
+  const fv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+  fv('fCompany',p.company); fv('fIndustry',p.industry); fv('fAbout',p.about);
+  fv('fContact',p.username); fv('fMobile',p.mobile); fv('fCity',p.city);
+  fv('fTech',p.tech_stack);
+  if(p.budget_range&&document.getElementById('fBudgetRange'))
+    document.getElementById('fBudgetRange').value=p.budget_range;
+  if(p.collab_type&&document.getElementById('fCollab'))
+    document.getElementById('fCollab').value=p.collab_type;
+  // 15-din restriction
+  const infoBox=document.getElementById('provProfileUpdateInfo');
+  const msgEl=document.getElementById('provProfileUpdateMsg');
+  if(infoBox && p.profile_updated_at){
+    const last=new Date(p.profile_updated_at);
+    const daysSince=Math.floor((new Date()-last)/(1000*60*60*24));
+    const daysLeft=15-daysSince;
+    if(daysLeft>0){infoBox.style.display='block';msgEl.textContent=`Aapne ${daysSince} din pehle profile update ki thi. ${daysLeft} din baad dobara update kar sakte hain.`;}
+    else{infoBox.style.display='none';}
+  }
+}
+
+function toggleEdit(){
+  const edit = document.getElementById('profileEdit');
+  const view = document.getElementById('profileView');
+  const isEditing = edit.style.display!=='none';
+  edit.style.display = isEditing?'none':'block';
+  view.style.display = isEditing?'block':'none';
+}
+
+async function saveProfile(){
+  const logoInput = document.getElementById('logoInput');
+  let logoData = profileData.logo_data||'';
+  if(logoInput.files[0]){
+    logoData = await new Promise(res=>{
+      const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(logoInput.files[0]);
+    });
+  }
+  const payload = {
+    email: providerEmail,
+    username: document.getElementById('fContact').value,
+    company:  document.getElementById('fCompany').value,
+    industry: document.getElementById('fIndustry').value,
+    about:    document.getElementById('fAbout').value,
+    mobile:   document.getElementById('fMobile').value,
+    city:     document.getElementById('fCity').value,
+    tech_stack:   document.getElementById('fTech').value,
+    budget_range: document.getElementById('fBudgetRange').value,
+    collab_type:  document.getElementById('fCollab').value,
+    logo_data: logoData
+  };
+  try{
+    const res = await fetch('/update-profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data = await res.json();
+    if(data.status==='success'){
+      profileData = {...profileData, ...payload};
+      renderProfile();
+      toggleEdit();
+      alert('✅ Profile save ho gayi!');
+    }else{
+      alert(data.message||'Profile update nahi ho payi!');
+    }
+  }catch(e){alert('Server error!');}
+}
+
+// ── POST PROBLEM ──
+async function postProblem(){
+  const title = document.getElementById('probTitle').value.trim();
+  const desc  = document.getElementById('probDesc').value.trim();
+  const budget= document.getElementById('probBudget').value;
+  if(!title||!desc||!budget){alert('Saare required fields bharo!');return;}
+  try{
+    const res = await fetch('/add-problem',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({title,description:desc,category:document.getElementById('probCategory').value,
+        budget,timeline:document.getElementById('probTimeline').value,
+        difficulty:document.getElementById('probDiff').value,provider_email:providerEmail})});
+    const data = await res.json();
+    if(data.status==='success'){
+      alert('✅ Problem submit ho gayi! Faculty approval ka wait karein.');
+      document.getElementById('probTitle').value='';
+      document.getElementById('probDesc').value='';
+      document.getElementById('probBudget').value='';
+      loadMyProblems();
+    }else{alert('Error: '+data.message);}
+  }catch(e){alert('Server error!');}
+}
+
+// ── LOAD MY PROBLEMS ──
+async function loadMyProblems(){
+  try{
+    const res = await fetch('/get-my-problems?email='+encodeURIComponent(providerEmail));
+    myProblems = await res.json();
+    const tbody = document.getElementById('problemTableBody');
+    if(myProblems.length===0){
+      tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted)">Koi problem post nahi ki abhi.</td></tr>';
+    }else{
+      tbody.innerHTML=myProblems.map(p=>`
+        <tr>
+          <td><b>${p.title}</b></td>
+          <td><span class="badge badge-blue">${p.category}</span></td>
+          <td>₹${p.budget}</td>
+          <td><span class="badge ${p.status==='approved'?'badge-green':p.status==='rejected'?'badge-red':'badge-yellow'}">${p.status||'Pending'}</span></td>
+          <td>${p.timeline||'—'}</td>
+        </tr>`).join('');
+    }
+    const approved = myProblems.filter(p=>p.status==='approved');
+    const totalBudget = myProblems.reduce((s,p)=>s+parseInt(p.budget||0),0);
+    document.getElementById('statProblems').textContent = myProblems.length;
+    document.getElementById('statApproved').textContent = approved.length;
+    document.getElementById('statInvest').textContent   = '₹'+totalBudget.toLocaleString('en-IN');
+    document.getElementById('dispProbCount').textContent= myProblems.length;
+    document.getElementById('dispInvestDisplay').textContent='₹'+totalBudget.toLocaleString('en-IN');
+    // Recent activity
+    const recent = document.getElementById('recentActivity');
+    if(myProblems.length>0){
+      recent.innerHTML=myProblems.slice(0,3).map(p=>`
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">${p.title}</div>
+            <span class="badge ${p.status==='approved'?'badge-green':p.status==='rejected'?'badge-red':'badge-yellow'}">${p.status||'Pending'}</span>
+          </div>
+          <div class="card-meta"><b>Category:</b> ${p.category} &nbsp;|&nbsp; <b>Budget:</b> ₹${p.budget}</div>
+        </div>`).join('');
+    }else{
+      recent.innerHTML='<p style="color:var(--muted);font-size:14px">Koi activity nahi abhi.</p>';
+    }
+  }catch(e){console.log(e);}
+}
+
+// ── LOAD TEAMS ──
+async function loadTeams(){
+  try{
+    const res = await fetch('/get-applications?email='+encodeURIComponent(providerEmail));
+    const apps = await res.json();
+    const box  = document.getElementById('teamsList');
+    document.getElementById('statTeams').textContent = apps.length;
+    document.getElementById('dispTeamCount').textContent = apps.length;
+    if(apps.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi active team nahi abhi.</p>';return;}
+    box.innerHTML=apps.map(t=>`
+      <div class="team-card">
+        <div class="card-header">
+          <div class="card-title">👤 ${t.student_name||'Student'}</div>
+          <span class="badge ${t.status==='completed'?'badge-green':t.status==='rejected'?'badge-red':'badge-yellow'}">${t.status||'In Progress'}</span>
+        </div>
+        <div class="card-meta"><b>Problem:</b> ${t.problem_title||'—'}</div>
+        <div class="card-meta"><b>Email:</b> ${t.student_email||'—'}</div>
+        <div class="card-meta"><b>GitHub:</b> <a href="${t.github}" target="_blank" style="color:var(--primary)">${t.github||'—'}</a></div>
+        <div class="card-meta"><b>Team Members:</b> ${t.team_members||'Solo'}</div>
+        <div style="margin:10px 0">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);display:flex;justify-content:space-between"><span>Progress</span><span>${t.progress||'0%'}</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:${t.progress||'0%'}"></div></div>
+        </div>
+        ${t.faculty_remark?`<div class="card-meta"><b>Faculty Remark:</b> ${t.faculty_remark}</div>`:''}
+      </div>`).join('');
+  }catch(e){console.log(e);}
+}
+
+// ── LOAD APPLICATIONS ──
+async function loadApplications(){
+  try{
+    const res  = await fetch('/get-applications?email='+encodeURIComponent(providerEmail));
+    const apps = await res.json();
+    const box  = document.getElementById('applicationsList');
+    document.getElementById('appCount').textContent = apps.length;
+    if(apps.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi application nahi aayi abhi.</p>';return;}
+    box.innerHTML=apps.map(a=>`
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">${a.student_name||'Student'}</div><span class="badge badge-blue">${a.problem_title||'Problem'}</span></div>
+          <span class="badge ${a.status==='completed'?'badge-green':a.status==='rejected'?'badge-red':'badge-yellow'}">${a.status||'Pending'}</span>
+        </div>
+        <div class="card-meta"><b>Email:</b> ${a.student_email||'—'}</div>
+        <div class="card-meta"><b>GitHub:</b> <a href="${a.github}" target="_blank" style="color:var(--primary)">${a.github||'—'}</a></div>
+        <div class="card-meta"><b>Team:</b> ${a.team_members||'Solo'}</div>
+        <div class="card-meta"><b>Progress:</b> ${a.progress||'0%'}</div>
+        ${a.faculty_remark?`<div class="card-meta"><b>Faculty Remark:</b> ${a.faculty_remark}</div>`:''}
+      </div>`).join('');
+  }catch(e){console.log(e);}
+}
+
+// ── INIT ──
+window.onload=async function(){
+  await loadProfile();
+  await loadMyProblems();
+  await loadTeams();
+  await loadApplications();
+};
+</script>
+</body>
+</html>

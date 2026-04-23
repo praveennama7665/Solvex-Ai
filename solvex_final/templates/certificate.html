@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Certificates | Solvex-AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="icon" href="../Solvex-Ai-logo.png">
+
+<style>
+:root{
+  --primary:#4f46e5;--primary-dark:#3730a3;--primary-light:#a5b4fc;
+  --accent:#f43f5e;--success:#059669;--bg:#f1f5f9;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;
+  --sidebar:256px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;font-family:inherit;}
+
+/* ---- SIDEBAR ---- */
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar);height:100vh;background:linear-gradient(180deg,#0f172a,#1e1b4b 50%,#312e81);display:flex;flex-direction:column;z-index:200;transition:transform .3s;overflow-y:auto;}
+.sb-brand{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px;}
+.sb-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),#f59e0b);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:800;flex-shrink:0;}
+.sb-name{color:white;font-size:16px;font-weight:800;line-height:1.1;}
+.sb-name span{display:block;font-size:11px;font-weight:400;color:rgba(255,255,255,.4);margin-top:2px;}
+.sb-user{margin:16px;background:rgba(255,255,255,.08);border-radius:14px;padding:16px;text-align:center;}
+.sb-avatar{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;}
+.sb-uname{color:white;font-size:14px;font-weight:700;}
+.sb-email{color:rgba(255,255,255,.4);font-size:11px;margin-top:2px;}
+.sb-nav{padding:8px 12px;flex:1;}
+.sb-label{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.3);padding:12px 10px 6px;font-weight:700;}
+.sb-link{display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;color:rgba(255,255,255,.6);font-size:13.5px;font-weight:600;margin-bottom:2px;transition:all .2s;cursor:pointer;}
+.sb-link i{width:18px;text-align:center;font-size:14px;}
+.sb-link:hover,.sb-link.active{background:rgba(255,255,255,.15);color:white;}
+.sb-footer{padding:14px 12px;border-top:1px solid rgba(255,255,255,.1);}
+.logout-btn{width:100%;padding:11px;background:var(--accent);color:white;border-radius:10px;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;}
+.logout-btn:hover{background:#e11d48;}
+
+/* ---- TOPBAR ---- */
+.topbar{position:fixed;top:0;left:var(--sidebar);right:0;height:64px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:100;transition:left .3s;}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{display:none;background:none;font-size:20px;color:var(--primary);}
+.page-heading{font-size:18px;font-weight:800;color:var(--primary-dark);}
+.topbar-chip{background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:7px;}
+
+/* ---- MAIN ---- */
+.content{margin-left:var(--sidebar);padding-top:64px;min-height:100vh;display:flex;flex-direction:column;}
+.page-body{padding:32px;flex:1;}
+
+/* ---- BANNER ---- */
+.banner{background:linear-gradient(135deg,#1e1b4b,#312e81,#4338ca);border-radius:20px;padding:28px 32px;color:white;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;position:relative;overflow:hidden;}
+.banner::before{content:'';position:absolute;right:-20px;top:-20px;width:150px;height:150px;background:rgba(255,255,255,.05);border-radius:50%;}
+.banner-text h1{font-size:24px;font-weight:800;margin-bottom:6px;}
+.banner-text p{font-size:14px;opacity:.8;}
+.banner-icon{font-size:54px;position:relative;z-index:1;}
+
+/* ---- STATS ---- */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:16px;margin-bottom:32px;}
+.stat-card{background:white;border-radius:16px;padding:18px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:transform .2s,box-shadow .2s;}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(79,70,229,.12);}
+.stat-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.ico-gold{background:#fef9c3;color:#a16207;}
+.ico-green{background:#d1fae5;color:var(--success);}
+.ico-blue{background:#e0e7ff;color:var(--primary);}
+.stat-info h2{font-size:26px;font-weight:800;line-height:1;}
+.stat-info p{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;}
+
+/* ---- SEC TITLE ---- */
+.sec-title{font-size:17px;font-weight:800;color:var(--primary-dark);margin-bottom:24px;display:flex;align-items:center;gap:8px;}
+.sec-title i{color:#a16207;font-size:16px;}
+
+/* ============================================================
+   CERTIFICATE SECTION — the big layout block
+   ============================================================ */
+.cert-section{
+  display:flex;align-items:center;gap:52px;
+  margin-bottom:52px;padding:36px;
+  background:white;border-radius:24px;border:1px solid var(--border);
+  box-shadow:0 2px 12px rgba(0,0,0,.04);
+  flex-wrap:wrap;transition:box-shadow .35s;
+}
+.cert-section:hover{box-shadow:0 14px 36px rgba(0,0,0,.09);}
+
+/* ============================================================
+   CERTIFICATE CARD (the actual certificate)
+   ============================================================ */
+.certificate{
+  width:500px;min-width:500px;
+  position:relative;
+  font-family:'Cormorant Garamond',serif;
+  box-shadow:0 16px 50px rgba(0,0,0,.2);
+  flex-shrink:0;
+  transition:transform .3s,box-shadow .35s;
+  overflow:hidden;
+}
+.certificate:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 28px 70px rgba(0,0,0,.25);}
+
+.cert-body{padding:36px 40px;position:relative;}
+
+/* OUTER BORDER */
+.cert-border-outer{position:absolute;inset:8px;border:2.5px solid;pointer-events:none;z-index:3;}
+/* INNER BORDER */
+.cert-border-inner{position:absolute;inset:14px;border:1px solid;opacity:.45;pointer-events:none;z-index:3;}
+
+/* CORNER ORNAMENTS */
+.c-corner{position:absolute;font-size:20px;line-height:1;z-index:4;pointer-events:none;}
+.c-tl{top:4px;left:6px;}
+.c-tr{top:4px;right:6px;}
+.c-bl{bottom:4px;left:6px;}
+.c-br{bottom:4px;right:6px;}
+
+/* WATERMARK */
+.cert-wm{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-20deg);
+  font-family:'Cinzel',serif;font-size:48px;font-weight:900;
+  letter-spacing:6px;pointer-events:none;z-index:0;opacity:.04;white-space:nowrap;
+}
+
+/* CONTENT LAYER */
+.cert-inner{position:relative;z-index:2;}
+
+/* HEADER ROW */
+.cert-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.cert-brand-name{font-family:'Cinzel',serif;font-size:17px;font-weight:700;letter-spacing:.8px;}
+.cert-brand-sub{font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-top:3px;opacity:.65;}
+.cert-seal-circle{
+  width:50px;height:50px;border-radius:50%;border:2.5px solid;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  flex-shrink:0;
+}
+
+/* HORIZONTAL RULE */
+.cert-hr{height:2px;margin:0 0 14px;}
+
+/* CERT OF */
+.cert-of-text{
+  text-align:center;font-family:'Cinzel',serif;
+  font-size:9.5px;letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:5px;opacity:.65;
+}
+
+/* MAIN TITLE */
+.cert-main-title{
+  text-align:center;font-family:'Cinzel',serif;
+  font-size:21px;font-weight:700;line-height:1.35;margin-bottom:12px;
+}
+
+/* ORNAMENT LINE */
+.cert-ornament{text-align:center;font-size:14px;letter-spacing:5px;opacity:.55;margin-bottom:10px;}
+
+/* PRESENTED TO */
+.cert-presented{
+  text-align:center;font-size:10.5px;letter-spacing:2px;
+  text-transform:uppercase;opacity:.55;margin-bottom:4px;
+}
+
+/* NAME */
+.cert-name{
+  text-align:center;font-family:'Cinzel',serif;
+  font-size:26px;font-weight:700;margin-bottom:5px;
+}
+
+/* NAME RULE */
+.cert-name-rule{
+  width:65%;height:1.5px;margin:0 auto 13px;
+  background:linear-gradient(90deg,transparent,currentColor,transparent);
+}
+
+/* CERT TEXT */
+.cert-text{
+  text-align:center;font-size:12px;line-height:1.75;
+  opacity:.72;margin-bottom:18px;font-style:italic;
+}
+
+/* BOTTOM */
+.cert-bottom-row{display:flex;justify-content:space-between;align-items:flex-end;}
+.cert-sign-col{text-align:center;}
+.cert-sign-rule{height:1px;width:90px;opacity:.4;margin-bottom:4px;background:currentColor;}
+.cert-sign-txt{font-size:9.5px;letter-spacing:1px;opacity:.6;text-transform:uppercase;}
+.cert-center-col{text-align:center;}
+.cert-center-circle{
+  width:44px;height:44px;border-radius:50%;border:2px solid;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin:0 auto;
+}
+.cert-id-txt{font-size:8px;opacity:.45;margin-top:3px;letter-spacing:.3px;}
+
+/* ============================================================
+   GREEN THEME — Problem Solver
+   ============================================================ */
+.cert-green{background:linear-gradient(160deg,#ffffff,#f0fdf4);}
+.cert-green .cert-border-outer{border-color:#059669;}
+.cert-green .cert-border-inner{border-color:#059669;}
+.cert-green .c-corner,.cert-green .cert-wm{color:#059669;}
+.cert-green .cert-brand-name,.cert-green .cert-main-title,.cert-green .cert-name{color:#064e3b;}
+.cert-green .cert-brand-sub,.cert-green .cert-of-text,.cert-green .cert-presented,.cert-green .cert-ornament{color:#059669;}
+.cert-green .cert-seal-circle{border-color:#059669;color:#059669;background:#d1fae5;}
+.cert-green .cert-hr{background:linear-gradient(90deg,transparent,#059669,transparent);}
+.cert-green .cert-name-rule{color:#059669;}
+.cert-green .cert-text{color:#065f46;}
+.cert-green .cert-sign-rule{background:#059669;}
+.cert-green .cert-sign-txt,.cert-green .cert-sign-col{color:#064e3b;}
+.cert-green .cert-center-circle{border-color:#059669;color:#059669;background:#d1fae5;}
+.cert-green .cert-id-txt{color:#059669;}
+
+/* ============================================================
+   BLUE THEME — Industry Collaboration
+   ============================================================ */
+.cert-blue{background:linear-gradient(160deg,#ffffff,#eff6ff);}
+.cert-blue .cert-border-outer{border-color:#1d4ed8;}
+.cert-blue .cert-border-inner{border-color:#1d4ed8;}
+.cert-blue .c-corner,.cert-blue .cert-wm{color:#1d4ed8;}
+.cert-blue .cert-brand-name,.cert-blue .cert-main-title,.cert-blue .cert-name{color:#1e3a8a;}
+.cert-blue .cert-brand-sub,.cert-blue .cert-of-text,.cert-blue .cert-presented,.cert-blue .cert-ornament{color:#1d4ed8;}
+.cert-blue .cert-seal-circle{border-color:#1d4ed8;color:#1d4ed8;background:#dbeafe;}
+.cert-blue .cert-hr{background:linear-gradient(90deg,transparent,#1d4ed8,transparent);}
+.cert-blue .cert-name-rule{color:#1d4ed8;}
+.cert-blue .cert-text{color:#1e3a8a;}
+.cert-blue .cert-sign-rule{background:#1d4ed8;}
+.cert-blue .cert-sign-txt,.cert-blue .cert-sign-col{color:#1e3a8a;}
+.cert-blue .cert-center-circle{border-color:#1d4ed8;color:#1d4ed8;background:#dbeafe;}
+.cert-blue .cert-id-txt{color:#1d4ed8;}
+
+/* ============================================================
+   RED THEME — Innovation Excellence
+   ============================================================ */
+.cert-red{background:linear-gradient(160deg,#ffffff,#fff1f2);}
+.cert-red .cert-border-outer{border-color:#dc2626;}
+.cert-red .cert-border-inner{border-color:#dc2626;}
+.cert-red .c-corner,.cert-red .cert-wm{color:#dc2626;}
+.cert-red .cert-brand-name,.cert-red .cert-main-title,.cert-red .cert-name{color:#7f1d1d;}
+.cert-red .cert-brand-sub,.cert-red .cert-of-text,.cert-red .cert-presented,.cert-red .cert-ornament{color:#dc2626;}
+.cert-red .cert-seal-circle{border-color:#dc2626;color:#dc2626;background:#fee2e2;}
+.cert-red .cert-hr{background:linear-gradient(90deg,transparent,#dc2626,transparent);}
+.cert-red .cert-name-rule{color:#dc2626;}
+.cert-red .cert-text{color:#7f1d1d;}
+.cert-red .cert-sign-rule{background:#dc2626;}
+.cert-red .cert-sign-txt,.cert-red .cert-sign-col{color:#7f1d1d;}
+.cert-red .cert-center-circle{border-color:#dc2626;color:#dc2626;background:#fee2e2;}
+.cert-red .cert-id-txt{color:#dc2626;}
+
+/* ============================================================
+   INFO PANEL (right of certificate)
+   ============================================================ */
+.cert-info{flex:1;min-width:220px;}
+.cert-info h2{font-size:21px;font-weight:800;color:var(--text);margin-bottom:10px;}
+.cert-info p{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:18px;}
+
+.cert-meta-list{margin-bottom:18px;}
+.cert-meta-item{display:flex;align-items:center;gap:9px;font-size:13px;margin-bottom:8px;}
+.cert-meta-item i{width:16px;text-align:center;}
+
+.status-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 16px;border-radius:20px;font-size:12.5px;font-weight:700;margin-bottom:18px;
+}
+.pill-approved{background:#d1fae5;color:#065f46;}
+.pill-pending{background:#fef3c7;color:#92400e;}
+
+.locked-notice{
+  background:#fffbeb;border:1px solid #fde68a;border-radius:10px;
+  padding:11px 15px;font-size:13px;color:#92400e;font-weight:600;
+  display:flex;align-items:center;gap:8px;margin-bottom:16px;
+}
+
+.dl-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:13px 30px;border-radius:12px;
+  font-size:14px;font-weight:700;color:white;
+  box-shadow:0 6px 18px rgba(0,0,0,.2);
+  transition:all .3s;
+}
+.dl-btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.25);}
+.dl-btn:disabled{background:#94a3b8 !important;box-shadow:none;transform:none;cursor:not-allowed;opacity:.7;}
+.dl-green{background:linear-gradient(135deg,#059669,#10b981);}
+.dl-blue{background:linear-gradient(135deg,#1d4ed8,#3b82f6);}
+.dl-red{background:linear-gradient(135deg,#dc2626,#ef4444);}
+
+/* EMPTY STATE */
+.empty-state{background:white;border-radius:20px;border:1px solid var(--border);padding:60px;text-align:center;}
+.empty-state .icon{font-size:60px;margin-bottom:18px;opacity:.35;}
+.empty-state h3{font-size:20px;font-weight:700;margin-bottom:8px;}
+.empty-state p{font-size:14px;color:var(--muted);}
+
+/* FOOTER */
+footer{background:linear-gradient(160deg,#1e1b4b,#0f0e2e);color:white;padding:36px 28px 18px;margin-top:auto;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;margin-bottom:24px;}
+.footer-col h3{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--primary-light);margin-bottom:12px;}
+.footer-col a,.footer-col p{display:block;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px;}
+.footer-col a:hover{color:white;}
+.copyright{text-align:center;font-size:12px;color:rgba(255,255,255,.3);padding-top:18px;border-top:1px solid rgba(255,255,255,.07);}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:199;}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .overlay.show{display:block;}
+  .content{margin-left:0;}
+  .topbar{left:0;}
+  .hamburger{display:flex;align-items:center;}
+  .page-body{padding:18px;}
+  .banner{flex-direction:column;gap:12px;text-align:center;}
+  .cert-section{flex-direction:column;padding:22px;gap:28px;}
+  .certificate{min-width:unset;width:100%;max-width:500px;}
+}
+@media(max-width:520px){
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .topbar-chip{display:none;}
+  .cert-main-title{font-size:16px;}
+  .cert-name{font-size:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ============================================================
+     HIDDEN CERTS FOR PDF (off-screen, large size)
+     ============================================================ -->
+<!-- GREEN PDF -->
+<div id="pdfWrap_green" style="position:fixed;top:-9999px;left:-9999px;z-index:-10;">
+  <div class="certificate cert-green" id="pdfCert_green" style="width:760px;">
+    <div class="cert-body">
+      <div class="cert-border-outer"></div><div class="cert-border-inner"></div>
+      <div class="c-corner c-tl">✦</div><div class="c-corner c-tr">✦</div>
+      <div class="c-corner c-bl">✦</div><div class="c-corner c-br">✦</div>
+      <div class="cert-wm">SOLVEX-AI</div>
+      <div class="cert-inner">
+        <div class="cert-header">
+          <div><div class="cert-brand-name">Solvex-AI</div><div class="cert-brand-sub">Eco-World Problem Solve Platform</div></div>
+          <div class="cert-seal-circle"><i class="fa-solid fa-leaf"></i></div>
+        </div>
+        <div class="cert-hr"></div>
+        <div class="cert-of-text">Certificate of Achievement</div>
+        <div class="cert-main-title">PROBLEM SOLVER<br>CERTIFICATE</div>
+        <div class="cert-ornament">— ✦ ✦ ✦ —</div>
+        <div class="cert-presented">This Certificate is Proudly Presented to</div>
+        <div class="cert-name" id="g_name">Student Name</div>
+        <div class="cert-name-rule"></div>
+        <div class="cert-text">This is to certify that the above student has successfully solved real-world technical challenges<br>under the supervision of faculty and industry mentors at Poornima University through Solvex-AI.</div>
+        <div class="cert-bottom-row">
+          <div class="cert-sign-col"><div class="cert-sign-rule"></div><div class="cert-sign-txt">Faculty Sign</div></div>
+          <div class="cert-center-col">
+            <div class="cert-center-circle"><i class="fa-solid fa-certificate"></i></div>
+            <div class="cert-id-txt" id="g_id">CERT-ID: SA-PS-001</div>
+            <div class="cert-id-txt" id="g_date">Date: —</div>
+          </div>
+          <div class="cert-sign-col"><div class="cert-sign-rule"></div><div class="cert-sign-txt">Industry Sign</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BLUE PDF -->
+<div id="pdfWrap_blue" style="position:fixed;top:-9999px;left:-9999px;z-index:-10;">
+  <div class="certificate cert-blue" id="pdfCert_blue" style="width:760px;">
+    <div class="cert-body">
+      <div class="cert-border-outer"></div><div class="cert-border-inner"></div>
+      <div class="c-corner c-tl">❖</div><div class="c-corner c-tr">❖</div>
+      <div class="c-corner c-bl">❖</div><div class="c-corner c-br">❖</div>
+      <div class="cert-wm">SOLVEX-AI</div>
+      <div class="cert-inner">
+        <div class="cert-header">
+          <div><div class="cert-brand-name">Solvex-AI</div><div class="cert-brand-sub">Eco-World Problem Solve Platform</div></div>
+          <div class="cert-seal-circle"><i class="fa-solid fa-handshake"></i></div>
+        </div>
+        <div class="cert-hr"></div>
+        <div class="cert-of-text">Certificate of Achievement</div>
+        <div class="cert-main-title">INDUSTRY COLLABORATION<br>CERTIFICATE</div>
+        <div class="cert-ornament">— ❖ ❖ ❖ —</div>
+        <div class="cert-presented">This Certificate is Proudly Presented to</div>
+        <div class="cert-name" id="b_name">Student Name</div>
+        <div class="cert-name-rule"></div>
+        <div class="cert-text">For exceptional performance in Industry Linked Projects under guidance of professionals<br>and faculty supervisors at Poornima University through the Solvex-AI collaboration platform.</div>
+        <div class="cert-bottom-row">
+          <div class="cert-sign-col"><div class="cert-sign-rule"></div><div class="cert-sign-txt">Industry Guide</div></div>
+          <div class="cert-center-col">
+            <div class="cert-center-circle"><i class="fa-solid fa-certificate"></i></div>
+            <div class="cert-id-txt" id="b_id">CERT-ID: SA-IC-001</div>
+            <div class="cert-id-txt" id="b_date">Date: —</div>
+          </div>
+          <div class="cert-sign-col"><div class="cert-sign-rule"></div><div class="cert-sign-txt">Faculty</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RED PDF -->
+<div id="pdfWrap_red" style="position:fixed;top:-9999px;left:-9999px;z-index:-10;">
+  <div class="certificate cert-red" id="pdfCert_red" style="width:760px;">
+    <div class="cert-body">
+      <div class="cert-border-outer"></div><div class="cert-border-inner"></div>
+      <div class="c-corner c-tl">★</div><div class="c-corner c-tr">★</div>
+      <div class="c-corner c-bl">★</div><div class="c-corner c-br">★</div>
+      <div class="cert-wm">SOLVEX-AI</div>
+      <div class="cert-inner">
+        <div class="cert-header">
+          <div><div class="cert-brand-name">Solvex-AI</div><div class="cert-brand-sub">Eco-World Problem Solve Platform</div></div>
+          <div class="cert-seal-circle"><i class="fa-solid fa-lightbulb"></i></div>
+        </div>
+        <div class="cert-hr"></div>
+        <div class="cert-of-text">Certificate of Achievement</div>
+        <div class="cert-main-title">INNOVATION EXCELLENCE<br>CERTIFICATE</div>
+        <div class="cert-ornament">— ★ ★ ★ —</div>
+        <div class="cert-presented">This Certificate is Proudly Presented to</div>
+        <div class="cert-name" id="r_name">Student Name</div>
+        <div class="cert-name-rule"></div>
+        <div class="cert-text">For developing creative solutions and innovative systems that demonstrate originality<br>and advanced thinking in the Solvex-AI program at Poornima University.</div>
+        <div class="cert-bottom-row">
+          <div class="cert-sign-col"><div class="cert-sign-rule"></div><div class="cert-sign-txt">Innovation Head</div></div>
+          <div class="cert-center-col">
+            <div class="cert-center-circle"><i class="fa-solid fa-certificate"></i></div>
+            <div class="cert-id-txt" id="r_id">CERT-ID: SA-IE-001</div>
+            <div class="cert-id-txt" id="r_date">Date: —</div>
+          </div>
+          <div class="cert-sign-col"><div class="cert-sign-rule"></div><div class="cert-sign-txt">Industry Partner</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-icon">S</div>
+    <div class="sb-name">Solvex-AI <span>Student Portal</span></div>
+  </div>
+  <div class="sb-user">
+    <div class="sb-avatar" id="stuAvatar">S</div>
+    <div class="sb-uname" id="stuName">Student</div>
+    <div class="sb-email" id="stuEmail">student@email.com</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-label">Navigation</div>
+    <div class="sb-link" onclick="location.href='student.html'"><i class="fa-solid fa-house"></i> Dashboard</div>
+    <div class="sb-link" onclick="location.href='student.html'"><i class="fa-solid fa-fire"></i> Available Problems</div>
+    <div class="sb-link" onclick="location.href='student.html'"><i class="fa-solid fa-folder-open"></i> My Project</div>
+    <div class="sb-link" onclick="location.href='student.html'"><i class="fa-solid fa-people-group"></i> My Team</div>
+    <div class="sb-link active"><i class="fa-solid fa-certificate"></i> My Certificates</div>
+  </nav>
+  <div class="sb-footer">
+    <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+    <span class="page-heading">🏅 My Certificates</span>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-chip"><i class="fa-solid fa-graduation-cap"></i><span id="topbarName">Student</span></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+<div class="page-body">
+
+  <div class="banner">
+    <div class="banner-text">
+      <h1>Your Achievement Certificates 🏆</h1>
+      <p>Faculty-approved certificates generated with your name. Download anytime as PDF.</p>
+    </div>
+    <div class="banner-icon">📜</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-ico ico-gold"><i class="fa-solid fa-award"></i></div><div class="stat-info"><h2 id="statTotal">0</h2><p>Total Issued</p></div></div>
+    <div class="stat-card"><div class="stat-ico ico-green"><i class="fa-solid fa-check-circle"></i></div><div class="stat-info"><h2 id="statApproved">0</h2><p>Approved</p></div></div>
+    <div class="stat-card"><div class="stat-ico ico-blue"><i class="fa-solid fa-clock"></i></div><div class="stat-info"><h2 id="statPending">0</h2><p>Pending</p></div></div>
+  </div>
+
+  <div class="sec-title"><i class="fa-solid fa-trophy"></i> My Certificates</div>
+  <div id="certsContainer">
+    <div class="empty-state"><div class="icon">🎓</div><h3>No Certificates Yet</h3><p>Complete a project and get faculty approval to earn your certificate!</p></div>
+  </div>
+
+</div>
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h3>Quick Links</h3><a href="#">About Us</a><a href="#">Contact Us</a><a href="#">Privacy Policy</a></div>
+    <div class="footer-col"><h3>Contact</h3><p>📍 Jaipur, Rajasthan</p><p>📞 +91 9351360177</p><p>✉️ praveennama7665@gmail.com</p></div>
+    <div class="footer-col"><h3>Solvex-AI</h3><p style="line-height:1.7">Work Hard. Achieve Excellence. Get Certified.</p></div>
+  </div>
+  <div class="copyright">© Solvex-AI – Poornima University | All Rights Reserved</div>
+</footer>
+</div>
+
+<script>
+const { jsPDF } = window.jspdf;
+
+const studentEmail = sessionStorage.getItem('email')    || '';
+const studentName  = sessionStorage.getItem('username') || 'Student';
+
+document.getElementById('stuName').textContent    = studentName;
+document.getElementById('stuEmail').textContent   = studentEmail;
+document.getElementById('stuAvatar').textContent  = studentName.charAt(0).toUpperCase();
+document.getElementById('topbarName').textContent = studentName;
+
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+function logout(){sessionStorage.clear();location.href='signin.html';}
+
+/* ---- CERT TYPES ---- */
+const CERTS = [
+  {
+    key:'green', corner:'✦', ornament:'— ✦ ✦ ✦ —',
+    icon:'fa-leaf', iconColor:'#059669',
+    mainTitle:'PROBLEM SOLVER<br>CERTIFICATE',
+    shortTitle:'Problem Solver Certificate',
+    signL:'Faculty Sign', signR:'Industry Sign',
+    certText:'This is to certify that the above student has successfully solved real-world technical challenges under the supervision of faculty and industry mentors at Poornima University through Solvex-AI.',
+    desc:'Awarded to students who successfully complete real-world coding and analytical challenges. This certificate represents strong logical thinking and implementation ability.',
+    prefix:'SA-PS', dlClass:'dl-green',
+  },
+  {
+    key:'blue', corner:'❖', ornament:'— ❖ ❖ ❖ —',
+    icon:'fa-handshake', iconColor:'#1d4ed8',
+    mainTitle:'INDUSTRY COLLABORATION<br>CERTIFICATE',
+    shortTitle:'Industry Collaboration Certificate',
+    signL:'Industry Guide', signR:'Faculty',
+    certText:'For exceptional performance in Industry Linked Projects under guidance of professionals and faculty supervisors at Poornima University through the Solvex-AI collaboration platform.',
+    desc:'Given to students who actively work on live industry projects, gaining professional exposure and real-time experience under faculty and mentor guidance.',
+    prefix:'SA-IC', dlClass:'dl-blue',
+  },
+  {
+    key:'red', corner:'★', ornament:'— ★ ★ ★ —',
+    icon:'fa-lightbulb', iconColor:'#dc2626',
+    mainTitle:'INNOVATION EXCELLENCE<br>CERTIFICATE',
+    shortTitle:'Innovation Excellence Certificate',
+    signL:'Innovation Head', signR:'Industry Partner',
+    certText:'For developing creative solutions and innovative systems that demonstrate originality and advanced thinking in the Solvex-AI program at Poornima University.',
+    desc:'Awarded to students who build unique solutions, startup-level ideas or high-level research innovations that demonstrate creativity and advanced thinking.',
+    prefix:'SA-IE', dlClass:'dl-red',
+  }
+];
+
+/* ---- BUILD PREVIEW CERT ---- */
+function buildPreview(c, name){
+  return `
+  <div class="certificate cert-${c.key}">
+    <div class="cert-body">
+      <div class="cert-border-outer"></div>
+      <div class="cert-border-inner"></div>
+      <div class="c-corner c-tl">${c.corner}</div>
+      <div class="c-corner c-tr">${c.corner}</div>
+      <div class="c-corner c-bl">${c.corner}</div>
+      <div class="c-corner c-br">${c.corner}</div>
+      <div class="cert-wm">SOLVEX-AI</div>
+      <div class="cert-inner">
+        <div class="cert-header">
+          <div>
+            <div class="cert-brand-name">Solvex-AI</div>
+            <div class="cert-brand-sub">Eco-World Problem Solve Platform</div>
+          </div>
+          <div class="cert-seal-circle"><i class="fa-solid ${c.icon}"></i></div>
+        </div>
+        <div class="cert-hr"></div>
+        <div class="cert-of-text">Certificate of Achievement</div>
+        <div class="cert-main-title">${c.mainTitle}</div>
+        <div class="cert-ornament">${c.ornament}</div>
+        <div class="cert-presented">This Certificate is Proudly Presented to</div>
+        <div class="cert-name">${name}</div>
+        <div class="cert-name-rule"></div>
+        <div class="cert-text">${c.certText}</div>
+        <div class="cert-bottom-row">
+          <div class="cert-sign-col"><div class="cert-sign-rule"></div><div class="cert-sign-txt">${c.signL}</div></div>
+          <div class="cert-center-col">
+            <div class="cert-center-circle"><i class="fa-solid fa-certificate"></i></div>
+          </div>
+          <div class="cert-sign-col"><div class="cert-sign-rule"></div><div class="cert-sign-txt">${c.signR}</div></div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---- RENDER ALL CERTS ---- */
+function renderCerts(data){
+  const box      = document.getElementById('certsContainer');
+  const approved = data.filter(d => d.approved || d.status==='approved');
+  const pending  = data.filter(d => !d.approved && d.status!=='approved');
+
+  document.getElementById('statTotal').textContent    = data.length;
+  document.getElementById('statApproved').textContent = approved.length;
+  document.getElementById('statPending').textContent  = pending.length;
+
+  if(!data.length){
+    box.innerHTML=`<div class="empty-state"><div class="icon">🎓</div><h3>No Certificates Yet</h3><p>Complete a project and get faculty approval to earn your certificate!</p></div>`;
+    return;
+  }
+
+  box.innerHTML='';
+
+  data.forEach((item, i)=>{
+    const c          = CERTS[i % CERTS.length];
+    const isApproved = item.approved || item.status==='approved';
+    const name       = item.student_name || studentName;
+    const certId     = item.cert_id || `${c.prefix}-${String(i+1).padStart(3,'0')}`;
+    const date       = item.issued_date
+      ? new Date(item.issued_date).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})
+      : new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    const project    = item.project || item.description || 'Solvex-AI Project';
+
+    const sec = document.createElement('div');
+    sec.className = 'cert-section';
+    sec.innerHTML = `
+      ${buildPreview(c, name)}
+      <div class="cert-info">
+        <h2>${c.shortTitle}</h2>
+        <p>${c.desc}</p>
+        <div class="cert-meta-list">
+          <div class="cert-meta-item"><i class="fa-solid fa-user" style="color:${c.iconColor}"></i><b>Name:</b>&nbsp;${name}</div>
+          <div class="cert-meta-item"><i class="fa-solid fa-hashtag" style="color:${c.iconColor}"></i><b>Cert ID:</b>&nbsp;${certId}</div>
+          <div class="cert-meta-item"><i class="fa-solid fa-calendar" style="color:${c.iconColor}"></i><b>Date:</b>&nbsp;${date}</div>
+          <div class="cert-meta-item"><i class="fa-solid fa-folder" style="color:${c.iconColor}"></i><b>Project:</b>&nbsp;${project}</div>
+        </div>
+        <div class="${isApproved?'status-pill pill-approved':'status-pill pill-pending'}">
+          ${isApproved ? '✅ Faculty Approved — Ready to Download' : '⏳ Waiting for Faculty Approval'}
+        </div>
+        ${!isApproved ? `<div class="locked-notice"><i class="fa-solid fa-lock"></i> Certificate unlocks after faculty approval.</div>` : ''}
+        <button
+          class="dl-btn ${c.dlClass}"
+          ${!isApproved?'disabled':''}
+          onclick="downloadCert('${c.key}','${name.replace(/'/g,'`')}','${certId}','${date}',this)">
+          <i class="fa-solid fa-download"></i>
+          ${isApproved ? 'Download PDF' : '🔒 Locked'}
+        </button>
+      </div>`;
+    box.appendChild(sec);
+  });
+}
+
+/* ---- DOWNLOAD PDF ---- */
+async function downloadCert(colorKey, rawName, certId, date, btn){
+  const name = rawName.replace(/`/g,"'");
+  const prefix = colorKey.charAt(0);
+
+  // Update PDF cert fields
+  document.getElementById(`${prefix}_name`).textContent = name;
+  document.getElementById(`${prefix}_id`).textContent   = 'CERT-ID: '+certId;
+  document.getElementById(`${prefix}_date`).textContent = 'Date: '+date;
+
+  const wrap = document.getElementById(`pdfWrap_${colorKey}`);
+  const cert = document.getElementById(`pdfCert_${colorKey}`);
+
+  // Temporarily show off-screen at position 0
+  wrap.style.top      = '0';
+  wrap.style.left     = '0';
+  wrap.style.position = 'absolute';
+  wrap.style.zIndex   = '-1';
+
+  const origText = btn.innerHTML;
+  btn.innerHTML  = '<i class="fa-solid fa-spinner fa-spin"></i> Generating PDF…';
+  btn.disabled   = true;
+
+  try{
+    const canvas  = await html2canvas(cert, {scale:2, useCORS:true, backgroundColor:'#ffffff', logging:false});
+    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    const pdf     = new jsPDF({orientation:'landscape', unit:'mm', format:'a4'});
+    pdf.addImage(imgData, 'JPEG', 0, 0, 297, 210);
+    pdf.save(`Solvex-AI_${colorKey.charAt(0).toUpperCase()+colorKey.slice(1)}_Certificate_${name.replace(/\s+/g,'_')}.pdf`);
+  }catch(err){
+    console.error(err);
+    alert('PDF generation failed. Please try again.');
+  }finally{
+    wrap.style.top      = '-9999px';
+    wrap.style.left     = '-9999px';
+    wrap.style.position = 'fixed';
+    wrap.style.zIndex   = '-10';
+    btn.innerHTML  = origText;
+    btn.disabled   = false;
+  }
+}
+
+/* ---- LOAD FROM API ---- */
+async function loadCerts(){
+  try{
+    const res  = await fetch('/get-certificates?email='+encodeURIComponent(studentEmail));
+    const data = await res.json();
+    renderCerts(Array.isArray(data) ? data : []);
+  }catch(e){
+    // Demo fallback
+    renderCerts([
+      {student_name:studentName, status:'approved', approved:true,  project:'Student Management System', cert_id:'SA-PS-001'},
+      {student_name:studentName, status:'pending',  approved:false, project:'Hospital Queue System',     cert_id:'SA-IC-001'},
+      {student_name:studentName, status:'pending',  approved:false, project:'Innovation Project',        cert_id:'SA-IE-001'},
+    ]);
+  }
+}
+
+window.onload = loadCerts;
+</script>
+</body>
+</html>

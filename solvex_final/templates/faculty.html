@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faculty Dashboard | Solvex-AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="../Solvex-Ai-logo.png">
+<style>
+:root{
+  --primary:#6366f1;--primary-dark:#4338ca;--primary-light:#a5b4fc;
+  --accent:#f43f5e;--accent2:#f59e0b;--success:#10b981;--info:#0ea5e9;
+  --bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;
+  --sidebar:258px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}button{cursor:pointer;border:none;font-family:inherit;}
+input,textarea,select{font-family:inherit;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar);height:100vh;background:linear-gradient(180deg,#064e3b 0%,#065f46 40%,#047857 100%);display:flex;flex-direction:column;z-index:200;transition:transform .3s ease;overflow-y:auto;}
+.sidebar-brand{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:12px;}
+.brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--accent2),#f97316);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:800;flex-shrink:0;}
+.brand-name{color:white;font-size:16px;font-weight:800;line-height:1.1;}
+.brand-name span{display:block;font-size:11px;font-weight:400;color:rgba(255,255,255,.45);}
+.faculty-badge{margin:16px;background:rgba(255,255,255,.1);border-radius:14px;padding:16px;text-align:center;}
+.fac-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),#f97316);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;}
+.fac-name{color:white;font-size:14px;font-weight:700;}
+.fac-role{color:rgba(255,255,255,.45);font-size:11px;margin-top:2px;}
+.sidebar-nav{padding:8px 12px;flex:1;}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.3);padding:12px 10px 6px;font-weight:700;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;color:rgba(255,255,255,.6);font-size:13.5px;font-weight:600;margin-bottom:2px;transition:all .2s;cursor:pointer;}
+.nav-item i{width:18px;text-align:center;font-size:14px;}
+.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.18);color:white;}
+.sidebar-footer{padding:14px 12px;border-top:1px solid rgba(255,255,255,.1);}
+.logout-btn{width:100%;padding:11px;background:var(--accent);color:white;border-radius:10px;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;}
+.logout-btn:hover{background:#e11d48;}
+
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:var(--sidebar);right:0;height:64px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:100;transition:left .3s;}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{display:none;background:none;font-size:20px;color:var(--primary);}
+.page-heading{font-size:18px;font-weight:800;color:#065f46;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.topbar-chip{background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:7px 16px;font-size:13px;font-weight:600;color:#047857;display:flex;align-items:center;gap:7px;}
+.icon-btn{width:38px;height:38px;background:var(--bg);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:15px;cursor:pointer;transition:all .2s;}
+.icon-btn:hover{background:#047857;color:white;border-color:#047857;}
+
+/* CONTENT */
+.content{margin-left:var(--sidebar);padding-top:64px;min-height:100vh;display:flex;flex-direction:column;}
+.page-body{padding:28px;flex:1;}
+.section{display:none;}
+.section.active{display:block;}
+
+/* BANNER */
+.banner{background:linear-gradient(135deg,#064e3b 0%,#047857 100%);border-radius:20px;padding:26px 30px;color:white;display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;position:relative;overflow:hidden;}
+.banner::before{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;background:rgba(255,255,255,.05);border-radius:50%;}
+.banner-text h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.banner-text p{font-size:13.5px;opacity:.8;max-width:420px;}
+.banner-icon{font-size:50px;position:relative;z-index:1;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:16px;margin-bottom:26px;}
+.stat-card{background:white;border-radius:16px;padding:18px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:transform .2s,box-shadow .2s;}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(4,120,87,.1);}
+.stat-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.ico-green{background:#d1fae5;color:#047857;}
+.ico-blue{background:#e0e7ff;color:var(--primary);}
+.ico-red{background:#fee2e2;color:var(--accent);}
+.ico-yellow{background:#fef3c7;color:#b45309;}
+.ico-teal{background:#ccfbf1;color:#0d9488;}
+.ico-purple{background:#ede9fe;color:#7c3aed;}
+.stat-info h2{font-size:24px;font-weight:800;line-height:1;}
+.stat-info p{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px;}
+
+/* SEC TITLE */
+.sec-title{font-size:16px;font-weight:800;color:#065f46;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-title i{color:var(--accent2);font-size:15px;}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-green{background:#d1fae5;color:#047857;}
+.badge-red{background:#fee2e2;color:var(--accent);}
+.badge-yellow{background:#fef3c7;color:#b45309;}
+.badge-blue{background:#e0e7ff;color:var(--primary);}
+.badge-teal{background:#ccfbf1;color:#0d9488;}
+.badge-purple{background:#ede9fe;color:#7c3aed;}
+
+/* CARDS */
+.card{background:white;border-radius:16px;padding:22px;border:1px solid var(--border);margin-bottom:16px;transition:transform .2s,box-shadow .2s;}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.06);}
+.card-title{font-size:15px;font-weight:700;margin-bottom:10px;}
+.card-meta{font-size:13px;color:var(--muted);margin-bottom:5px;}
+.card-meta b{color:var(--text);}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+
+/* BUTTONS */
+.btn-approve{padding:9px 18px;background:var(--success);color:white;border-radius:9px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:opacity .2s;}
+.btn-approve:hover{opacity:.9;}
+.btn-reject{padding:9px 18px;background:var(--accent);color:white;border-radius:9px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:opacity .2s;}
+.btn-reject:hover{opacity:.9;}
+.btn-primary{padding:10px 22px;background:linear-gradient(135deg,#065f46,#047857);color:white;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 12px rgba(4,120,87,.3);transition:opacity .2s,transform .1s;}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);}
+.btn-info{padding:8px 16px;background:var(--info);color:white;border-radius:9px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:opacity .2s;}
+.btn-info:hover{opacity:.9;}
+.btn-purple{padding:8px 16px;background:#7c3aed;color:white;border-radius:9px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:opacity .2s;}
+.btn-purple:hover{opacity:.9;}
+.btn-sm{padding:7px 14px;font-size:12px;}
+
+/* PROGRESS */
+.prog-bar{height:9px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin:6px 0;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#047857,var(--accent2));border-radius:10px;transition:width .4s;}
+.prog-label{font-size:12px;font-weight:700;color:var(--muted);display:flex;justify-content:space-between;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:400;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal{background:white;border-radius:20px;padding:28px;max-width:620px;width:95%;max-height:88vh;overflow-y:auto;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.modal-title{font-size:17px;font-weight:800;color:#065f46;}
+.modal-close{background:none;font-size:20px;color:var(--muted);cursor:pointer;}
+.modal-close:hover{color:var(--accent);}
+.detail-row{display:flex;gap:14px;margin-bottom:12px;}
+.detail-box{flex:1;background:var(--bg);border-radius:10px;padding:12px;}
+.detail-box label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
+.detail-box p{font-size:13.5px;font-weight:600;margin-top:3px;}
+.team-member-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.team-member-row:last-child{border-bottom:none;}
+.team-member-icon{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:white;flex-shrink:0;}
+.team-member-info{flex:1;}
+.team-member-info h4{font-size:13.5px;font-weight:700;}
+.team-member-info p{font-size:12px;color:var(--muted);}
+
+/* ASSIGN MODAL */
+.assign-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:18px;margin-bottom:16px;}
+.assign-box h3{font-size:14px;font-weight:800;color:#065f46;margin-bottom:12px;}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:var(--text);}
+.form-group select,.form-group input,.form-group textarea{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;background:white;}
+.form-group select:focus,.form-group input:focus,.form-group textarea:focus{outline:none;border-color:#047857;}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:12px;margin-bottom:20px;width:fit-content;flex-wrap:wrap;}
+.tab{padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;}
+.tab.active{background:white;color:#065f46;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+
+/* STUDENT STATUS DOT */
+.status-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:5px;}
+.dot-active{background:#10b981;}
+.dot-inactive{background:#94a3b8;}
+
+/* TABLE */
+.table-wrap{background:white;border-radius:16px;border:1px solid var(--border);overflow:auto;margin-bottom:20px;}
+table{width:100%;border-collapse:collapse;min-width:600px;}
+th{background:#065f46;color:white;padding:13px 16px;font-size:12.5px;font-weight:700;text-align:left;white-space:nowrap;}
+td{padding:11px 16px;font-size:13px;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#f0fdf4;}
+
+/* SEARCH BAR */
+.search-bar{width:100%;padding:11px 16px;border:1.5px solid var(--border);border-radius:11px;font-size:14px;background:white;margin-bottom:16px;}
+.search-bar:focus{outline:none;border-color:#047857;}
+
+/* FOOTER */
+footer{background:linear-gradient(160deg,#064e3b,#022c22);color:white;padding:38px 28px 18px;margin-top:auto;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:28px;margin-bottom:26px;}
+.footer-col h3{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#6ee7b7;margin-bottom:12px;}
+.footer-col a,.footer-col p{display:block;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px;transition:color .2s;}
+.footer-col a:hover{color:white;}
+.newsletter-input{width:100%;padding:10px 12px;border-radius:8px;border:none;margin-bottom:8px;background:rgba(255,255,255,.1);color:white;font-family:inherit;font-size:13px;}
+.newsletter-input::placeholder{color:rgba(255,255,255,.35);}
+.newsletter-btn{width:100%;padding:10px;background:var(--accent);color:white;border-radius:8px;font-size:13px;font-weight:700;transition:background .2s;}
+.newsletter-btn:hover{background:#e11d48;}
+.copyright{text-align:center;font-size:12px;color:rgba(255,255,255,.3);padding-top:18px;border-top:1px solid rgba(255,255,255,.07);}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:199;}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .overlay.show{display:block;}
+  .content{margin-left:0;}
+  .topbar{left:0;}
+  .hamburger{display:flex;align-items:center;}
+  .page-body{padding:18px;}
+  .banner{flex-direction:column;gap:12px;text-align:center;}
+  .detail-row{flex-direction:column;}
+}
+@media(max-width:520px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .topbar-chip{display:none;}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Details</span>
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ASSIGN PROBLEM MODAL -->
+<div class="modal-overlay" id="assignModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-paper-plane" style="margin-right:7px;color:#047857"></i>Assign Problem to Student</span>
+      <button class="modal-close" onclick="closeAssignModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="assign-box">
+      <h3><i class="fa-solid fa-info-circle" style="margin-right:6px"></i>Faculty Assignment Panel</h3>
+      <div class="form-group">
+        <label>Select Student</label>
+        <select id="assignStudentSelect">
+          <option value="">-- Student chunein --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Select Approved Problem</label>
+        <select id="assignProblemSelect">
+          <option value="">-- Problem chunein --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Faculty Note (Optional)</label>
+        <textarea id="assignNote" rows="2" placeholder="Student ke liye koi special instruction..."></textarea>
+      </div>
+      <button class="btn-primary" onclick="doAssignProblem()"><i class="fa-solid fa-paper-plane"></i> Assign Karo</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">S</div>
+    <div class="brand-name">Solvex-AI <span>Faculty Portal</span></div>
+  </div>
+  <div class="faculty-badge">
+    <div class="fac-avatar" id="facAvatar">F</div>
+    <div class="fac-name" id="facName">Faculty</div>
+    <div class="fac-role">Poornima University</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Overview</div>
+    <div class="nav-item active" onclick="showSection('dashboard',this)"><i class="fa-solid fa-house"></i> Dashboard</div>
+    <div class="nav-label">Management</div>
+    <div class="nav-item" onclick="showSection('approvals',this)"><i class="fa-solid fa-clipboard-check"></i> Problem Approvals <span id="pendingBadge" style="margin-left:auto;background:var(--accent);color:white;padding:2px 7px;border-radius:12px;font-size:10px;font-weight:700;display:none">0</span></div>
+    <div class="nav-item" onclick="showSection('providers',this)"><i class="fa-solid fa-building"></i> Providers</div>
+    <div class="nav-item" onclick="showSection('students',this)"><i class="fa-solid fa-user-graduate"></i> Students</div>
+    <div class="nav-item" onclick="showSection('assign',this)"><i class="fa-solid fa-paper-plane"></i> Assign Problems <span style="margin-left:auto;background:#7c3aed;color:white;padding:2px 7px;border-radius:12px;font-size:10px;font-weight:700;">New</span></div>
+    <div class="nav-item" onclick="showSection('teams',this)"><i class="fa-solid fa-people-group"></i> Teams</div>
+    <div class="nav-label">Projects</div>
+    <div class="nav-item" onclick="showSection('projects',this)"><i class="fa-solid fa-folder-open"></i> Submitted Projects</div>
+    <div class="nav-item" onclick="showSection('certificates',this)"><i class="fa-solid fa-certificate"></i> Certificates</div>
+    <div class="nav-item" onclick="showSection('myEarnings',this)"><i class="fa-solid fa-indian-rupee-sign"></i> My Earnings</div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+    <span class="page-heading" id="pageHeading">Dashboard</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn-purple btn-sm" onclick="openAssignModal()"><i class="fa-solid fa-paper-plane"></i> Assign Problem</button>
+    <div class="topbar-chip"><i class="fa-solid fa-chalkboard-teacher"></i><span id="topbarName">Faculty</span></div>
+    <div class="icon-btn"><i class="fa-regular fa-bell"></i></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+<div class="page-body">
+
+  <!-- DASHBOARD -->
+  <div class="section active" id="dashboard">
+    <div class="banner">
+      <div class="banner-text">
+        <h1>Welcome, <span id="welcomeName">Faculty</span>! 🎓</h1>
+        <p>Problems approve karo, students monitor karo, aur projects review karo — Solvex-AI pe.</p>
+      </div>
+      <div class="banner-icon">📋</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-ico ico-yellow"><i class="fa-solid fa-clock"></i></div><div class="stat-info"><h2 id="statPending">0</h2><p>Pending Approvals</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-green"><i class="fa-solid fa-check-circle"></i></div><div class="stat-info"><h2 id="statApproved">0</h2><p>Approved Problems</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-blue"><i class="fa-solid fa-user-graduate"></i></div><div class="stat-info"><h2 id="statStudents">0</h2><p>Registered Students</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-teal"><i class="fa-solid fa-folder-open"></i></div><div class="stat-info"><h2 id="statProjects">0</h2><p>Projects Submitted</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-red"><i class="fa-solid fa-award"></i></div><div class="stat-info"><h2 id="statCerts">0</h2><p>Certificates Issued</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-purple"><i class="fa-solid fa-paper-plane"></i></div><div class="stat-info"><h2 id="statAssigned">0</h2><p>Problems Assigned</p></div></div>
+    </div>
+    <div class="sec-title"><i class="fa-solid fa-clock"></i> Pending Problem Approvals</div>
+    <div id="dashPending"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- APPROVALS -->
+  <div class="section" id="approvals">
+    <div class="sec-title"><i class="fa-solid fa-clipboard-check"></i> Problem Approvals</div>
+    <div class="tabs">
+      <div class="tab active" onclick="filterApprovals('all',this)">All</div>
+      <div class="tab" onclick="filterApprovals('pending',this)">Pending</div>
+      <div class="tab" onclick="filterApprovals('approved',this)">Approved ✅</div>
+      <div class="tab" onclick="filterApprovals('rejected',this)">Rejected ❌</div>
+    </div>
+    <div id="approvalsList"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- PROVIDERS -->
+  <div class="section" id="providers">
+    <div class="sec-title"><i class="fa-solid fa-building"></i> Registered Providers</div>
+    <input type="text" class="search-bar" placeholder="🔍 Provider name ya email se search karein..." id="providerSearch" oninput="filterProviders()">
+    <div id="providersList"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- STUDENTS -->
+  <div class="section" id="students">
+    <div class="sec-title"><i class="fa-solid fa-user-graduate"></i> All Registered Students</div>
+    <input type="text" class="search-bar" placeholder="🔍 Student name ya email se search karein..." id="studentSearch" oninput="filterStudents()">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Status</th><th>Name</th><th>Email</th><th>Mobile</th><th>Department</th><th>Project</th><th>Action</th></tr></thead>
+        <tbody id="studentsTableBody"><tr><td colspan="7" style="text-align:center;color:var(--muted)">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ASSIGN PROBLEMS -->
+  <div class="section" id="assign">
+    <div class="sec-title"><i class="fa-solid fa-paper-plane"></i> Faculty — Problem Assignment</div>
+    <div class="card" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#bbf7d0">
+      <p style="font-size:14px;color:#065f46;font-weight:600"><i class="fa-solid fa-info-circle" style="margin-right:6px;color:#047857"></i>Yahan se aap directly kisi bhi registered student ko koi bhi approved problem assign kar sakte hain. Student ka dashboard pe wo problem automatically dikhai degi.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:700px;">
+      <div class="form-group">
+        <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px">Select Student</label>
+        <select id="assignStudentSelect2" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:white;">
+          <option value="">-- Student chunein --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px">Select Approved Problem</label>
+        <select id="assignProblemSelect2" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:white;">
+          <option value="">-- Problem chunein --</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="max-width:700px">
+      <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px">Faculty Note (Optional)</label>
+      <textarea id="assignNote2" rows="3" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:white;" placeholder="Student ke liye koi special instruction ya guidance..."></textarea>
+    </div>
+    <button class="btn-primary" onclick="doAssignProblem2()"><i class="fa-solid fa-paper-plane"></i> Assign Karo</button>
+    <div class="sec-title" style="margin-top:28px"><i class="fa-solid fa-history"></i> Assignment History</div>
+    <div id="assignHistory"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- TEAMS -->
+  <div class="section" id="teams">
+    <div class="sec-title"><i class="fa-solid fa-people-group"></i> All Teams</div>
+    <div id="teamsList"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section" id="projects">
+    <div class="sec-title"><i class="fa-solid fa-folder-open"></i> Submitted Projects</div>
+    <div class="tabs">
+      <div class="tab active" onclick="filterProjects('all',this)">All</div>
+      <div class="tab" onclick="filterProjects('pending',this)">Pending</div>
+      <div class="tab" onclick="filterProjects('completed',this)">Approved ✅</div>
+      <div class="tab" onclick="filterProjects('rejected',this)">Rejected ❌</div>
+    </div>
+    <div id="projectsList"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+  <!-- CERTIFICATES -->
+  <div class="section" id="certificates">
+    <div class="sec-title"><i class="fa-solid fa-certificate"></i> Certificates Issued</div>
+    <div id="certificatesList"><p style="color:var(--muted);font-size:14px">Koi certificate issue nahi hua abhi tak.</p></div>
+  </div>
+
+  <!-- MY EARNINGS SECTION -->
+  <div class="section" id="myEarnings">
+    <div class="banner" style="margin-bottom:24px">
+      <div class="banner-text">
+        <h1>💰 Meri Earnings</h1>
+        <p>Har completed project par aapko 25% share milta hai total budget ka.</p>
+      </div>
+      <div class="banner-icon">📊</div>
+    </div>
+    <div class="stats-grid" style="margin-bottom:24px">
+      <div class="stat-card"><div class="stat-ico ico-green"><i class="fa-solid fa-indian-rupee-sign"></i></div><div class="stat-info"><h2 id="facEarTotal">₹0</h2><p>Meri Total Earning (25%)</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-blue"><i class="fa-solid fa-folder-check"></i></div><div class="stat-info"><h2 id="facEarProjects">0</h2><p>Projects Completed</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-yellow"><i class="fa-solid fa-user-graduate"></i></div><div class="stat-info"><h2 id="facEarStudentShare">₹0</h2><p>Students Ka Total (45%)</p></div></div>
+      <div class="stat-card"><div class="stat-ico ico-red"><i class="fa-solid fa-university"></i></div><div class="stat-info"><h2 id="facEarUniShare">₹0</h2><p>University Share (30%)</p></div></div>
+    </div>
+    <div class="sec-title"><i class="fa-solid fa-chart-bar"></i> Monthly Earnings Chart</div>
+    <div style="background:white;border-radius:16px;padding:22px;border:1px solid var(--border);margin-bottom:22px">
+      <canvas id="facultyEarningsChart" height="100"></canvas>
+    </div>
+    <div class="sec-title"><i class="fa-solid fa-list"></i> Earning Details</div>
+    <div id="facEarningDetails"><p style="color:var(--muted);font-size:14px">Loading...</p></div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h3>Quick Links</h3><a href="#">About Us</a><a href="#">Contact Us</a><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+    <div class="footer-col"><h3>Contact</h3><p>📍 Jaipur, Rajasthan</p><p>📞 +91 9351360177</p><p>✉️ praveennama7665@gmail.com</p></div>
+    <div class="footer-col"><h3>Newsletter</h3><input type="email" class="newsletter-input" id="newsEmail" placeholder="Your email"><button class="newsletter-btn" onclick="subscribeNews()">Subscribe</button></div>
+  </div>
+  <div class="copyright">© Solvex-AI – Poornima University | All Rights Reserved</div>
+</footer>
+</div>
+
+<script>
+// ---- SESSION ----
+let facultyName = sessionStorage.getItem('username')||'Faculty';
+let allProblems = [];
+let allProjects = [];
+let allStudents = [];
+let allProviders = [];
+let issuedCerts  = [];
+let assignedCount = 0;
+
+document.getElementById('facName').textContent = facultyName;
+document.getElementById('welcomeName').textContent = facultyName;
+document.getElementById('topbarName').textContent = facultyName;
+document.getElementById('facAvatar').textContent = facultyName.charAt(0).toUpperCase();
+
+// ---- SIDEBAR ----
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+
+// ---- SECTIONS ----
+function showSection(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el)el.classList.add('active');
+  const titles={dashboard:'Dashboard',approvals:'Problem Approvals',providers:'Providers',students:'Students',assign:'Assign Problems',teams:'Teams',projects:'Submitted Projects',certificates:'Certificates'};
+  document.getElementById('pageHeading').textContent=titles[id]||id;
+  closeSidebar();
+}
+
+// ---- MODAL ----
+function openModal(title,html){
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalContent').innerHTML=html;
+  document.getElementById('detailModal').classList.add('show');
+}
+function closeModal(){document.getElementById('detailModal').classList.remove('show');}
+
+// ---- ASSIGN MODAL ----
+function openAssignModal(){document.getElementById('assignModal').classList.add('show');}
+function closeAssignModal(){document.getElementById('assignModal').classList.remove('show');}
+
+// ---- LOGOUT ----
+function logout(){sessionStorage.clear();window.location.href='signin.html';}
+
+// ---- LOAD PROBLEMS ----
+async function loadProblems(){
+  try{
+    // Load ALL problems (pending + approved + rejected)
+    const res = await fetch('/get-all-problems');
+    allProblems = await res.json();
+
+    const pending  = allProblems.filter(p=>!p.status||p.status==='pending');
+    const approved = allProblems.filter(p=>p.status==='approved');
+
+    document.getElementById('statPending').textContent  = pending.length;
+    document.getElementById('statApproved').textContent = approved.length;
+
+    const badge = document.getElementById('pendingBadge');
+    if(pending.length>0){badge.style.display='inline';badge.textContent=pending.length;}
+    else{badge.style.display='none';}
+
+    renderApprovals(allProblems);
+    renderDashPending(pending.slice(0,3));
+    populateAssignProblemDropdowns(approved);
+  }catch(e){console.log(e);}
+}
+
+function renderDashPending(problems){
+  const box=document.getElementById('dashPending');
+  if(problems.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi pending approval nahi hai. ✅</p>';return;}
+  box.innerHTML=problems.map(p=>buildProblemCard(p)).join('');
+}
+
+function buildProblemCard(p){
+  const status=p.status||'pending';
+  const badgeClass = status==='approved'?'badge-green':status==='rejected'?'badge-red':'badge-yellow';
+  return `
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">${p.title}</div>
+          <span class="badge badge-blue">${p.category||'General'}</span>
+        </div>
+        <span class="badge ${badgeClass}">${status.charAt(0).toUpperCase()+status.slice(1)}</span>
+      </div>
+      <div class="card-meta"><b>Provider:</b> ${p.provider||p.provider_email||'—'} &nbsp;|&nbsp; <b>Email:</b> ${p.provider_email||'—'}</div>
+      <div class="card-meta"><b>Budget:</b> ₹${p.budget||'—'} &nbsp;|&nbsp; <b>Timeline:</b> ${p.timeline||'—'} &nbsp;|&nbsp; <b>Difficulty:</b> ${p.difficulty||'—'}</div>
+      <div class="card-meta" style="margin-bottom:12px"><b>Description:</b> ${(p.description||'').substring(0,130)}${(p.description||'').length>130?'...':''}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        ${status==='pending'?`
+          <button class="btn-approve" onclick="approveProblem(${p.id})"><i class="fa-solid fa-check"></i> Approve</button>
+          <button class="btn-reject" onclick="rejectProblem(${p.id})"><i class="fa-solid fa-xmark"></i> Reject</button>`
+        :''}
+        <button class="btn-info btn-sm" onclick="viewProviderDetails(${p.id})"><i class="fa-solid fa-eye"></i> Provider Details</button>
+      </div>
+    </div>`;
+}
+
+// ---- FILTER APPROVALS ----
+function filterApprovals(filter,el){
+  document.querySelectorAll('.tabs .tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  const filtered = filter==='all' ? allProblems : allProblems.filter(p=>(p.status||'pending')===filter);
+  renderApprovals(filtered);
+}
+
+function renderApprovals(problems){
+  const box=document.getElementById('approvalsList');
+  if(problems.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi problem nahi mili.</p>';return;}
+  box.innerHTML=problems.map(p=>buildProblemCard(p)).join('');
+}
+
+// ---- APPROVE / REJECT (BUG FIX: problem_id key) ----
+async function approveProblem(id){
+  try{
+    const res = await fetch('/approve-problem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({problem_id:id})});
+    const data = await res.json();
+    if(data.status==='success'){
+      alert('✅ Problem Approve ho gayi!');
+      await loadProblems();
+      // Auto switch to approved tab
+      const tab = document.querySelector('.tabs .tab:nth-child(3)');
+      filterApprovals('approved', tab);
+    }
+  }catch(e){console.log(e);}
+}
+
+async function rejectProblem(id){
+  if(!confirm('Kya aap yeh problem reject karna chahte hain?'))return;
+  try{
+    const res = await fetch('/reject-problem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({problem_id:id})});
+    const data = await res.json();
+    if(data.status==='success'){alert('❌ Problem Reject kar di gayi.');await loadProblems();}
+  }catch(e){console.log(e);}
+}
+
+// ---- VIEW PROVIDER DETAILS (with mobile number) ----
+function viewProviderDetails(problemId){
+  const p = allProblems.find(x=>x.id===problemId);
+  if(!p)return;
+  // Find provider details from allProviders list
+  const prov = allProviders.find(x=>x.email===p.provider_email)||{};
+  openModal('Provider Details',`
+    <div class="detail-row">
+      <div class="detail-box"><label>Company / Provider</label><p>${prov.company||p.provider||p.provider_email||'—'}</p></div>
+      <div class="detail-box"><label>Industry</label><p>${prov.industry||p.industry||'—'}</p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-box"><label>Contact Person</label><p>${prov.username||'—'}</p></div>
+      <div class="detail-box"><label>Email</label><p>${p.provider_email||'—'}</p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-box"><label>📞 Mobile Number</label><p style="font-size:16px;font-weight:800;color:#065f46">${prov.mobile||'—'}</p></div>
+      <div class="detail-box"><label>Registered On</label><p>${prov.created_at?new Date(prov.created_at).toLocaleDateString('hi-IN'):'—'}</p></div>
+    </div>
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <div class="detail-row">
+      <div class="detail-box"><label>Problem Title</label><p>${p.title}</p></div>
+      <div class="detail-box"><label>Category</label><p>${p.category||'—'}</p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-box"><label>Budget</label><p>₹${p.budget||'—'}</p></div>
+      <div class="detail-box"><label>Timeline</label><p>${p.timeline||'—'}</p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-box" style="flex:1"><label>Problem Description</label><p>${p.description||'—'}</p></div>
+    </div>
+  `);
+}
+
+// ---- LOAD PROJECTS ----
+async function loadProjects(){
+  try{
+    const res = await fetch('/get-projects');
+    allProjects = await res.json();
+    document.getElementById('statProjects').textContent = allProjects.length;
+    const certs = allProjects.filter(p=>p.status==='completed');
+    document.getElementById('statCerts').textContent = certs.length;
+    issuedCerts = certs;
+    renderProjects(allProjects);
+    loadTeamsList();
+    loadCertificates();
+  }catch(e){console.log(e);}
+}
+
+function renderProjects(projects){
+  const box = document.getElementById('projectsList');
+  if(projects.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi project submit nahi hua.</p>';return;}
+  box.innerHTML=projects.map(p=>`
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">${p.description||'Project'}</div>
+          <div class="card-meta" style="margin-top:4px"><b>Student:</b> ${p.student_name||'—'} &nbsp;|&nbsp; <b>Email:</b> ${p.student_email||'—'}</div>
+        </div>
+        <span class="badge ${p.status==='completed'?'badge-green':p.status==='rejected'?'badge-red':'badge-yellow'}">${p.status==='completed'?'Approved':p.status||'Pending'}</span>
+      </div>
+      <div class="card-meta"><b>GitHub:</b> <a href="${p.github}" target="_blank" style="color:var(--primary)">${p.github||'—'}</a></div>
+      <div class="card-meta"><b>Team Members:</b> ${p.team_members||'Solo'}</div>
+      <div style="margin:10px 0;">
+        <div class="prog-label"><span>Progress</span><span>${p.progress||'0%'}</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:${p.progress||'0%'}"></div></div>
+      </div>
+      ${p.faculty_remark?`<div class="card-meta"><b>Faculty Remark:</b> ${p.faculty_remark}</div>`:''}
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+        <button class="btn-info btn-sm" onclick='viewStudentDetail(${JSON.stringify(p).replace(/'/g,"&#39;")})'><i class="fa-solid fa-eye"></i> Full Details</button>
+        ${p.status!=='completed'?`<button class="btn-approve btn-sm" onclick="approveProject(${p.id})"><i class="fa-solid fa-check"></i> Approve Project</button>`:''}
+        ${p.status!=='rejected'?`<button class="btn-reject btn-sm" onclick="rejectProject(${p.id})"><i class="fa-solid fa-xmark"></i> Reject</button>`:''}
+        ${p.status==='completed'?`<button class="btn-approve btn-sm" onclick="issueCertificate('${p.student_email}','${p.student_name||'Student'}')"><i class="fa-solid fa-award"></i> Issue Certificate</button>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function filterProjects(filter,el){
+  document.querySelectorAll('#projects .tabs .tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  const filtered = filter==='all' ? allProjects : allProjects.filter(p=>(p.status||'pending')===filter);
+  renderProjects(filtered);
+}
+
+async function approveProject(id){
+  const remark = prompt('Faculty remark dein (optional):') || 'Approved by Faculty';
+  try{
+    await fetch('/approve-project',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({project_id:id,remark})});
+    alert('✅ Project approved!');await loadProjects();
+  }catch(e){console.log(e);}
+}
+
+async function rejectProject(id){
+  const remark = prompt('Reject karne ka reason:') || 'Rejected by Faculty';
+  if(!confirm('Kya aap sure hain?'))return;
+  try{
+    await fetch('/reject-project',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({project_id:id,remark})});
+    alert('❌ Project rejected.');await loadProjects();
+  }catch(e){console.log(e);}
+}
+
+// ---- STUDENT DETAIL MODAL ----
+function viewStudentDetail(p){
+  openModal('Student Project Details',`
+    <div class="detail-row">
+      <div class="detail-box"><label>Student Name</label><p>${p.student_name||'—'}</p></div>
+      <div class="detail-box"><label>Email</label><p>${p.student_email||'—'}</p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-box"><label>GitHub</label><p><a href="${p.github}" target="_blank" style="color:var(--primary)">${p.github||'—'}</a></p></div>
+      <div class="detail-box"><label>Status</label><p>${p.status||'Pending'}</p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-box"><label>Progress</label><p>${p.progress||'0%'}</p></div>
+      <div class="detail-box"><label>Submitted At</label><p>${p.submitted_at?new Date(p.submitted_at).toLocaleDateString('hi-IN'):'—'}</p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-box" style="flex:1"><label>Project Description</label><p>${p.description||'—'}</p></div>
+    </div>
+    ${p.team_members?`
+    <div style="margin-top:14px">
+      <h4 style="font-size:14px;font-weight:700;margin-bottom:10px;color:#065f46"><i class="fa-solid fa-people-group" style="margin-right:6px"></i>Team Members</h4>
+      ${p.team_members.split(',').map(m=>`
+        <div class="team-member-row">
+          <div class="team-member-icon">${(m.trim()||'M').charAt(0).toUpperCase()}</div>
+          <div class="team-member-info"><h4>${m.trim()}</h4><p>Team Member</p></div>
+          <span class="badge badge-green">Active</span>
+        </div>`).join('')}
+    </div>`:''}
+  `);
+}
+
+// ---- STUDENTS TABLE (now from /get-students) ----
+async function loadStudents(){
+  try{
+    const res = await fetch('/get-students');
+    allStudents = await res.json();
+    document.getElementById('statStudents').textContent = allStudents.length;
+    renderStudentsTable(allStudents);
+    populateAssignStudentDropdowns(allStudents);
+    // Load assignment history
+    loadAssignHistory();
+  }catch(e){console.log(e);}
+}
+
+function renderStudentsTable(students){
+  const tbody = document.getElementById('studentsTableBody');
+  if(students.length===0){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted)">Koi student registered nahi hai.</td></tr>';return;}
+  tbody.innerHTML = students.map(s=>{
+    // Check if student has submitted a project
+    const proj = allProjects.find(p=>p.student_email===s.email);
+    const isActive = !!proj;
+    return `
+      <tr>
+        <td><span class="status-dot ${isActive?'dot-active':'dot-inactive'}"></span>${isActive?'<span style="color:#10b981;font-weight:700;font-size:12px">Active</span>':'<span style="color:#94a3b8;font-size:12px">Inactive</span>'}</td>
+        <td><b>${s.username||'—'}</b></td>
+        <td>${s.email||'—'}</td>
+        <td>${s.mobile||'—'}</td>
+        <td>${s.department||'—'}</td>
+        <td>${proj?`<span style="font-size:12px;color:var(--primary)">${(proj.description||'').substring(0,30)}...</span>`:'<span style="color:var(--muted);font-size:12px">No project</span>'}</td>
+        <td style="display:flex;gap:6px;flex-wrap:wrap;">
+          ${proj?`<button class="btn-info btn-sm" onclick='viewStudentDetail(${JSON.stringify(proj).replace(/'/g,"&#39;")})'><i class="fa-solid fa-eye"></i> View</button>`:''}
+          <button class="btn-purple btn-sm" onclick="quickAssign('${s.email}','${s.username||''}')"><i class="fa-solid fa-paper-plane"></i> Assign</button>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function filterStudents(){
+  const q = document.getElementById('studentSearch').value.toLowerCase();
+  const filtered = allStudents.filter(s=>(s.username||'').toLowerCase().includes(q)||(s.email||'').toLowerCase().includes(q));
+  renderStudentsTable(filtered);
+}
+
+// ---- PROVIDERS (with mobile number) ----
+async function loadProviders(){
+  try{
+    const res = await fetch('/get-providers');
+    const data = await res.json().catch(()=>[]);
+    allProviders = Array.isArray(data)?data:[];
+    renderProviders(allProviders);
+  }catch(e){console.log(e);}
+}
+
+function renderProviders(providers){
+  const box = document.getElementById('providersList');
+  if(providers.length===0){
+    // Fallback: unique providers from problems
+    const unique=[...new Map(allProblems.map(p=>[p.provider_email,p])).values()];
+    if(unique.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi provider registered nahi hai.</p>';return;}
+    box.innerHTML=unique.map(p=>`
+      <div class="card">
+        <div class="card-header"><div class="card-title">${p.provider||p.provider_email||'Provider'}</div><span class="badge badge-blue">Registered</span></div>
+        <div class="card-meta"><b>Email:</b> ${p.provider_email||'—'}</div>
+        <div class="card-meta"><b>Problems Posted:</b> ${allProblems.filter(x=>x.provider_email===p.provider_email).length}</div>
+      </div>`).join('');
+    return;
+  }
+  box.innerHTML=providers.map(p=>`
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">${p.company||p.username||'Company'}</div>
+          <span class="badge badge-blue">${p.industry||'Technology'}</span>
+        </div>
+        <span class="badge badge-green">Verified ✓</span>
+      </div>
+      <div class="detail-row" style="margin-top:10px">
+        <div class="detail-box"><label>Contact Person</label><p>${p.username||'—'}</p></div>
+        <div class="detail-box"><label>Email</label><p>${p.email||'—'}</p></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-box"><label>📞 Mobile Number</label><p style="font-size:16px;font-weight:800;color:#065f46">${p.mobile||'—'}</p></div>
+        <div class="detail-box"><label>Registered On</label><p>${p.created_at?new Date(p.created_at).toLocaleDateString('hi-IN'):'—'}</p></div>
+      </div>
+      <div class="card-meta" style="margin-top:6px"><b>Problems Posted:</b> ${allProblems.filter(x=>x.provider_email===p.email).length}</div>
+    </div>`).join('');
+}
+
+function filterProviders(){
+  const q = document.getElementById('providerSearch').value.toLowerCase();
+  const filtered = allProviders.filter(p=>(p.company||'').toLowerCase().includes(q)||(p.email||'').toLowerCase().includes(q)||(p.username||'').toLowerCase().includes(q));
+  renderProviders(filtered);
+}
+
+// ---- TEAMS LIST ----
+function loadTeamsList(){
+  const box = document.getElementById('teamsList');
+  const teamsWithMembers = allProjects.filter(p=>p.team_members&&p.team_members.trim()!=='');
+  if(teamsWithMembers.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi team nahi bani abhi tak.</p>';return;}
+  box.innerHTML=teamsWithMembers.map(p=>`
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Team: ${p.student_name||'Student'}</div>
+        <span class="badge badge-teal">Active</span>
+      </div>
+      <div class="card-meta"><b>Lead:</b> ${p.student_name||'—'} &nbsp;|&nbsp; <b>Email:</b> ${p.student_email||'—'}</div>
+      <div class="card-meta"><b>Project:</b> ${p.description||'—'}</div>
+      <div class="card-meta"><b>GitHub:</b> <a href="${p.github}" target="_blank" style="color:var(--primary)">${p.github||'—'}</a></div>
+      <div style="margin:10px 0">
+        <div class="prog-label"><span>Progress</span><span>${p.progress||'0%'}</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:${p.progress||'0%'}"></div></div>
+      </div>
+      <div style="margin-top:10px">
+        <h4 style="font-size:13px;font-weight:700;margin-bottom:8px">Members:</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          ${p.team_members.split(',').map(m=>`<span style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:#065f46"><i class="fa-solid fa-user" style="margin-right:4px"></i>${m.trim()}</span>`).join('')}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ---- CERTIFICATES ----
+function loadCertificates(){
+  const box = document.getElementById('certificatesList');
+  if(issuedCerts.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi certificate issue nahi hua abhi tak.</p>';return;}
+  box.innerHTML=issuedCerts.map(p=>`
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🏆 ${p.student_name||'Student'}</div>
+        <span class="badge badge-green">Certificate Issued</span>
+      </div>
+      <div class="card-meta"><b>Email:</b> ${p.student_email||'—'}</div>
+      <div class="card-meta"><b>Project:</b> ${p.description||'—'}</div>
+      <div class="card-meta"><b>Faculty Remark:</b> ${p.faculty_remark||'—'}</div>
+    </div>`).join('');
+}
+
+// ---- ISSUE CERTIFICATE ----
+async function issueCertificate(email,name){
+  if(!confirm(`${name} ko certificate issue karein?`))return;
+  try{
+    await fetch('/issue-certificate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({student_email:email,student_name:name})});
+  }catch(e){}
+  alert(`✅ Certificate issue kar diya gaya: ${name}!`);
+  await loadProjects();
+}
+
+// ---- ASSIGN PROBLEM (Faculty → Student) ----
+function populateAssignStudentDropdowns(students){
+  const selects = [document.getElementById('assignStudentSelect'), document.getElementById('assignStudentSelect2')];
+  selects.forEach(sel=>{
+    if(!sel)return;
+    sel.innerHTML='<option value="">-- Student chunein --</option>'+
+      students.map(s=>`<option value="${s.email}">${s.username} (${s.email})</option>`).join('');
+  });
+}
+
+function populateAssignProblemDropdowns(approved){
+  const selects = [document.getElementById('assignProblemSelect'), document.getElementById('assignProblemSelect2')];
+  selects.forEach(sel=>{
+    if(!sel)return;
+    sel.innerHTML='<option value="">-- Problem chunein --</option>'+
+      approved.map(p=>`<option value="${p.id}">${p.title} — ₹${p.budget||'—'}</option>`).join('');
+  });
+}
+
+function quickAssign(email, name){
+  // Pre-fill the assign modal with this student
+  const sel = document.getElementById('assignStudentSelect');
+  if(sel) sel.value = email;
+  openAssignModal();
+}
+
+async function doAssignProblem(){
+  const email  = document.getElementById('assignStudentSelect').value;
+  const probId = document.getElementById('assignProblemSelect').value;
+  const note   = document.getElementById('assignNote').value;
+  if(!email||!probId){alert('Student aur problem dono select karein!');return;}
+  await _assign(email, probId, note);
+  closeAssignModal();
+}
+
+async function doAssignProblem2(){
+  const email  = document.getElementById('assignStudentSelect2').value;
+  const probId = document.getElementById('assignProblemSelect2').value;
+  const note   = document.getElementById('assignNote2').value;
+  if(!email||!probId){alert('Student aur problem dono select karein!');return;}
+  await _assign(email, probId, note);
+}
+
+async function _assign(email, probId, note){
+  try{
+    const res = await fetch('/assign-problem',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({student_email:email, problem_id:probId, faculty_note:note})});
+    const data = await res.json();
+    if(data.status==='success'){
+      assignedCount++;
+      document.getElementById('statAssigned').textContent = assignedCount;
+      alert('✅ Problem successfully assign kar di gayi student ko!');
+      loadAssignHistory();
+    }else{alert('Error: '+data.message);}
+  }catch(e){alert('Server error. Backend check karein.');}
+}
+
+async function loadAssignHistory(){
+  // Show accepted_problems from students' perspective via projects
+  const box = document.getElementById('assignHistory');
+  if(!box)return;
+  // We show which students have accepted/assigned problems
+  if(allStudents.length===0){box.innerHTML='<p style="color:var(--muted);font-size:14px">Koi assignment nahi abhi tak.</p>';return;}
+  // Get accepted problems
+  try{
+    const res = await fetch('/get-all-problems');
+    const probs = await res.json();
+    box.innerHTML=`
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Problem</th><th>Status</th></tr></thead>
+          <tbody>
+            ${allProjects.length>0?allProjects.map(p=>{
+              const prob = probs.find(x=>x.id===p.problem_id);
+              return `<tr>
+                <td><b>${p.student_name||p.student_email||'—'}</b></td>
+                <td>${prob?prob.title:'Working project...'}</td>
+                <td><span class="badge ${p.status==='completed'?'badge-green':'badge-yellow'}">${p.status||'In Progress'}</span></td>
+              </tr>`;
+            }).join(''):'<tr><td colspan="3" style="text-align:center;color:var(--muted)">Koi assignment nahi</td></tr>'}
+          </tbody>
+        </table>
+      </div>`;
+  }catch(e){box.innerHTML='<p style="color:var(--muted)">Load nahi ho paya.</p>';}
+}
+
+// ---- NEWSLETTER ----
+function subscribeNews(){
+  const v=document.getElementById('newsEmail').value;
+  if(!v){alert('Email daalen!');return;}
+  alert('✅ Subscribed!');document.getElementById('newsEmail').value='';
+}
+
+// ---- FACULTY EARNINGS ----
+let facEarningsChart = null;
+const facultyEmail = sessionStorage.getItem('email')||'';
+
+async function loadFacultyEarnings(){
+  try{
+    const [detRes, sumRes] = await Promise.all([
+      fetch('/get-earnings?email='+encodeURIComponent(facultyEmail)+'&role=faculty'),
+      fetch('/get-earnings-summary?email='+encodeURIComponent(facultyEmail)+'&role=faculty')
+    ]);
+    const details = await detRes.json();
+    const summary = await sumRes.json();
+
+    const totalFacEarned  = details.reduce((s,e)=>s+(e.faculty_share||0),0);
+    const totalStuShare   = details.reduce((s,e)=>s+(e.student_share||0),0);
+    const totalUniShare   = details.reduce((s,e)=>s+(e.university_share||0),0);
+
+    document.getElementById('facEarTotal').textContent       = '₹'+totalFacEarned.toLocaleString('en-IN');
+    document.getElementById('facEarProjects').textContent    = details.length;
+    document.getElementById('facEarStudentShare').textContent= '₹'+totalStuShare.toLocaleString('en-IN');
+    document.getElementById('facEarUniShare').textContent    = '₹'+totalUniShare.toLocaleString('en-IN');
+
+    const months = summary.map(s=>s.month);
+    const earned = summary.map(s=>s.my_earning_faculty||0);
+
+    const ctx = document.getElementById('facultyEarningsChart').getContext('2d');
+    if(facEarningsChart) facEarningsChart.destroy();
+    facEarningsChart = new Chart(ctx,{
+      type:'bar',
+      data:{
+        labels: months.length ? months : ['Koi Data Nahi'],
+        datasets:[
+          {label:'Aapki Earning (25%) ₹', data: earned.length ? earned : [0], backgroundColor:'rgba(99,102,241,0.85)', borderRadius:8, borderSkipped:false},
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{display:true}, tooltip:{callbacks:{label:c=>'₹'+c.raw.toLocaleString('en-IN')}}},
+        scales:{y:{beginAtZero:true, ticks:{callback:v=>'₹'+v.toLocaleString('en-IN')}}}
+      }
+    });
+
+    const box = document.getElementById('facEarningDetails');
+    if(details.length===0){
+      box.innerHTML='<div style="background:white;border-radius:16px;padding:30px;border:1px solid var(--border);text-align:center"><p style="color:var(--muted);font-size:14px">🏆 Koi earning nahi abhi tak. Student ka project approve karo!</p></div>';
+      return;
+    }
+    box.innerHTML=`<div style="background:white;border-radius:16px;border:1px solid var(--border);overflow:auto">
+      <table style="width:100%;border-collapse:collapse;min-width:560px">
+        <thead><tr>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Month</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Problem</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Total Budget</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Aapka (25%)</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">Student (45%)</th>
+          <th style="background:var(--primary-dark);color:white;padding:12px 16px;font-size:12.5px;font-weight:700;text-align:left">University (30%)</th>
+        </tr></thead>
+        <tbody>${details.map(e=>`<tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:11px 16px;font-size:13px">${e.month||'—'}</td>
+          <td style="padding:11px 16px;font-size:13px"><b>${e.problem_title||'—'}</b></td>
+          <td style="padding:11px 16px;font-size:13px">₹${(e.budget||0).toLocaleString('en-IN')}</td>
+          <td style="padding:11px 16px;font-size:13px;color:var(--primary);font-weight:800">₹${(e.faculty_share||0).toLocaleString('en-IN')}</td>
+          <td style="padding:11px 16px;font-size:13px">₹${(e.student_share||0).toLocaleString('en-IN')}</td>
+          <td style="padding:11px 16px;font-size:13px">₹${(e.university_share||0).toLocaleString('en-IN')}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  }catch(e){console.log('Faculty earnings error:',e);}
+}
+
+// showSection override — load earnings when tab opens
+const _origShowSection = showSection;
+showSection = function(id, el){
+  _origShowSection(id, el);
+  if(id==='myEarnings') loadFacultyEarnings();
+};
+
+// ---- INIT ----
+window.onload=async function(){
+  await loadProblems();
+  await loadProjects();
+  await loadStudents();
+  await loadProviders();
+  await loadFacultyEarnings();
+};
+</script>
+</body>
+</html>
